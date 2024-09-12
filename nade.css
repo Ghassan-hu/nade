@@ -1,0 +1,391 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url(/imges/view-soccer-field-with-grass_23-2150887297.avif);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: 'Open Sans', sans-serif; /* Imported font from Google Fonts */
+  padding-top: 60px; /* Adjust this value based on your navbar height */
+}
+
+.navbar {
+  background-color: #1a1d23;
+  padding: 1em;
+  display: flex;
+  flex-direction: row-reverse; /* Add this line */
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 5px solid #007bff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  z-index: 1002;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  margin: 3px 0;
+  transition: 0.4s;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Change this line */
+}
+
+.navbar-links a, .dropdown {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px;
+  margin: 0 5px;
+  font-size: 16px;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #1a1d23;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  top: 100%;
+  left: 0;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+@media screen and (max-width: 768px) {
+  .hamburger-menu {
+    display: flex;
+    position: fixed;
+    top: 1em;
+    left: 1em; /* Change right to left */
+    right: auto; /* Add this line */
+  }
+
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(26, 29, 35, 0.95);
+    padding: 80px 0 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 1001;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .navbar-links.active {
+    display: flex;
+  }
+
+  .navbar-links a, .dropdown {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .navbar-links.active a, .navbar-links.active .dropdown {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Add a delay for each link to create a staggered animation */
+  .navbar-links.active a:nth-child(1), .navbar-links.active .dropdown:nth-child(1) { transition-delay: 0.1s; }
+  .navbar-links.active a:nth-child(2), .navbar-links.active .dropdown:nth-child(2) { transition-delay: 0.2s; }
+  .navbar-links.active a:nth-child(3), .navbar-links.active .dropdown:nth-child(3) { transition-delay: 0.3s; }
+  /* Add more if you have more links */
+
+  .logo {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .navbar-links a, .dropdown {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .navbar-links {
+    justify-content: flex-start; /* Change this line */
+  }
+
+  .navbar-links a, .dropdown {
+    font-size: 18px;
+    padding: 12px;
+  }
+}
+
+.navbar img {
+  width: 70px;
+  /* Increased the logo size to make it a bit bigger */
+  height: 70px;
+  /* Increased the logo size to make it a bit bigger */
+  transition: transform 0.5s ease;
+  /* Added a transition to the logo for a smoother animation */
+  margin-right: 0; /* Remove right margin */
+  margin-left: 10px; /* Add left margin */
+  /* Added a 10px gap between the logo and the left edge of the window */
+  transform-origin: left; /* Change to left */
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #1a1d23;
+  /* Changed to match the navbar color */
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+  /* Added a subtle border radius to give the dropdown a more rounded look */
+}
+
+.dropdown-content a {
+  color: #fff;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.2s ease;
+  /* Added a transition to the dropdown links to give them a smoother hover effect */
+}
+
+.dropdown-content a:hover {
+  background-color: #007bff;
+  /* Changed to a bold, football team-inspired color for the dropdown links */
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #007bff;
+  /* Changed to match the dropdown-content hover color */
+}
+
+.dropbtn {
+  background-color: #1a1d23;
+  /* Changed to match the navbar color */
+  color: #fff;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  /* Added a subtle border radius to give the dropdown button a more rounded look */
+}
+
+.dropbtn:hover {
+  background-color: #007bff;
+  /* Changed to match the dropdown-content hover color */
+}
+
+#home {
+  display: inline;
+  position: relative;
+  padding: 20px;
+  margin: auto;
+  background-image: none;
+  backdrop-filter: blur(10px);
+}
+
+#home h1 {
+  color: #f6f6f6;
+  font-size: 60px;
+  margin-bottom: 20px;
+  text-align: center;
+  direction: ltr;
+}
+
+/* Add these new responsive styles */
+@media screen and (max-width: 768px) {
+  #home h1 {
+    font-size: 40px;
+  }
+
+  #home p {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #home h1 {
+    font-size: 32px;
+  }
+
+  #home p {
+    font-size: 14px;
+  }
+}
+
+#schedule {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(26, 29, 35, 0.9);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  border-top: 2px solid #007bff;
+  box-sizing: border-box;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+#schedule h2 {
+  color: #007bff;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+#schedule table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+  font-size: 0.9em;
+}
+
+#schedule th, #schedule td {
+  border: 1px solid #007bff;
+  padding: 4px;
+  text-align: center;
+}
+
+#schedule form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+#schedule label {
+  font-size: 0.9em;
+}
+
+#schedule input, #schedule select, #schedule button {
+  width: 100%;
+  max-width: 250px;
+  padding: 6px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  font-size: 0.9em;
+}
+
+#schedule button {
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+#schedule button:hover {
+  background-color: #0056b3;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 600px) {
+  #schedule {
+    font-size: 12px;
+    padding: 5px;
+  }
+
+  #schedule h2 {
+    font-size: 1em;
+  }
+
+  #schedule th, #schedule td {
+    padding: 2px;
+  }
+
+  #schedule input, #schedule select, #schedule button {
+    max-width: 200px;
+    padding: 4px;
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 1024px) {
+  #schedule {
+    font-size: 13px;
+  }
+
+  #schedule input, #schedule select, #schedule button {
+    max-width: 220px;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  #schedule form {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  #schedule input, #schedule select, #schedule button {
+    width: auto;
+    max-width: 180px;
+  }
+}
+
+.reservation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+.reservation-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.hamburger-menu.active .bar:nth-child(1) {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.hamburger-menu.active .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu.active .bar:nth-child(3) {
+  transform: rotate(45deg) translate(-5px, -6px);
+}

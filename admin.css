@@ -1,0 +1,269 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 10px;
+}
+
+h2 {
+    color: #495057;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 18px;
+}
+
+#reservation-container {
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 10px;
+    max-width: 100%;
+    margin: 10px auto;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#reservation-container p {
+    font-size: 12px;
+    color: #6c757d;
+    margin: 5px 0;
+}
+
+#reservation-container button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 3px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 12px;
+    width: 100%;
+    max-width: 150px;
+}
+
+#reservation-container button#reject-reservation {
+    background-color: #dc3545;
+}
+
+#reservation-container button:hover {
+    opacity: 0.8;
+}
+
+.reservation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.reservation-card {
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+#clear-table {
+    display: block;
+    margin: 10px auto;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 12px;
+    max-width: 150px;
+}
+
+#clear-table:hover {
+    opacity: 0.8;
+}
+
+#clear-page {
+    display: block;
+    margin: 10px auto;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 12px;
+    max-width: 150px;
+}
+
+#clear-page:hover {
+    opacity: 0.8;
+}
+
+tbody {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+tbody tr {
+    border-bottom: 1px solid #dee2e6;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #e9ecef;
+}
+
+tbody tr:hover {
+    background-color: #dee2e6;
+}
+
+tbody td {
+    padding: 6px;
+    text-align: center;
+    color: #495057;
+    font-size: 11px;
+}
+
+tbody tr.approved {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+tbody tr.approved td {
+    border-color: #c3e6cb;
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (min-width: 576px) {
+    body {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    #reservation-container {
+        padding: 15px;
+    }
+
+    #reservation-container p {
+        font-size: 13px;
+    }
+
+    #reservation-container button {
+        font-size: 13px;
+        padding: 8px 16px;
+    }
+
+    .reservation-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+
+    tbody td {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    body {
+        padding: 30px;
+    }
+
+    h2 {
+        font-size: 24px;
+        margin-top: 25px;
+    }
+
+    #reservation-container {
+        padding: 25px;
+        margin: 25px auto;
+    }
+
+    #reservation-container p {
+        font-size: 16px;
+        margin: 8px 0;
+    }
+
+    #reservation-container button {
+        font-size: 16px;
+        padding: 10px 20px;
+        margin: 5px;
+        max-width: 200px;
+    }
+
+    .reservation-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .reservation-card {
+        padding: 15px;
+    }
+
+    #clear-table, #clear-page {
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 16px;
+        max-width: 200px;
+    }
+
+    tbody td {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    body {
+        padding: 40px;
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+
+    #reservation-container {
+        padding: 30px;
+    }
+
+    .reservation-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+
+    tbody td {
+        font-size: 15px;
+        padding: 12px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    body {
+        padding: 50px;
+    }
+
+    h2 {
+        font-size: 32px;
+    }
+
+    #reservation-container {
+        padding: 35px;
+    }
+
+    .reservation-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+
+    #reservation-container p {
+        font-size: 18px;
+    }
+
+    #reservation-container button {
+        font-size: 18px;
+        padding: 12px 24px;
+    }
+
+    tbody td {
+        font-size: 16px;
+        padding: 14px;
+    }
+}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Reservation Approval</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="icon" href="./imges/Soccer-Player--Streamline-Ultimate.png">
+     
+
+</head>
+<body>
+<h2>موافقة على الحجوزات</h2>
+<div id="reservation-container" class="reservation-grid"></div>
+<button id="clear-table">الغاء الحجوزات</button>
+<script>
+    function updateReservationTable() {
+        // ... (implementation of updateReservationTable function)
+    }
+
+    window.addEventListener('load', function() {
+        const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+        const reservationContainer = document.querySelector('#reservation-container');
+
+        reservations.forEach((reservationData, index) => {
+            const reservationCard = document.createElement('div');
+            reservationCard.className = 'reservation-card';
+            reservationCard.innerHTML = `
+                <p>Name: ${reservationData.name}</p>
+                <p>Family Name: ${reservationData.familyName}</p>
+                <p>Phone: ${reservationData.phone}</p>
+                <p>Day: ${reservationData.day}</p>
+                <p>Start Time: ${reservationData.startTime}</p>
+                <p>End Time: ${reservationData.endTime}</p>
+                <button class="approve-reservation" data-index="${index}">Approve</button>
+                <button class="reject-reservation" data-index="${index}" style="background-color: red;">Reject</button>
+            `;
+            reservationContainer.appendChild(reservationCard);
+        });
+
+        reservationContainer.addEventListener('click', function(event) {
+            if (event.target.classList.contains('approve-reservation') || 
+                event.target.classList.contains('reject-reservation')) {
+                const index = event.target.getAttribute('data-index');
+                const reservationCard = event.target.closest('.reservation-card');
+                const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+                const reservationData = reservations[index];
+
+                if (event.target.classList.contains('approve-reservation')) {
+                    const approvedReservations = JSON.parse(localStorage.getItem('approvedReservations') || '[]');
+                    approvedReservations.push(reservationData);
+                    localStorage.setItem('approvedReservations', JSON.stringify(approvedReservations));
+                    reservationCard.innerHTML = '<p>Reservation approved!</p>';
+                } else {
+                    reservationCard.innerHTML = '<p>Reservation rejected!</p>';
+                }
+
+                reservations.splice(index, 1);
+                localStorage.setItem('reservations', JSON.stringify(reservations));
+            }
+        });
+
+        // Add event listener for the clear table button
+        document.getElementById('clear-table').addEventListener('click', function() {
+            // Clear all reservations from localStorage
+            localStorage.removeItem('reservations');
+            localStorage.removeItem('approvedReservations');
+            
+            // Clear the reservation container
+            document.getElementById('reservation-container').innerHTML = '';
+            
+            // Clear the reservation table in nade.html (if it's open in another tab)
+            localStorage.setItem('clearReservationTable', 'true');
+            
+        });
+
+        updateReservationTable();
+    });
+</script>
+</body>
+</html>
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Reservation Approval</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="icon" href="./imges/Soccer-Player--Streamline-Ultimate.png">
+     
+
+</head>
+<body>
+<h2>موافقة على الحجوزات</h2>
+<div id="reservation-container" class="reservation-grid"></div>
+<button id="clear-table">الغاء الحجوزات</button>
+<script>
+    function updateReservationTable() {
+        // ... (implementation of updateReservationTable function)
+    }
+
+    window.addEventListener('load', function() {
+        const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+        const reservationContainer = document.querySelector('#reservation-container');
+
+        reservations.forEach((reservationData, index) => {
+            const reservationCard = document.createElement('div');
+            reservationCard.className = 'reservation-card';
+            reservationCard.innerHTML = `
+                <p>Name: ${reservationData.name}</p>
+                <p>Family Name: ${reservationData.familyName}</p>
+                <p>Phone: ${reservationData.phone}</p>
+                <p>Day: ${reservationData.day}</p>
+                <p>Start Time: ${reservationData.startTime}</p>
+                <p>End Time: ${reservationData.endTime}</p>
+                <button class="approve-reservation" data-index="${index}">Approve</button>
+                <button class="reject-reservation" data-index="${index}" style="background-color: red;">Reject</button>
+            `;
+            reservationContainer.appendChild(reservationCard);
+        });
+
+        reservationContainer.addEventListener('click', function(event) {
+            if (event.target.classList.contains('approve-reservation') || 
+                event.target.classList.contains('reject-reservation')) {
+                const index = event.target.getAttribute('data-index');
+                const reservationCard = event.target.closest('.reservation-card');
+                const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+                const reservationData = reservations[index];
+
+                if (event.target.classList.contains('approve-reservation')) {
+                    const approvedReservations = JSON.parse(localStorage.getItem('approvedReservations') || '[]');
+                    approvedReservations.push(reservationData);
+                    localStorage.setItem('approvedReservations', JSON.stringify(approvedReservations));
+                    reservationCard.innerHTML = '<p>Reservation approved!</p>';
+                } else {
+                    reservationCard.innerHTML = '<p>Reservation rejected!</p>';
+                }
+
+                reservations.splice(index, 1);
+                localStorage.setItem('reservations', JSON.stringify(reservations));
+            }
+        });
+
+        // Add event listener for the clear table button
+        document.getElementById('clear-table').addEventListener('click', function() {
+            // Clear all reservations from localStorage
+            localStorage.removeItem('reservations');
+            localStorage.removeItem('approvedReservations');
+            
+            // Clear the reservation container
+            document.getElementById('reservation-container').innerHTML = '';
+            
+            // Clear the reservation table in nade.html (if it's open in another tab)
+            localStorage.setItem('clearReservationTable', 'true');
+            
+        });
+
+        updateReservationTable();
+    });
+</script>
+</body>
+</html> -->

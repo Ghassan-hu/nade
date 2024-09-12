@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="nade.css">
+    <link rel="icon" href="/imges/Soccer-Player--Streamline-Ultimate.png">
+  
+</head>
+
+<body>
+ 
+    <nav class="navbar">
+        <img src="/imges/Soccer-Ball--Streamline-Ultimate.png" alt="Logo">
+        <div class="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div class="navbar-links">
+            <a href="#home">الرئيسية</a>
+            <a href="#services">الخدمات</a>
+            <a href="#about">عنا</a>
+            <a href="#admin">المسؤول</a>
+            <div class="dropdown">
+                <button class="dropbtn">الفرق</button>
+                <div class="dropdown-content">
+                    <a href="#team1">فريق 1</a>
+                    <a href="#team2">فريق 2</a>
+                    <a href="#team3">فريق 3</a>
+                    <a href="#team4">فريق 4</a>
+                    <a href="#team5">فريق 5</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home">
+            <h1>مرحباً بكم في موقع نادي قلنديا الرسمي</h1>
+    </section>
+    <section id="schedule" style="text-align: center;">
+        <h2>الجدول الأسبوعي لحجز ملعب كرة القدم</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>اليوم</th>
+                    <th>الفترة الزمنية</th>
+                    <th>محجوز بواسطة</th>
+                </tr>
+            </thead>
+            <tbody id="reservation-table">
+                <!-- <tr>
+                    <td>الاثنين</td>
+                    <td>10:00 - 12:00</td>
+                    <td>محمد علي</td>
+                </tr> -->
+            </tbody>
+        </table>
+        <h3>طلب حجز الملعب</h3>
+        <form id="reservation-form">
+            <label for="name">الاسم:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="family-name">اسم العائلة:</label>
+            <input type="text" id="family-name" name="family-name" required>
+            <label for="phone">رقم الهاتف:</label>
+            <input type="text" id="phone" name="phone" required>
+            <label for="day">اليوم:</label>
+            <select id="day" name="day" required>
+                <option value="Monday">الاثنين</option>
+                <option value="Tuesday">الثلاثاء</option>
+                <option value="Wednesday">الأربعاء</option>
+                <option value="Thursday">الخميس</option>
+                <option value="Friday">الجمعة</option>
+                <option value="Saturday">السبت</option>
+                <option value="Sunday">الأحد</option>
+            </select>
+            <section id="time-selection">
+                <label for="start-time">وقت البدء:</label>
+                <input type="time" id="start-time" name="start-time" required>
+                <label for="end-time">وقت الانتهاء:</label>
+                <input type="time" id="end-time" name="end-time" required>
+            </section>
+            <button type="submit">إرسال الطلب</button>
+        </form>
+        <p id="reservation-message"></p>
+        <script src="nade.js"></script>
+</body>
+
+</html>
