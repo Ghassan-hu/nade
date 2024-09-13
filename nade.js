@@ -330,6 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to close the menu
   function closeMenu() {
     navbarLinks.classList.remove('active');
+    hamburger.classList.remove('active');
     dropdowns.forEach(dropdown => {
       const dropdownContent = dropdown.querySelector('.dropdown-content');
       if (dropdownContent) {
@@ -341,6 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (hamburger && navbarLinks) {
     hamburger.addEventListener('click', function() {
       navbarLinks.classList.toggle('active');
+      hamburger.classList.toggle('active');
     });
   }
 
@@ -362,12 +364,36 @@ document.addEventListener('DOMContentLoaded', function() {
     anchor.addEventListener('click', closeMenu);
   });
 
-  // Close menu when clicking outside
+  // Close menu when clicking outside for screens under 768px
   document.addEventListener('click', function(e) {
-    if (navbarLinks && !navbarLinks.contains(e.target) && (!hamburger || !hamburger.contains(e.target))) {
-      closeMenu();
+    if (window.innerWidth <= 768) {
+      if (navbarLinks && !navbarLinks.contains(e.target) && (!hamburger || !hamburger.contains(e.target))) {
+        closeMenu();
+      }
     }
   });
+
+  // Add swipe up to close functionality for screens under 768px
+  let touchStartY = 0;
+  let touchEndY = 0;
+
+  document.addEventListener('touchstart', function(e) {
+    touchStartY = e.changedTouches[0].screenY;
+  }, false);
+
+  document.addEventListener('touchend', function(e) {
+    touchEndY = e.changedTouches[0].screenY;
+    handleSwipeGesture();
+  }, false);
+
+  function handleSwipeGesture() {
+    if (window.innerWidth <= 768 && navbarLinks.classList.contains('active')) {
+      const swipeDistance = touchStartY - touchEndY;
+      if (swipeDistance > 50) { // Adjust this value to change swipe sensitivity
+        closeMenu();
+      }
+    }
+  }
 
   // Handle window resize
   window.addEventListener('resize', function() {
