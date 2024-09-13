@@ -47,30 +47,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function displayTeamLoginForm(teamName, username, password, page) {
   const form = document.createElement('div');
-  form.style.position = 'fixed';
-  form.style.top = '50%';
-  form.style.left = '50%';
-  form.style.transform = 'translate(-50%, -50%)';
-  form.style.backgroundColor = 'white';
-  form.style.padding = '50px';
-  form.style.border = '4px solid black';
-  form.style.borderRadius = '20px';
-  form.style.boxShadow = '0px 0px 20px rgba(0,0,0,0.5)';
-  form.style.fontSize = '24px';
+  form.className = 'team-login-form';
   form.innerHTML = `
-    <button id="close" style="position: absolute; top: 20px; right: 20px; background-color: transparent; border: none; font-size: 30px;">X</button>
-    <h2 style="font-size: 36px;">Login for ${teamName}</h2>
-    <input type="text" id="username" placeholder="Username" style="margin-bottom: 20px; font-size: 24px; padding: 10px;">
-    <input type="password" id="password" placeholder="Password" style="margin-bottom: 30px; font-size: 24px; padding: 10px;">
-    <button id="submit" style="padding: 20px 40px; font-size: 24px;">Submit</button>
-    <p id="error-message" style="color: red; font-size: 24px;"></p>
+    <button class="close-button">X</button>
+    <h2>Login for ${teamName}</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button class="submit-button">Submit</button>
+    <p id="error-message"></p>
   `;
   document.body.appendChild(form);
-  const closeButton = form.querySelector('#close');
+  const closeButton = form.querySelector('.close-button');
   closeButton.addEventListener('click', function() {
     form.remove();
   });
-  const submitButton = form.querySelector('#submit');
+  const submitButton = form.querySelector('.submit-button');
   submitButton.addEventListener('click', function() {
     const usernameInput = form.querySelector('#username');
     const passwordInput = form.querySelector('#password');
@@ -97,30 +88,33 @@ document.querySelector('a[href="#admin"]').addEventListener('click', function(ev
 });
 
 function displayAdminLoginForm() {
-  const adminForm = document.createElement('div');
-  adminForm.style.position = 'fixed';
-  adminForm.style.top = '50%';
-  adminForm.style.left = '50%';
-  adminForm.style.transform = 'translate(-50%, -50%)';
-  adminForm.style.backgroundColor = 'white';
-  adminForm.style.padding = '50px';
-  adminForm.style.border = '4px solid black';
-  adminForm.style.borderRadius = '20px';
-  adminForm.style.boxShadow = '0px 0px 20px rgba(0,0,0,0.5)';
-  adminForm.style.fontSize = '24px';
-  adminForm.innerHTML = `
-    <button id="close-admin" style="position: absolute; top: 20px; right: 20px; background-color: transparent; border: none; font-size: 30px;">X</button>
-    <h2 style="font-size: 36px;">Admin Login</h2>
-    <input type="text" id="admin-username" placeholder="Username" style="margin-bottom: 20px; font-size: 24px; padding: 10px;">
-    <input type="password" id="admin-password" placeholder="Password" style="margin-bottom: 30px; font-size: 24px; padding: 10px;">
-    <button id="admin-submit" style="padding: 20px 40px; font-size: 24px;">Submit</button>
-    <p id="admin-error-message" style="color: red; font-size: 24px;"></p>
-  `;
-  document.body.appendChild(adminForm);
+  // Check if the form already exists
+  let adminForm = document.getElementById('admin-form');
+  
+  // If the form doesn't exist, create it
+  if (!adminForm) {
+    adminForm = document.createElement('div');
+    adminForm.id = 'admin-form';
+    adminForm.className = 'admin-form';
+    adminForm.innerHTML = `
+      <button id="close-admin" class="close-button">X</button>
+      <h2>Admin Login</h2>
+      <input type="text" id="admin-username" placeholder="Username">
+      <input type="password" id="admin-password" placeholder="Password">
+      <button id="admin-submit" class="submit-button">Submit</button>
+      <p id="admin-error-message"></p>
+    `;
+    document.body.appendChild(adminForm);
+  }
+
+  // Show the form
+  adminForm.style.display = 'block';
+
   const closeAdminButton = adminForm.querySelector('#close-admin');
   closeAdminButton.addEventListener('click', function() {
-    adminForm.remove();
+    adminForm.style.display = 'none';
   });
+
   const adminSubmitButton = adminForm.querySelector('#admin-submit');
   adminSubmitButton.addEventListener('click', function() {
     const adminUsernameInput = adminForm.querySelector('#admin-username');
@@ -128,12 +122,14 @@ function displayAdminLoginForm() {
     const adminErrorMessage = adminForm.querySelector('#admin-error-message');
     if (adminUsernameInput.value === adminUsername && adminPasswordInput.value === adminPassword) {
       adminErrorMessage.textContent = `Access granted for Admin!`;
+      adminErrorMessage.style.color = 'green';
       setTimeout(() => {
-        adminForm.remove();
+        adminForm.style.display = 'none';
         window.location.href = adminPage;
       }, 1000);
     } else {
       adminErrorMessage.textContent = 'Incorrect username or password. Access denied.';
+      adminErrorMessage.style.color = 'red';
     }
   });
 }
@@ -182,6 +178,18 @@ function handleReservationSubmit(event) {
       <p>شكرًا لحجزك. السعر الإجمالي هو ₪${price}</p>
       <p>وقت الحجز: من ${formattedStartTime} إلى ${formattedEndTime}</p>
     `;
+
+    // Close the reservation table after 3 seconds if screen width is under 768px
+    if (window.innerWidth <= 768) {
+      setTimeout(() => {
+        const dropdown = document.getElementById('reservation-dropdown');
+        const toggleButton = document.getElementById('reservation-toggle');
+        if (dropdown && toggleButton) {
+          dropdown.classList.remove('active');
+          toggleButton.textContent = 'طلب حجز الملعب';
+        }
+      }, 3000);
+    }
 
     // Reset the form submission flag after 5 seconds
     setTimeout(() => {
@@ -416,6 +424,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
   reservationForm.addEventListener('submit', handleReservationSubmit);
 });
-
-
-
