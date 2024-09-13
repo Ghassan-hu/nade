@@ -176,17 +176,28 @@ function handleReservationSubmit(event) {
   const formattedEndTime = formatTimeAsDayNight(endTime);
 
   const reservationMessage = document.getElementById('reservation-message');
-  if (reservationMessage) {
+  const reservationDropdown = document.getElementById('reservation-dropdown');
+  const toggleButton = document.getElementById('reservation-toggle');
+
+  if (reservationMessage && reservationDropdown && toggleButton) {
     reservationMessage.innerHTML = `
       <p>!تم تقديم طلب الحجز بنجاح</p>
       <p>شكرًا لحجزك. السعر الإجمالي هو ₪${price}</p>
       <p>وقت الحجز: من ${formattedStartTime} إلى ${formattedEndTime}</p>
     `;
 
-    // Reset the form submission flag after 5 seconds
+    // Keep the form open for 5 seconds before closing
     setTimeout(() => {
-      formSubmitted = false;
+      // Close the dropdown
+      reservationDropdown.classList.remove('active');
+      toggleButton.textContent = 'طلب حجز الملعب';
+
+      // Reset the form
+      document.getElementById('reservation-form').reset();
+
+      // Clear the message and reset the form submission flag
       reservationMessage.innerHTML = '';
+      formSubmitted = false;
     }, 5000);
   }
 }
