@@ -240,7 +240,9 @@ body {
 /* Add these new responsive styles */
 @media screen and (max-width: 768px) {
   #home h1 {
-    font-size: 40px;
+    margin-top: 50px;
+    font-size: 15px;
+    color: #007bff;
   }
 
   #home p {
@@ -250,7 +252,9 @@ body {
 
 @media screen and (max-width: 480px) {
   #home h1 {
-    font-size: 32px;
+    margin-top: 50px;
+    font-size: 15px;
+    color: #007bff;
   }
 
   #home p {
@@ -367,25 +371,73 @@ body {
   }
 }
 
-.reservation-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-.reservation-card {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
+
+@media screen and (max-width: 768px) {
+    .reservation-toggle {
+        display:  inline-block;
+        width: 100%;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border: none;
+        text-align: center;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .reservation-dropdown {
+        display: none;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+    }
+
+    .reservation-dropdown.active {
+        display: block;
+    }
+
+    #reservation-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #reservation-form input,
+    #reservation-form select,
+    #reservation-form button {
+        margin-bottom: 10px;
+    }
 }
 
-.hamburger-menu.active .bar:nth-child(1) {
-  transform: rotate(-45deg) translate(-5px, 6px);
+@media screen and (min-width: 769px) {
+    .reservation-toggle {
+        display: none;
+    }
+
+    .reservation-dropdown {
+        display: block;
+    }
 }
 
-.hamburger-menu.active .bar:nth-child(2) {
-  opacity: 0;
-}
+@media screen and (max-width: 768px) {
+  .reservation-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Change to single column for small screens */
+    gap: 10px; /* Reduce gap for small screens */
+  }
 
-.hamburger-menu.active .bar:nth-child(3) {
-  transform: rotate(45deg) translate(-5px, -6px);
+  .reservation-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .hamburger-menu.active .bar:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+
+  .hamburger-menu.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger-menu.active .bar:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
 }

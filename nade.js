@@ -138,8 +138,20 @@ function displayAdminLoginForm() {
   });
 }
 
-document.querySelector('#reservation-form').addEventListener('submit', function(event) {
+let formSubmitted = false;
+let listenerAttached = false;
+
+function handleReservationSubmit(event) {
   event.preventDefault();
+  
+  if (formSubmitted) {
+    console.log('Form already submitted. Ignoring this submission.');
+    return;
+  }
+  
+  console.log('Handling form submission');
+  formSubmitted = true;
+
   const name = document.querySelector('#name').value;
   const familyName = document.querySelector('#family-name').value;
   const phone = document.querySelector('#phone').value;
@@ -148,41 +160,52 @@ document.querySelector('#reservation-form').addEventListener('submit', function(
   const endTime = document.querySelector('#end-time').value;
 
   const reservationData = {
-    name: name,
-    familyName: familyName,
-    phone: phone,
-    day: day,
-    startTime: startTime,
-    endTime: endTime
+    name, familyName, phone, day, startTime, endTime
   };
 
   // Calculate price
   const price = calculatePrice(startTime, endTime);
-
-  // Add price to reservationData
   reservationData.price = price;
 
   // Get existing reservations or initialize an empty array
   const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
-  
-  // Add the new reservation
   reservations.push(reservationData);
-
-  // Save the updated reservations array
   localStorage.setItem('reservations', JSON.stringify(reservations));
 
   const formattedStartTime = formatTimeAsDayNight(startTime);
   const formattedEndTime = formatTimeAsDayNight(endTime);
 
-  document.querySelector('#reservation-message').innerHTML = `
-    <p>!تم تقديم طلب الحجز بنجاح</p>
-    <p>شكرًا لحجزك. السعر الإجمالي هو ₪${price}</p>
-    <p>وقت الحجز: من ${formattedStartTime} إلى ${formattedEndTime}</p>
-  `;
-  setTimeout(() => {
-    document.querySelector('#reservation-message').innerHTML = '';
-  },5000);
-});
+  const reservationMessage = document.getElementById('reservation-message');
+  if (reservationMessage) {
+    reservationMessage.innerHTML = `
+      <p>!تم تقديم طلب الحجز بنجاح</p>
+      <p>شكرًا لحجزك. السعر الإجمالي هو ₪${price}</p>
+      <p>وقت الحجز: من ${formattedStartTime} إلى ${formattedEndTime}</p>
+    `;
+
+    // Reset the form submission flag after 5 seconds
+    setTimeout(() => {
+      formSubmitted = false;
+      reservationMessage.innerHTML = '';
+    }, 5000);
+  }
+}
+
+function initializeReservationSystem() {
+  console.log('Initializing reservation system');
+  const reservationForm = document.getElementById('reservation-form');
+  
+  if (reservationForm && !listenerAttached) {
+    console.log('Found reservation form, adding event listener');
+    reservationForm.addEventListener('submit', handleReservationSubmit);
+    listenerAttached = true;
+    console.log('Event listener attached');
+  } else if (listenerAttached) {
+    console.log('Event listener already attached, skipping');
+  } else {
+    console.log('Reservation form not found');
+  }
+}
 
 function calculatePrice(startTime, endTime) {
   const start = new Date(`2000-01-01T${startTime}`);
@@ -202,6 +225,25 @@ function formatTimeAsDayNight(time) {
     return `${time} ليلاً`;
   }
 }
+
+// Use a self-executing function to ensure the initialization runs only once
+(function() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeReservationSystem);
+  } else {
+    initializeReservationSystem();
+  }
+})();
+
+// Remove any existing submit event listeners
+window.addEventListener('load', function() {
+  const reservationForm = document.getElementById('reservation-form');
+  if (reservationForm) {
+    const clonedForm = reservationForm.cloneNode(true);
+    reservationForm.parentNode.replaceChild(clonedForm, reservationForm);
+    clonedForm.addEventListener('submit', handleReservationSubmit);
+  }
+});
 
 window.addEventListener('load', function() {
   if (window.location.href.includes('admin.html')) {
@@ -333,6 +375,20 @@ document.addEventListener('DOMContentLoaded', function() {
       closeMenu();
     }
   });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const toggleButton = document.getElementById('reservation-toggle');
+  const dropdown = document.getElementById('reservation-dropdown');
+  const reservationForm = document.getElementById('reservation-form');
+  const reservationMessage = document.getElementById('reservation-message');
+
+  toggleButton.addEventListener('click', function() {
+    dropdown.classList.toggle('active');
+    toggleButton.textContent = dropdown.classList.contains('active') ? 'إغلاق' : 'طلب حجز الملعب';
+  });
+
+  reservationForm.addEventListener('submit', handleReservationSubmit);
 });
 
 
