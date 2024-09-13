@@ -58,13 +58,13 @@
             <h3>طلب حجز الملعب</h3>
             <form id="reservation-form">
                 <label for="name">الاسم:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" required autocomplete="given-name">
                 <label for="family-name">اسم العائلة:</label>
-                <input type="text" id="family-name" name="family-name" required>
+                <input type="text" id="family-name" name="family-name" required autocomplete="family-name">
                 <label for="phone">رقم الهاتف:</label>
-                <input type="text" id="phone" name="phone" required>
+                <input type="tel" id="phone" name="phone" required autocomplete="tel">
                 <label for="day">اليوم:</label>
-                <select id="day" name="day" required>
+                <select id="day" name="day" required autocomplete="off">
                     <option value="Monday">الاثنين</option>
                     <option value="Tuesday">الثلاثاء</option>
                     <option value="Wednesday">الأربعاء</option>
@@ -75,9 +75,9 @@
                 </select>
                 <section id="time-selection">
                     <label for="start-time">وقت البدء:</label>
-                    <input type="time" id="start-time" name="start-time" required>
+                    <input type="time" id="start-time" name="start-time" required autocomplete="off">
                     <label for="end-time">وقت الانتهاء:</label>
-                    <input type="time" id="end-time" name="end-time" required>
+                    <input type="time" id="end-time" name="end-time" required autocomplete="off">
                 </section>
                 <button type="submit">إرسال الطلب</button>
             </form>
