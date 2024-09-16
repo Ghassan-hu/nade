@@ -177,7 +177,7 @@
 <div id="reservation-container" class="reservation-grid"></div>
 <button id="clear-table">إلغاء جميع الحجوزات</button>
 <div id="search-container">
-    <input type="text" id="search-input" placeholder="البحث بالاسم أو الهاتف أو التاريخ">
+    <input type="text" id="search-input" placeholder="البحث برقم الهاتف (10 أرقام)" maxlength="10" pattern="\d*">
     <button id="clear-saved-reservations">مسح الحجوزات المحفوظة</button>
 </div>
 <div id="saved-reservations-container">
@@ -231,14 +231,9 @@
             const reservationElement = document.createElement('div');
             reservationElement.className = 'saved-reservation';
             
-            const isMatch = searchTerm && (
-                reservationData.phone.includes(searchTerm) ||
-                reservationData.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                reservationData.familyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                reservationData.day.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+            const isMatch = searchTerm && reservationData.phone.includes(searchTerm);
 
-            if (reservationData.status === 'تمت الموافقة' && isMatch) {
+            if (isMatch) {
                 reservationElement.classList.add('search-result');
                 if (!firstMatchFound) {
                     reservationElement.classList.add('first-match');
@@ -348,6 +343,7 @@
 
         const searchInput = document.getElementById('search-input');
         searchInput.addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 10);
             updateSavedReservationsDisplay(this.value);
         });
     });
