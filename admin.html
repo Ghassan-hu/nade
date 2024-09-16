@@ -122,13 +122,22 @@
         .status-rejected { color: var(--danger-color); font-weight: bold; }
 
         .search-result {
-            border: 2px solid var(--primary-color);
-            background-color: rgba(52, 152, 219, 0.1);
+        border: 2px solid var(--primary-color);
+        background-color: rgba(52, 152, 219, 0.1);
+    }
+
+    .first-match {
+        border: 2px solid var(--primary-color);
+        background-color: rgba(46, 204, 113, 0.1);
+    }
+
+
+        .search-result.status-approved {
+            background-color: rgba(46, 204, 113, 0.2); /* Light green */
         }
 
-        .first-match {
-            border: 2px solid var(--secondary-color);
-            background-color: rgba(46, 204, 113, 0.1);
+        .search-result.status-rejected {
+            background-color: rgba(231, 76, 60, 0.2); /* Light red */
         }
 
         @media (min-width: 768px) {
@@ -168,6 +177,57 @@
 
             #clear-saved-reservations, #clear-table {
                 width: auto;
+            }
+        }
+
+        @media (max-width: 767px) {
+            body {
+                padding: 10px;
+            }
+
+            h2, h3 {
+                font-size: 1.2em;
+                margin-bottom: 0.5em;
+            }
+
+            #reservation-container {
+                gap: 10px;
+                grid-template-columns: repeat(2, 1fr); /* Two columns for smaller screens */
+            }
+
+            .reservation-card, .saved-reservation {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+
+            #saved-reservations-container {
+                flex-direction: row; /* Change to row to display side by side */
+                gap: 10px;
+                margin-top: 10px;
+                padding-top: 10px;
+            }
+
+            .reservations-column {
+                width: calc(50% - 5px); /* Adjust width to fit two columns with gap */
+            }
+
+            .column-separator {
+                display: none; /* Hide the separator for side-by-side layout */
+            }
+
+            #search-container {
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+
+            #search-input, #clear-saved-reservations, #clear-table {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .saved-reservations-grid {
+                gap: 10px;
+                grid-template-columns: 1fr; /* Single column for saved reservations */
             }
         }
     </style>
@@ -235,6 +295,7 @@
 
             if (isMatch) {
                 reservationElement.classList.add('search-result');
+                reservationElement.classList.add(`status-${reservationData.status === 'تمت الموافقة' ? 'approved' : 'rejected'}`);
                 if (!firstMatchFound) {
                     reservationElement.classList.add('first-match');
                     firstMatchFound = true;
