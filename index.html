@@ -12,7 +12,7 @@
 
 <body>
     <nav class="navbar">
-        <img src="./imges/Soccer-Ball--Streamline-Ultimate.png" alt="Logo">
+        <img src="./imges/Soccer-Ball--Streamline-Ultimate.png" alt="Logo" id="logoimg">
         <div class="hamburger-menu">
             <div class="bar"></div>
             <div class="bar"></div>
@@ -62,7 +62,9 @@
                 <label for="family-name">اسم العائلة:</label>
                 <input type="text" id="family-name" name="family-name" required autocomplete="family-name">
                 <label for="phone">رقم الهاتف:</label>
-                <input type="tel" id="phone" name="phone" required autocomplete="tel">
+                <input type="tel" id="phone" name="phone" required autocomplete="tel" 
+                       pattern="^(05[0-9]{8}|9[0-9]{8})$" minlength="9" maxlength="10" 
+                       title="الرجاء إدخال رقم هاتف فلسطيني أو إسرائيلي صحيح">
                 <label for="day">اليوم:</label>
                 <select id="day" name="day" required autocomplete="off">
                     <option value="Monday">الاثنين</option>

@@ -40,6 +40,7 @@ body {
   left: 0;
   right: 0;
   z-index: 1000;
+  direction: rtl;
 }
 
 .hamburger-menu {
@@ -711,5 +712,57 @@ body {
 @media (max-width: 768px) {
   .team-login-form {
     width: 90%;
+    max-width: none;
+    padding: 15px;
+  }
+
+  .team-login-form h2 {
+    font-size: 1.5rem;
+  }
+
+  .team-login-form input,
+  .team-login-form .submit-button {
+    font-size: 1rem;
+    padding: 8px;
+  }
+
+  .team-login-form .close-button {
+    font-size: 1.5rem;
+    top: 10px;
+    right: 10px;
+  }
+  .navbar{
+    height: 40px;
+  }
+
+  #logoimg {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    left: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-login-form {
+    width: 95%;
+    padding: 10px;
+  }
+
+  .team-login-form h2 {
+    font-size: 1.25rem;
+  }
+
+  .team-login-form input,
+  .team-login-form .submit-button {
+    font-size: 0.9rem;
+    padding: 6px;
+  }
+
+  #logoimg {
+    width: 30px;
+    height: 30px;
   }
 }

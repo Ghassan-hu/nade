@@ -19,7 +19,7 @@ function initializeLogo() {
   });
 
   function animateLogo() {
-    logo.style.transform = 'translateX(-3000%)';
+    logo.style.transform = 'translateX(100%)';
     setTimeout(() => {
       logo.style.transform = 'translateX(0)';
       animateLogoVertically();
@@ -234,6 +234,7 @@ function handleReservationSubmit(event) {
   }
 }
 
+
 function calculatePrice(startTime, endTime) {
   const start = new Date(`2000-01-01T${startTime}`);
   const end = new Date(`2000-01-01T${endTime}`);
@@ -409,3 +410,49 @@ function displayReservationApproval(reservationData) {
     reservationContainer.remove();
   });
 }
+document.getElementById('phone').addEventListener('input', function(e) {
+  var phone = e.target.value.replace(/\D/g, '');
+  var isValid = /^(05[0-9]{8}|9[0-9]{8})$/.test(phone);
+  
+  if (isValid) {
+      e.target.setCustomValidity('');
+  } else {
+      e.target.setCustomValidity('الرجاء إدخال رقم هاتف فلسطيني أو إسرائيلي صحيح');
+  }
+});
+document.addEventListener('DOMContentLoaded', function() {
+  const startTimeInput = document.getElementById('start-time');
+  const endTimeInput = document.getElementById('end-time');
+
+  function updateEndTime() {
+      if (startTimeInput.value) {
+          const startTime = new Date(`2000-01-01T${startTimeInput.value}`);
+          let endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
+          endTimeInput.min = endTime.toTimeString().slice(0, 5);
+          
+          if (endTimeInput.value) {
+              const selectedEndTime = new Date(`2000-01-01T${endTimeInput.value}`);
+              if (selectedEndTime <= startTime) {
+                  endTimeInput.value = endTime.toTimeString().slice(0, 5);
+              }
+          } else {
+              endTimeInput.value = endTime.toTimeString().slice(0, 5);
+          }
+      } else {
+          endTimeInput.value = '';
+          endTimeInput.min = '';
+      }
+  }
+
+  startTimeInput.addEventListener('change', updateEndTime);
+  endTimeInput.addEventListener('change', function() {
+      const startTime = new Date(`2000-01-01T${startTimeInput.value}`);
+      const endTime = new Date(`2000-01-01T${endTimeInput.value}`);
+      
+      if (endTime <= startTime || (endTime - startTime) < 60 * 60 * 1000) {
+          updateEndTime();
+      }
+  });
+});
+
+  
