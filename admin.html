@@ -230,12 +230,90 @@
                 grid-template-columns: 1fr; /* Single column for saved reservations */
             }
         }
+
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup-content {
+            background-color: var(--card-background);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+        }
+        .popup-content p {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: var(--text-color);
+        }
+        .popup-content button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .popup-content button:hover {
+            transform: translateY(-2px);
+        }
+        #confirm-clear {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        #confirm-clear:hover {
+            background-color: #c0392b;
+        }
+        #cancel-clear {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        #cancel-clear:hover {
+            background-color: #27ae60;
+        }
+        @media (max-width: 768px) {
+            .popup-content {
+                padding: 20px;
+                width: 85%;
+                max-width: 320px;
+            }
+            .popup-content p {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+            .popup-content button {
+                padding: 8px 16px;
+                font-size: 14px;
+                margin: 5px;
+                width: calc(50% - 10px);
+                max-width: 150px;
+            }
+        }
     </style>
 </head>
 <body>
 <h2>الموافقة على الحجوزات</h2>
 <div id="reservation-container" class="reservation-grid"></div>
 <button id="clear-table">إلغاء جميع الحجوزات</button>
+<div id="confirmation-popup" class="popup">
+    <div class="popup-content">
+        <p>هل أنت متأكد أنك تريد حذف جميع الحجوزات؟</p>
+        <button id="confirm-clear">نعم</button>
+        <button id="cancel-clear">لا</button>
+    </div>
+</div>
 <div id="search-container">
     <input type="text" id="search-input" placeholder="البحث برقم الهاتف (10 أرقام)" maxlength="10" pattern="\d*">
     <button id="clear-saved-reservations">مسح الحجوزات المحفوظة</button>
@@ -332,9 +410,10 @@
         }, 1000);
     }
 
-    window.addEventListener('load', function() {
+    function fetchAndDisplayReservations() {
         const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
         const reservationContainer = document.querySelector('#reservation-container');
+        reservationContainer.innerHTML = ''; // Clear existing cards
 
         reservations.forEach((reservationData, index) => {
             const reservationCard = document.createElement('div');
@@ -351,47 +430,30 @@
             `;
             reservationContainer.appendChild(reservationCard);
         });
+    }
 
-        reservationContainer.addEventListener('click', function(event) {
-            if (event.target.classList.contains('approve-reservation') || 
-                event.target.classList.contains('reject-reservation')) {
-                const index = event.target.getAttribute('data-index');
-                const reservationCard = event.target.closest('.reservation-card');
-                const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
-                const reservationData = reservations[index];
+    window.addEventListener('load', function() {
+        // Initial fetch and display
+        fetchAndDisplayReservations();
 
-                if (event.target.classList.contains('approve-reservation')) {
-                    const approvedReservations = JSON.parse(localStorage.getItem('approvedReservations') || '[]');
-                    approvedReservations.push(reservationData);
-                    localStorage.setItem('approvedReservations', JSON.stringify(approvedReservations));
-                    reservationCard.innerHTML = '<p>تمت الموافقة على الحجز!</p>';
-                    
-                    sendWhatsAppMessage(
-                        reservationData.phone,
-                        reservationData.name,
-                        reservationData.day,
-                        reservationData.startTime,
-                        reservationData.endTime,
-                        reservationData.price
-                    );
-
-                    saveReservationStatus(reservationData, 'تمت الموافقة');
-                } else {
-                    reservationCard.innerHTML = '<p>تم رفض الحجز!</p>';
-                    
-                    saveReservationStatus(reservationData, 'مرفوض');
-                }
-
-                reservations.splice(index, 1);
-                localStorage.setItem('reservations', JSON.stringify(reservations));
-            }
-        });
+        // Set up polling every 5 seconds
+        setInterval(fetchAndDisplayReservations, 5000);
 
         document.getElementById('clear-table').addEventListener('click', function() {
+            document.getElementById('confirmation-popup').style.display = 'flex';
+        });
+
+        document.getElementById('confirm-clear').addEventListener('click', function() {
             localStorage.removeItem('reservations');
             localStorage.removeItem('approvedReservations');
             document.getElementById('reservation-container').innerHTML = '';
             localStorage.setItem('clearReservationTable', 'true');
+            document.getElementById('confirmation-popup').style.display = 'none';
+            showPopupMessage('تم حذف جميع الحجوزات.');
+        });
+
+        document.getElementById('cancel-clear').addEventListener('click', function() {
+            document.getElementById('confirmation-popup').style.display = 'none';
         });
 
         document.getElementById('clear-saved-reservations').addEventListener('click', function() {
@@ -406,6 +468,41 @@
         searchInput.addEventListener('input', function() {
             this.value = this.value.replace(/\D/g, '').slice(0, 10);
             updateSavedReservationsDisplay(this.value);
+        });
+
+        const reservationContainer = document.getElementById('reservation-container');
+        reservationContainer.addEventListener('click', function(event) {
+            if (event.target.classList.contains('approve-reservation') || 
+                event.target.classList.contains('reject-reservation')) {
+                const index = event.target.getAttribute('data-index');
+                const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+                const reservationData = reservations[index];
+
+                if (event.target.classList.contains('approve-reservation')) {
+                    const approvedReservations = JSON.parse(localStorage.getItem('approvedReservations') || '[]');
+                    approvedReservations.push(reservationData);
+                    localStorage.setItem('approvedReservations', JSON.stringify(approvedReservations));
+                    
+                    sendWhatsAppMessage(
+                        reservationData.phone,
+                        reservationData.name,
+                        reservationData.day,
+                        reservationData.startTime,
+                        reservationData.endTime,
+                        reservationData.price
+                    );
+
+                    saveReservationStatus(reservationData, 'تمت الموافقة');
+                } else {
+                    saveReservationStatus(reservationData, 'مرفوض');
+                }
+
+                reservations.splice(index, 1);
+                localStorage.setItem('reservations', JSON.stringify(reservations));
+                
+                // Refresh the display immediately after approval/rejection
+                fetchAndDisplayReservations();
+            }
         });
     });
 </script>

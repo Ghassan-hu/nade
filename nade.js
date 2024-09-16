@@ -375,39 +375,42 @@ function displayReservationApproval(reservationData) {
 
   document.querySelector('#approve-reservation').addEventListener('click', function() {
     alert('Reservation approved!');
-    localStorage.setItem('approvedReservationData', JSON.stringify(reservationData));
+    
+    // Update localStorage
+    const approvedReservations = JSON.parse(localStorage.getItem('approvedReservations') || '[]');
+    approvedReservations.push(reservationData);
+    localStorage.setItem('approvedReservations', JSON.stringify(approvedReservations));
     localStorage.removeItem('reservationData');
+    
     reservationContainer.remove();
 
-    const table = window.opener.document.querySelector('#schedule table tbody');
-    if (table) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${reservationData.day}</td>
-        <td>${reservationData.startTime} - ${reservationData.endTime}</td>
-        <td>${reservationData.name} ${reservationData.familyName}</td>
-      `;
-      table.appendChild(tr);
+    // Update the opener window (main page)
+    if (window.opener) {
+      // Add the reservation to the table in the opener window
+      const table = window.opener.document.querySelector('#reservation-table');
+      if (table) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${reservationData.day}</td>
+          <td>${reservationData.startTime} - ${reservationData.endTime}</td>
+          <td>${reservationData.name} ${reservationData.familyName}</td>
+        `;
+        table.appendChild(tr);
+      }
+
+      // Refresh the opener window
+      window.opener.location.reload();
     }
 
-    const reservationSection = window.opener.document.querySelector('#reservation-message');
-    if (reservationSection) {
-      reservationSection.innerHTML = `
-        <p>Reservation Details:</p>
-        <p>Name: ${reservationData.name}</p>
-        <p>Family Name: ${reservationData.familyName}</p>
-        <p>Phone: ${reservationData.phone}</p>
-        <p>Day: ${reservationData.day}</p>
-        <p>Start Time: ${reservationData.startTime}</p>
-        <p>End Time: ${reservationData.endTime}</p>
-      `;
-    }
+    // Close the admin window
+    window.close();
   });
 
   document.querySelector('#reject-reservation').addEventListener('click', function() {
     alert('Reservation rejected!');
     localStorage.removeItem('reservationData');
     reservationContainer.remove();
+    window.close();
   });
 }
 document.getElementById('phone').addEventListener('input', function(e) {
