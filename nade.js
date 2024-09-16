@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
+  initializeLogo();
+  initializeTeamLogin();
+  initializeAdminLogin();
+  initializeReservationSystem();
+  initializeNavigation();
+});
+
+function initializeLogo() {
   const logo = document.querySelector('.navbar img');
   const links = document.querySelectorAll('.navbar-links a');
 
@@ -30,9 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 300);
     }, 300);
   }
-});
+}
 
-document.addEventListener('DOMContentLoaded', function() {
+function initializeTeamLogin() {
   const teams = document.querySelectorAll('.dropdown-content a');
   teams.forEach((team, index) => {
     team.addEventListener('click', function() {
@@ -43,9 +51,10 @@ document.addEventListener('DOMContentLoaded', function() {
       displayTeamLoginForm(teamName, teamUsernames[index], teamPasswords[index], teamPages[index]);
     });
   });
-});
+}
 
 function displayTeamLoginForm(teamName, username, password, page) {
+  closeAllLoginForms();
   const form = document.createElement('div');
   form.className = 'team-login-form';
   form.innerHTML = `
@@ -78,20 +87,24 @@ function displayTeamLoginForm(teamName, username, password, page) {
   });
 }
 
-const adminUsername = '1';
-const adminPassword = '1';
-const adminPage = 'admin.html';
-
-document.querySelector('a[href="#admin"]').addEventListener('click', function(event) {
-  event.preventDefault();
-  displayAdminLoginForm();
-});
+function initializeAdminLogin() {
+  const adminLink = document.querySelector('a[href="#admin"]');
+  if (adminLink) {
+    adminLink.addEventListener('click', function(event) {
+      event.preventDefault();
+      displayAdminLoginForm();
+    });
+  }
+}
 
 function displayAdminLoginForm() {
-  // Check if the form already exists
+  closeAllLoginForms();
+  const adminUsername = '1';
+  const adminPassword = '1';
+  const adminPage = 'admin.html';
+
   let adminForm = document.getElementById('admin-form');
   
-  // If the form doesn't exist, create it
   if (!adminForm) {
     adminForm = document.createElement('div');
     adminForm.id = 'admin-form';
@@ -107,7 +120,6 @@ function displayAdminLoginForm() {
     document.body.appendChild(adminForm);
   }
 
-  // Show the form
   adminForm.style.display = 'block';
 
   const closeAdminButton = adminForm.querySelector('#close-admin');
@@ -134,8 +146,35 @@ function displayAdminLoginForm() {
   });
 }
 
+function closeAllLoginForms() {
+  const teamLoginForms = document.querySelectorAll('.team-login-form');
+  teamLoginForms.forEach(form => form.remove());
+
+  const adminForm = document.getElementById('admin-form');
+  if (adminForm) {
+    adminForm.style.display = 'none';
+  }
+}
+
 let formSubmitted = false;
 let listenerAttached = false;
+
+function initializeReservationSystem() {
+  const reservationForm = document.getElementById('reservation-form');
+  if (reservationForm && !listenerAttached) {
+    reservationForm.addEventListener('submit', handleReservationSubmit);
+    listenerAttached = true;
+  }
+
+  const toggleButton = document.getElementById('reservation-toggle');
+  const dropdown = document.getElementById('reservation-dropdown');
+  if (toggleButton && dropdown) {
+    toggleButton.addEventListener('click', function() {
+      dropdown.classList.toggle('active');
+      toggleButton.textContent = dropdown.classList.contains('active') ? 'إغلاق' : 'طلب حجز الملعب';
+    });
+  }
+}
 
 function handleReservationSubmit(event) {
   event.preventDefault();
@@ -159,11 +198,9 @@ function handleReservationSubmit(event) {
     name, familyName, phone, day, startTime, endTime
   };
 
-  // Calculate price
   const price = calculatePrice(startTime, endTime);
   reservationData.price = price;
 
-  // Get existing reservations or initialize an empty array
   const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
   reservations.push(reservationData);
   localStorage.setItem('reservations', JSON.stringify(reservations));
@@ -179,7 +216,6 @@ function handleReservationSubmit(event) {
       <p>وقت الحجز: من ${formattedStartTime} إلى ${formattedEndTime}</p>
     `;
 
-    // Close the reservation table after 3 seconds if screen width is under 768px
     if (window.innerWidth <= 768) {
       setTimeout(() => {
         const dropdown = document.getElementById('reservation-dropdown');
@@ -191,27 +227,10 @@ function handleReservationSubmit(event) {
       }, 3000);
     }
 
-    // Reset the form submission flag after 5 seconds
     setTimeout(() => {
       formSubmitted = false;
       reservationMessage.innerHTML = '';
     }, 5000);
-  }
-}
-
-function initializeReservationSystem() {
-  console.log('Initializing reservation system');
-  const reservationForm = document.getElementById('reservation-form');
-  
-  if (reservationForm && !listenerAttached) {
-    console.log('Found reservation form, adding event listener');
-    reservationForm.addEventListener('submit', handleReservationSubmit);
-    listenerAttached = true;
-    console.log('Event listener attached');
-  } else if (listenerAttached) {
-    console.log('Event listener already attached, skipping');
-  } else {
-    console.log('Reservation form not found');
   }
 }
 
@@ -234,108 +253,12 @@ function formatTimeAsDayNight(time) {
   }
 }
 
-// Use a self-executing function to ensure the initialization runs only once
-(function() {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeReservationSystem);
-  } else {
-    initializeReservationSystem();
-  }
-})();
-
-// Remove any existing submit event listeners
-window.addEventListener('load', function() {
-  const reservationForm = document.getElementById('reservation-form');
-  if (reservationForm) {
-    const clonedForm = reservationForm.cloneNode(true);
-    reservationForm.parentNode.replaceChild(clonedForm, reservationForm);
-    clonedForm.addEventListener('submit', handleReservationSubmit);
-  }
-});
-
-window.addEventListener('load', function() {
-  if (window.location.href.includes('admin.html')) {
-    const reservationData = JSON.parse(localStorage.getItem('reservationData'));
-    if (reservationData) {
-      displayReservationApproval(reservationData);
-    }
-  }
-});
-
-function displayReservationApproval(reservationData) {
-  const reservationContainer = document.createElement('div');
-  reservationContainer.innerHTML = `
-    <h2>Reservation Approval</h2>
-    <p>Name: ${reservationData.name}</p>
-    <p>Family Name: ${reservationData.familyName}</p>
-    <p>Phone: ${reservationData.phone}</p>
-    <p>Day: ${reservationData.day}</p>
-    <p>Start Time: ${reservationData.startTime}</p>
-    <p>End Time: ${reservationData.endTime}</p>
-    <button id="approve-reservation">Approve</button>
-    <button id="reject-reservation">Reject</button>
-  `;
-  document.body.appendChild(reservationContainer);
-
-  document.querySelector('#approve-reservation').addEventListener('click', function() {
-    alert('Reservation approved!');
-    localStorage.setItem('approvedReservationData', JSON.stringify(reservationData));
-    localStorage.removeItem('reservationData');
-    reservationContainer.remove();
-
-    const table = window.opener.document.querySelector('#schedule table tbody');
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${reservationData.day}</td>
-      <td>${reservationData.startTime} - ${reservationData.endTime}</td>
-      <td>${reservationData.name} ${reservationData.familyName}</td>
-    `;
-    table.appendChild(tr);
-
-    const reservationSection = window.opener.document.querySelector('#reservation-message');
-    reservationSection.innerHTML = `
-      <p>Reservation Details:</p>
-      <p>Name: ${reservationData.name}</p>
-      <p>Family Name: ${reservationData.familyName}</p>
-      <p>Phone: ${reservationData.phone}</p>
-      <p>Day: ${reservationData.day}</p>
-      <p>Start Time: ${reservationData.startTime}</p>
-      <p>End Time: ${reservationData.endTime}</p>
-    `;
-  });
-
-  document.querySelector('#reject-reservation').addEventListener('click', function() {
-    alert('Reservation rejected!');
-    localStorage.removeItem('reservationData');
-    reservationContainer.remove();
-  });
-}
-
-function updateReservationTable() {
-  const approvedReservations = JSON.parse(localStorage.getItem('approvedReservations') || '[]');
-  const table = document.querySelector('#reservation-table');
-  
-  approvedReservations.forEach(reservation => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${reservation.day}</td>
-      <td>${reservation.startTime} - ${reservation.endTime}</td>
-      <td>${reservation.name} ${reservation.familyName}</td>
-    `;
-    table.appendChild(tr);
-  });
-}
-
-// Run this function when the page loads
-window.addEventListener('load', updateReservationTable);
-
-document.addEventListener('DOMContentLoaded', function() {
+function initializeNavigation() {
   const hamburger = document.querySelector('.hamburger-menu');
   const navbarLinks = document.querySelector('.navbar-links');
   const dropdowns = document.querySelectorAll('.dropdown');
-  const navAnchors = navbarLinks.querySelectorAll('a');
+  const navAnchors = navbarLinks ? navbarLinks.querySelectorAll('a') : [];
 
-  // Function to close the menu
   function closeMenu() {
     navbarLinks.classList.remove('active');
     hamburger.classList.remove('active');
@@ -367,12 +290,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Close menu when clicking on any link
   navAnchors.forEach(anchor => {
     anchor.addEventListener('click', closeMenu);
   });
 
-  // Close menu when clicking outside for screens under 768px
   document.addEventListener('click', function(e) {
     if (window.innerWidth <= 768) {
       if (navbarLinks && !navbarLinks.contains(e.target) && (!hamburger || !hamburger.contains(e.target))) {
@@ -381,7 +302,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Add swipe up to close functionality for screens under 768px
   let touchStartY = 0;
   let touchEndY = 0;
 
@@ -397,30 +317,95 @@ document.addEventListener('DOMContentLoaded', function() {
   function handleSwipeGesture() {
     if (window.innerWidth <= 768 && navbarLinks.classList.contains('active')) {
       const swipeDistance = touchStartY - touchEndY;
-      if (swipeDistance > 50) { // Adjust this value to change swipe sensitivity
+      if (swipeDistance > 50) {
         closeMenu();
       }
     }
   }
 
-  // Handle window resize
   window.addEventListener('resize', function() {
     if (window.innerWidth > 768) {
       closeMenu();
     }
   });
+}
+
+window.addEventListener('load', function() {
+  updateReservationTable();
+  if (window.location.href.includes('admin.html')) {
+    const reservationData = JSON.parse(localStorage.getItem('reservationData'));
+    if (reservationData) {
+      displayReservationApproval(reservationData);
+    }
+  }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-  const toggleButton = document.getElementById('reservation-toggle');
-  const dropdown = document.getElementById('reservation-dropdown');
-  const reservationForm = document.getElementById('reservation-form');
-  const reservationMessage = document.getElementById('reservation-message');
+function updateReservationTable() {
+  const approvedReservations = JSON.parse(localStorage.getItem('approvedReservations') || '[]');
+  const table = document.querySelector('#reservation-table');
+  
+  if (table) {
+    approvedReservations.forEach(reservation => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${reservation.day}</td>
+        <td>${reservation.startTime} - ${reservation.endTime}</td>
+        <td>${reservation.name} ${reservation.familyName}</td>
+      `;
+      table.appendChild(tr);
+    });
+  }
+}
 
-  toggleButton.addEventListener('click', function() {
-    dropdown.classList.toggle('active');
-    toggleButton.textContent = dropdown.classList.contains('active') ? 'إغلاق' : 'طلب حجز الملعب';
+function displayReservationApproval(reservationData) {
+  const reservationContainer = document.createElement('div');
+  reservationContainer.innerHTML = `
+    <h2>Reservation Approval</h2>
+    <p>Name: ${reservationData.name}</p>
+    <p>Family Name: ${reservationData.familyName}</p>
+    <p>Phone: ${reservationData.phone}</p>
+    <p>Day: ${reservationData.day}</p>
+    <p>Start Time: ${reservationData.startTime}</p>
+    <p>End Time: ${reservationData.endTime}</p>
+    <button id="approve-reservation">Approve</button>
+    <button id="reject-reservation">Reject</button>
+  `;
+  document.body.appendChild(reservationContainer);
+
+  document.querySelector('#approve-reservation').addEventListener('click', function() {
+    alert('Reservation approved!');
+    localStorage.setItem('approvedReservationData', JSON.stringify(reservationData));
+    localStorage.removeItem('reservationData');
+    reservationContainer.remove();
+
+    const table = window.opener.document.querySelector('#schedule table tbody');
+    if (table) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${reservationData.day}</td>
+        <td>${reservationData.startTime} - ${reservationData.endTime}</td>
+        <td>${reservationData.name} ${reservationData.familyName}</td>
+      `;
+      table.appendChild(tr);
+    }
+
+    const reservationSection = window.opener.document.querySelector('#reservation-message');
+    if (reservationSection) {
+      reservationSection.innerHTML = `
+        <p>Reservation Details:</p>
+        <p>Name: ${reservationData.name}</p>
+        <p>Family Name: ${reservationData.familyName}</p>
+        <p>Phone: ${reservationData.phone}</p>
+        <p>Day: ${reservationData.day}</p>
+        <p>Start Time: ${reservationData.startTime}</p>
+        <p>End Time: ${reservationData.endTime}</p>
+      `;
+    }
   });
 
-  reservationForm.addEventListener('submit', handleReservationSubmit);
-});
+  document.querySelector('#reject-reservation').addEventListener('click', function() {
+    alert('Reservation rejected!');
+    localStorage.removeItem('reservationData');
+    reservationContainer.remove();
+  });
+}

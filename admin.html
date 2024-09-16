@@ -18,87 +18,33 @@
         // ... (implementation of updateReservationTable function)
     }
 
-    window.addEventListener('load', function() {
-        const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
-        const reservationContainer = document.querySelector('#reservation-container');
+    function translateDayToArabic(day) {
+        const dayTranslations = {
+            'Sunday': 'الأحد',
+            'Monday': 'الاثنين',
+            'Tuesday': 'الثلاثاء',
+            'Wednesday': 'الأربعاء',
+            'Thursday': 'الخميس',
+            'Friday': 'الجمعة',
+            'Saturday': 'السبت'
+        };
+        return dayTranslations[day] || day;
+    }
 
-        reservations.forEach((reservationData, index) => {
-            const reservationCard = document.createElement('div');
-            reservationCard.className = 'reservation-card';
-            reservationCard.innerHTML = `
-                <p>Name: ${reservationData.name}</p>
-                <p>Family Name: ${reservationData.familyName}</p>
-                <p>Phone: ${reservationData.phone}</p>
-                <p>Day: ${reservationData.day}</p>
-                <p>Start Time: ${reservationData.startTime}</p>
-                <p>End Time: ${reservationData.endTime}</p>
-                <button class="approve-reservation" data-index="${index}">Approve</button>
-                <button class="reject-reservation" data-index="${index}" style="background-color: red;">Reject</button>
-            `;
-            reservationContainer.appendChild(reservationCard);
-        });
-
-        reservationContainer.addEventListener('click', function(event) {
-            if (event.target.classList.contains('approve-reservation') || 
-                event.target.classList.contains('reject-reservation')) {
-                const index = event.target.getAttribute('data-index');
-                const reservationCard = event.target.closest('.reservation-card');
-                const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
-                const reservationData = reservations[index];
-
-                if (event.target.classList.contains('approve-reservation')) {
-                    const approvedReservations = JSON.parse(localStorage.getItem('approvedReservations') || '[]');
-                    approvedReservations.push(reservationData);
-                    localStorage.setItem('approvedReservations', JSON.stringify(approvedReservations));
-                    reservationCard.innerHTML = '<p>Reservation approved!</p>';
-                } else {
-                    reservationCard.innerHTML = '<p>Reservation rejected!</p>';
-                }
-
-                reservations.splice(index, 1);
-                localStorage.setItem('reservations', JSON.stringify(reservations));
-            }
-        });
-
-        // Add event listener for the clear table button
-        document.getElementById('clear-table').addEventListener('click', function() {
-            // Clear all reservations from localStorage
-            localStorage.removeItem('reservations');
-            localStorage.removeItem('approvedReservations');
-            
-            // Clear the reservation container
-            document.getElementById('reservation-container').innerHTML = '';
-            
-            // Clear the reservation table in nade.html (if it's open in another tab)
-            localStorage.setItem('clearReservationTable', 'true');
-            
-        });
-
-        updateReservationTable();
-    });
-</script>
-</body>
-</html>
-
-<!-- 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Reservation Approval</title>
-    <link rel="stylesheet" href="admin.css">
-    <link rel="icon" href="./imges/Soccer-Player--Streamline-Ultimate.png">
-     
-
-</head>
-<body>
-<h2>موافقة على الحجوزات</h2>
-<div id="reservation-container" class="reservation-grid"></div>
-<button id="clear-table">الغاء الحجوزات</button>
-<script>
-    function updateReservationTable() {
-        // ... (implementation of updateReservationTable function)
+    function sendWhatsAppMessage(recipientPhone, name, day, startTime, endTime, price) {
+        const senderPhone = '0543923782';
+        const countryCode = recipientPhone.startsWith('05') ? '972' : '970';
+        const formattedRecipientPhone = `${countryCode}${recipientPhone.slice(1)}`;
+        
+        const arabicDay = translateDayToArabic(day);
+        
+        const message = encodeURIComponent(`مرحبًا ${name}، تمت الموافقة على حجزك!\n\nالتفاصيل:\nاليوم: ${arabicDay}\nوقت البدء: ${startTime}\nوقت الانتهاء: ${endTime}\nالسعر الإجمالي: ${price} شيكل\n\nشكرًا لحجزك!`);
+        
+        // Use the WhatsApp Business API URL
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedRecipientPhone}&text=${message}`;
+        
+        // Open WhatsApp in a new window
+        window.open(whatsappUrl, '_blank');
     }
 
     window.addEventListener('load', function() {
@@ -134,6 +80,16 @@
                     approvedReservations.push(reservationData);
                     localStorage.setItem('approvedReservations', JSON.stringify(approvedReservations));
                     reservationCard.innerHTML = '<p>Reservation approved!</p>';
+                    
+                    // Send WhatsApp message
+                    sendWhatsAppMessage(
+                        reservationData.phone,
+                        reservationData.name,
+                        reservationData.day,
+                        reservationData.startTime,
+                        reservationData.endTime,
+                        reservationData.price // Add the price here
+                    );
                 } else {
                     reservationCard.innerHTML = '<p>Reservation rejected!</p>';
                 }
@@ -161,4 +117,5 @@
     });
 </script>
 </body>
-</html> -->
+</html>
+

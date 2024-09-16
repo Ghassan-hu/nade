@@ -320,6 +320,7 @@ body {
   box-sizing: border-box;
   max-height: 80vh;
   overflow-y: auto;
+  direction: rtl;
 }
 
 #schedule h2 {
