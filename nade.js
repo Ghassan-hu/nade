@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeLogo();
   initializeTeamLogin();
   initializeAdminLogin();
+  initializeModeratorLogin();
   initializeReservationSystem();
   initializeNavigation();
 });
@@ -99,8 +100,10 @@ function initializeAdminLogin() {
 
 function displayAdminLoginForm() {
   closeAllLoginForms();
-  const adminUsername = '1';
-  const adminPassword = '1';
+  const adminUsers = [
+    { username: '1', password: '1' },
+    { username: '2', password: '2' }
+  ];
   const adminPage = 'admin.html';
 
   let adminForm = document.getElementById('admin-form');
@@ -112,8 +115,8 @@ function displayAdminLoginForm() {
     adminForm.innerHTML = `
       <button id="close-admin" class="close-button">X</button>
       <h2>Admin Login</h2>
-      <input type="text" id="admin-username" placeholder="Username">
-      <input type="password" id="admin-password" placeholder="Password">
+      <input type="text" id="admin-username" placeholder="Username" autocomplete="new-password">
+      <input type="password" id="admin-password" placeholder="Password" autocomplete="new-password">
       <button id="admin-submit" class="submit-button">Submit</button>
       <p id="admin-error-message"></p>
     `;
@@ -121,6 +124,18 @@ function displayAdminLoginForm() {
   }
 
   adminForm.style.display = 'block';
+
+  // Clear input fields immediately
+  const adminUsernameInput = adminForm.querySelector('#admin-username');
+  const adminPasswordInput = adminForm.querySelector('#admin-password');
+  adminUsernameInput.value = '';
+  adminPasswordInput.value = '';
+
+  // Clear input fields again after a short delay
+  setTimeout(() => {
+    adminUsernameInput.value = '';
+    adminPasswordInput.value = '';
+  }, 100);
 
   const closeAdminButton = adminForm.querySelector('#close-admin');
   closeAdminButton.addEventListener('click', function() {
@@ -132,7 +147,14 @@ function displayAdminLoginForm() {
     const adminUsernameInput = adminForm.querySelector('#admin-username');
     const adminPasswordInput = adminForm.querySelector('#admin-password');
     const adminErrorMessage = adminForm.querySelector('#admin-error-message');
-    if (adminUsernameInput.value === adminUsername && adminPasswordInput.value === adminPassword) {
+    let isValid = false;
+    for (let i = 0; i < adminUsers.length; i++) {
+      if (adminUsernameInput.value === adminUsers[i].username && adminPasswordInput.value === adminUsers[i].password) {
+        isValid = true;
+        break;
+      }
+    }
+    if (isValid) {
       adminErrorMessage.textContent = `Access granted for Admin!`;
       adminErrorMessage.style.color = 'green';
       setTimeout(() => {
@@ -146,6 +168,85 @@ function displayAdminLoginForm() {
   });
 }
 
+function initializeModeratorLogin() {
+  const moderatorLink = document.querySelector('a[href="#moderator"]');
+  if (moderatorLink) {
+    moderatorLink.addEventListener('click', function(event) {
+      event.preventDefault();
+      displayModeratorLoginForm();
+    });
+  }
+}
+
+function displayModeratorLoginForm() {
+  closeAllLoginForms();
+  const moderatorUsers = [
+    { username: '10', password: '10' }
+  ];
+  const moderatorPage = 'moderator.html';
+
+  let moderatorForm = document.getElementById('moderator-form');
+  
+  if (!moderatorForm) {
+    moderatorForm = document.createElement('div');
+    moderatorForm.id = 'moderator-form';
+    moderatorForm.className = 'moderator-form';
+    moderatorForm.innerHTML = `
+      <button id="close-moderator" class="close-button">X</button>
+      <h2>Moderator Login</h2>
+      <input type="text" id="moderator-username" placeholder="Username" autocomplete="new-password">
+      <input type="password" id="moderator-password" placeholder="Password" autocomplete="new-password">
+      <button id="moderator-submit" class="submit-button">Submit</button>
+      <p id="moderator-error-message"></p>
+    `;
+    document.body.appendChild(moderatorForm);
+  }
+
+  moderatorForm.style.display = 'block';
+
+  // Clear input fields immediately
+  const moderatorUsernameInput = moderatorForm.querySelector('#moderator-username');
+  const moderatorPasswordInput = moderatorForm.querySelector('#moderator-password');
+  moderatorUsernameInput.value = '';
+  moderatorPasswordInput.value = '';
+
+  // Clear input fields again after a short delay
+  setTimeout(() => {
+    moderatorUsernameInput.value = '';
+    moderatorPasswordInput.value = '';
+  }, 100);
+
+  const closeModeratorButton = moderatorForm.querySelector('#close-moderator');
+  closeModeratorButton.addEventListener('click', function() {
+    moderatorForm.style.display = 'none';
+  });
+
+  const moderatorSubmitButton = moderatorForm.querySelector('#moderator-submit');
+  moderatorSubmitButton.addEventListener('click', function() {
+    const moderatorUsernameInput = moderatorForm.querySelector('#moderator-username');
+    const moderatorPasswordInput = moderatorForm.querySelector('#moderator-password');
+    const moderatorErrorMessage = moderatorForm.querySelector('#moderator-error-message');
+    let isValid = false;
+    for (let i = 0; i < moderatorUsers.length; i++) {
+      if (moderatorUsernameInput.value === moderatorUsers[i].username && moderatorPasswordInput.value === moderatorUsers[i].password) {
+        isValid = true;
+        break;
+      }
+    }
+    if (isValid) {
+      moderatorErrorMessage.textContent = `Access granted for Moderator!`;
+      moderatorErrorMessage.style.color = 'green';
+      setTimeout(() => {
+        moderatorForm.style.display = 'none';
+        window.location.href = moderatorPage;
+      }, 1000);
+    } else {
+      moderatorErrorMessage.textContent = 'Incorrect username or password. Access denied.';
+      moderatorErrorMessage.style.color = 'red';
+    }
+  });
+}
+
 function closeAllLoginForms() {
   const teamLoginForms = document.querySelectorAll('.team-login-form');
   teamLoginForms.forEach(form => form.remove());
@@ -153,6 +254,11 @@ function closeAllLoginForms() {
   const adminForm = document.getElementById('admin-form');
   if (adminForm) {
     adminForm.style.display = 'none';
+  }
+
+  const moderatorForm = document.getElementById('moderator-form');
+  if (moderatorForm) {
+    moderatorForm.style.display = 'none';
   }
 }
 
@@ -174,6 +280,83 @@ function initializeReservationSystem() {
       toggleButton.textContent = dropdown.classList.contains('active') ? 'إغلاق' : 'طلب حجز الملعب';
     });
   }
+
+  setupTimeInputs();
+  setupDatePicker();
+}
+
+function setupTimeInputs() {
+  const startTimeInput = document.getElementById('start-time');
+  const endTimeInput = document.getElementById('end-time');
+
+  if (startTimeInput && endTimeInput) {
+    startTimeInput.step = 3600; // 1 hour in seconds
+    endTimeInput.step = 3600;
+
+    startTimeInput.addEventListener('change', function() {
+      this.value = roundToNearestHour(this.value);
+      updateEndTime();
+    });
+
+    endTimeInput.addEventListener('change', function() {
+      this.value = roundToNearestHour(this.value);
+    });
+  }
+}
+
+function roundToNearestHour(time) {
+  const [hours, minutes] = time.split(':');
+  return `${hours}:00`;
+}
+
+function updateEndTime() {
+  const startTimeInput = document.getElementById('start-time');
+  const endTimeInput = document.getElementById('end-time');
+
+  if (startTimeInput.value) {
+    const startTime = new Date(`2000-01-01T${startTimeInput.value}`);
+    let endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
+    endTimeInput.min = endTime.toTimeString().slice(0, 5);
+    
+    if (endTimeInput.value) {
+      const selectedEndTime = new Date(`2000-01-01T${endTimeInput.value}`);
+      if (selectedEndTime <= startTime) {
+        endTimeInput.value = endTime.toTimeString().slice(0, 5);
+      }
+    } else {
+      endTimeInput.value = endTime.toTimeString().slice(0, 5);
+    }
+
+    // Check if the time slot is already reserved
+    const selectedDate = document.getElementById('reservation-date').value;
+    if (isTimeSlotReserved(selectedDate, startTimeInput.value, endTimeInput.value)) {
+      alert('This time slot is already reserved. Please choose a different time.');
+      startTimeInput.value = '';
+      endTimeInput.value = '';
+    }
+  } else {
+    endTimeInput.value = '';
+    endTimeInput.min = '';
+  }
+}
+
+function setupDatePicker() {
+  const dateInput = document.getElementById('day');
+  if (dateInput) {
+    dateInput.type = 'date';
+    dateInput.id = 'reservation-date';
+    dateInput.min = new Date().toISOString().split('T')[0]; // Set min date to today
+  }
+}
+
+function isTimeSlotReserved(date, startTime, endTime) {
+  const approvedReservations = JSON.parse(localStorage.getItem('approvedReservations') || '[]');
+  return approvedReservations.some(reservation => 
+    reservation.day === date &&
+    ((startTime >= reservation.startTime && startTime < reservation.endTime) ||
+     (endTime > reservation.startTime && endTime <= reservation.endTime) ||
+     (startTime <= reservation.startTime && endTime >= reservation.endTime))
+  );
 }
 
 function handleReservationSubmit(event) {
@@ -190,7 +373,7 @@ function handleReservationSubmit(event) {
   const name = document.querySelector('#name').value;
   const familyName = document.querySelector('#family-name').value;
   const phone = document.querySelector('#phone').value;
-  const day = document.querySelector('#day').value;
+  const day = document.querySelector('#reservation-date').value;
   const startTime = document.querySelector('#start-time').value;
   const endTime = document.querySelector('#end-time').value;
 
@@ -423,38 +606,3 @@ document.getElementById('phone').addEventListener('input', function(e) {
       e.target.setCustomValidity('الرجاء إدخال رقم هاتف فلسطيني أو إسرائيلي صحيح');
   }
 });
-document.addEventListener('DOMContentLoaded', function() {
-  const startTimeInput = document.getElementById('start-time');
-  const endTimeInput = document.getElementById('end-time');
-
-  function updateEndTime() {
-      if (startTimeInput.value) {
-          const startTime = new Date(`2000-01-01T${startTimeInput.value}`);
-          let endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
-          endTimeInput.min = endTime.toTimeString().slice(0, 5);
-          
-          if (endTimeInput.value) {
-              const selectedEndTime = new Date(`2000-01-01T${endTimeInput.value}`);
-              if (selectedEndTime <= startTime) {
-                  endTimeInput.value = endTime.toTimeString().slice(0, 5);
-              }
-          } else {
-              endTimeInput.value = endTime.toTimeString().slice(0, 5);
-          }
-      } else {
-          endTimeInput.value = '';
-          endTimeInput.min = '';
-      }
-  }
-
-  startTimeInput.addEventListener('change', updateEndTime);
-  endTimeInput.addEventListener('change', function() {
-      const startTime = new Date(`2000-01-01T${startTimeInput.value}`);
-      const endTime = new Date(`2000-01-01T${endTimeInput.value}`);
-      
-      if (endTime <= startTime || (endTime - startTime) < 60 * 60 * 1000) {
-          updateEndTime();
-      }
-  });
-});
-

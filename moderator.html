@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المشرف</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        thead th {
+            background-color: #f2f2f2;
+            color: #333;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12px;
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 2px solid #ddd;
+        }
+        tbody tr {
+            transition: background-color 0.3s ease;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        tbody tr:hover {
+            background-color: #f0f0f0;
+        }
+        td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        td:first-child {
+            font-weight: bold;
+        }
+        td:nth-child(3) { /* Phone number */
+            font-family: monospace;
+            letter-spacing: 0.5px;
+        }
+        td:nth-child(4), td:nth-child(5), td:nth-child(6) { /* Date and time */
+            white-space: nowrap;
+        }
+        td:nth-child(7) { /* Status */
+            font-weight: bold;
+        }
+        .status-approved { color: #27ae60; }
+        .status-rejected { color: #c0392b; }
+        .status-pending { color: #f39c12; }
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-size: 12px;
+        }
+        .delete-btn:hover { 
+            background-color: #c0392b; 
+        }
+        #searchInput {
+            width: calc(100% - 220px);
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover { background-color: #45a049; }
+        #toggleDeleteMode { background-color: #f44336; }
+        #toggleDeleteMode:hover { background-color: #da190b; }
+
+        @media screen and (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                right: -9999px; /* Changed from left to right */
+            }
+            tr {
+                border: 1px solid #ccc;
+                margin-bottom: 10px;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+            td {
+                border: none;
+                position: relative;
+                padding-right: 50%; /* Changed from padding-left to padding-right */
+                text-align: right;
+                background-color: #fff;
+            }
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                right: 6px; /* Changed from left to right */
+                width: 45%;
+                padding-left: 10px; /* Changed from padding-right to padding-left */
+                white-space: nowrap;
+                font-weight: bold;
+                text-align: right; /* Changed from left to right */
+            }
+            td:nth-of-type(even) {
+                background-color: #f8f8f8;
+            }
+            #searchInput {
+                width: 100%;
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>المشرف</h1>
+    
+    <input type="text" id="searchInput" placeholder="البحث...">
+    <button onclick="searchTable()">بحث</button>
+    <button id="toggleDeleteMode">تفعيل وضع الحذف</button>
+
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>الاسم</th>
+                <th>اسم العائلة</th>
+                <th>الهاتف</th>
+                <th>اليوم</th>
+                <th>وقت البدء</th>
+                <th>وقت الانتهاء</th>
+                <th>الحالة</th>
+                <th>الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Data will be populated here -->
+        </tbody>
+    </table>
+
+    <script>
+        const DELETE_PASSWORD = '0'; // Set your desired password here
+        let deleteMode = false;
+        let moderatorReservations = [];
+
+        function loadModeratorReservations() {
+            const storedReservations = localStorage.getItem('moderatorReservations');
+            if (storedReservations) {
+                moderatorReservations = JSON.parse(storedReservations);
+            }
+        }
+
+        function saveModeratorReservations() {
+            localStorage.setItem('moderatorReservations', JSON.stringify(moderatorReservations));
+        }
+
+        function updateTable() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            // Sort reservations before displaying
+            const sortedReservations = sortReservationsByNewest([...moderatorReservations]);
+
+            sortedReservations.forEach((reservation, index) => {
+                const row = document.createElement('tr');
+                
+                const cellsData = [
+                    { label: 'الاسم', value: reservation.name },
+                    { label: 'اسم العائلة', value: reservation.familyName },
+                    { label: 'الهاتف', value: reservation.phone },
+                    { label: 'اليوم', value: reservation.day },
+                    { label: 'وقت البدء', value: reservation.startTime },
+                    { label: 'وقت الانتهاء', value: reservation.endTime },
+                    { label: 'الحالة', value: reservation.status }
+                ];
+
+                cellsData.forEach(cellData => {
+                    const cell = document.createElement('td');
+                    cell.setAttribute('data-label', cellData.label);
+                    cell.textContent = cellData.value;
+                    if (cellData.label === 'الحالة') {
+                        if (cellData.value === 'تمت الموافقة') {
+                            cell.classList.add('status-approved');
+                        } else if (cellData.value === 'مرفوض') {
+                            cell.classList.add('status-rejected');
+                        } else {
+                            cell.classList.add('status-pending');
+                        }
+                    }
+                    row.appendChild(cell);
+                });
+
+                if (deleteMode) {
+                    const actionCell = document.createElement('td');
+                    actionCell.setAttribute('data-label', 'الإجراءات');
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'حذف';
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.onclick = () => deleteReservation(index);
+                    actionCell.appendChild(deleteBtn);
+                    row.appendChild(actionCell);
+                }
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        function deleteReservation(index) {
+            const reservationToDelete = moderatorReservations[index];
+            
+            // Remove from moderatorReservations
+            moderatorReservations.splice(index, 1);
+            saveModeratorReservations();
+
+            // Remove from the corresponding localStorage array
+            const status = reservationToDelete.status;
+            let storageKey;
+            if (status === 'قيد الانتظار') {
+                storageKey = 'reservations';
+            } else if (status === 'تمت الموافقة') {
+                storageKey = 'approvedReservations';
+            } else if (status === 'مرفوض') {
+                storageKey = 'rejectedReservations';
+            }
+
+            if (storageKey) {
+                const storageArray = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                const updatedArray = storageArray.filter(r => 
+                    !(r.phone === reservationToDelete.phone && 
+                      r.day === reservationToDelete.day && 
+                      r.startTime === reservationToDelete.startTime)
+                );
+                localStorage.setItem(storageKey, JSON.stringify(updatedArray));
+            }
+
+            updateTable();
+        }
+
+        function searchTable() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById('dataTable');
+            const tr = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName('td');
+                let txtValue = '';
+                for (let j = 0; j < td.length; j++) {
+                    txtValue += td[j].textContent || td[j].innerText;
+                }
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = '';
+                } else {
+                    tr[i].style.display = 'none';
+                }
+            }
+        }
+
+        function toggleDeleteMode() {
+            const password = prompt('أدخل كلمة المرور للوصول إلى وضع الحذف:');
+            if (password === DELETE_PASSWORD) {
+                deleteMode = !deleteMode;
+                document.getElementById('toggleDeleteMode').textContent = deleteMode ? 'إلغاء وضع الحذف' : 'تفعيل وضع الحذف';
+                updateTable();
+            } else {
+                alert('كلمة المرور غير صحيحة!');
+            }
+        }
+
+        document.getElementById('toggleDeleteMode').addEventListener('click', toggleDeleteMode);
+
+        function syncReservations() {
+            const reservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+            const approvedReservations = JSON.parse(localStorage.getItem('approvedReservations') || '[]');
+            const rejectedReservations = JSON.parse(localStorage.getItem('rejectedReservations') || '[]');
+
+            console.log('Rejected reservations:', rejectedReservations);
+
+            const allReservations = [
+                ...reservations.map(r => ({...r, status: 'قيد الانتظار'})),
+                ...approvedReservations.map(r => ({...r, status: 'تمت الموافقة'})),
+                ...rejectedReservations.map(r => ({...r, status: 'مرفوض'}))
+            ];
+
+            console.log('All reservations:', allReservations);
+
+            allReservations.forEach(newReservation => {
+                const existingIndex = moderatorReservations.findIndex(r => 
+                    r.phone === newReservation.phone && 
+                    r.day === newReservation.day && 
+                    r.startTime === newReservation.startTime
+                );
+
+                if (existingIndex === -1) {
+                    moderatorReservations.push(newReservation);
+                } else {
+                    moderatorReservations[existingIndex] = newReservation;
+                }
+            });
+
+            console.log('Moderator reservations after sync:', moderatorReservations);
+
+            saveModeratorReservations();
+            updateTable();
+        }
+
+        function sortReservationsByNewest(reservations) {
+            return reservations.sort((a, b) => {
+                const dateA = new Date(`${a.day} ${a.startTime}`);
+                const dateB = new Date(`${b.day} ${b.startTime}`);
+                return dateB - dateA;
+            });
+        }
+
+        // Load moderator reservations when the page loads
+        loadModeratorReservations();
+
+        // Initial table update and interval to use the new sorting
+        updateTable();
+        setInterval(() => {
+            syncReservations();
+            updateTable();
+        }, 5000);
+    </script>
+</body>
+</html>

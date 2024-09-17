@@ -22,16 +22,8 @@
             <a href="#home">الرئيسية</a>
             <a href="#services">الخدمات</a>
             <a href="#about">عنا</a>
-            <a href="#admin">المسؤول</a>
-            <div class="dropdown">
-                <button class="dropbtn">الفرق</button>
-                <div class="dropdown-content">
-                    <a href="#team1">فريق 1</a>
-                    <a href="#team2">فريق 2</a>
-                    <a href="#team3">فريق 3</a>
-                    <a href="#team4">فريق 4</a>
-                    <a href="#team5">فريق 5</a>
-                </div>
+            <a href="#admin" id="admin-link">المسؤول</a>
+            <a href="#moderator" id="moderator-link">المشرف</a>
             </div>
         </div>
     </nav>
@@ -66,15 +58,7 @@
                        pattern="^(05[0-9]{8}|9[0-9]{8})$" minlength="9" maxlength="10" 
                        title="الرجاء إدخال رقم هاتف فلسطيني أو إسرائيلي صحيح">
                 <label for="day">اليوم:</label>
-                <select id="day" name="day" required autocomplete="off">
-                    <option value="Monday">الاثنين</option>
-                    <option value="Tuesday">الثلاثاء</option>
-                    <option value="Wednesday">الأربعاء</option>
-                    <option value="Thursday">الخميس</option>
-                    <option value="Friday">الجمعة</option>
-                    <option value="Saturday">السبت</option>
-                    <option value="Sunday">الأحد</option>
-                </select>
+                <input type="date" id="reservation-date" required>
                 <section id="time-selection">
                     <label for="start-time">وقت البدء:</label>
                     <input type="time" id="start-time" name="start-time" required autocomplete="off">
@@ -85,6 +69,18 @@
             </form>
             <p id="reservation-message"></p>
         </div>
+    </section>
+    
+    <section id="moderator" style="display: none;">
+        <h2>تسجيل دخول المشرف</h2>
+        <form id="moderator-login-form">
+            <label for="username">اسم المستخدم:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">كلمة المرور:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">تسجيل الدخول</button>
+        </form>
+        <p id="login-message"></p>
     </section>
     
     <script src="nade.js"></script>
