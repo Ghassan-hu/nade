@@ -82,8 +82,8 @@
         .delete-btn:hover { 
             background-color: #c0392b; 
         }
-        #searchInput {
-            width: calc(100% - 220px);
+        #phoneInput, #startDate, #endDate {
+            width: calc(33% - 10px);
             padding: 10px;
             margin-right: 10px;
             border: 1px solid #ddd;
@@ -100,6 +100,7 @@
         button:hover { background-color: #45a049; }
         #toggleDeleteMode { background-color: #f44336; }
         #toggleDeleteMode:hover { background-color: #da190b; }
+        .highlight { background-color: #ffff99 !important; }
 
         @media screen and (max-width: 768px) {
             table, thead, tbody, th, td, tr {
@@ -108,7 +109,7 @@
             thead tr {
                 position: absolute;
                 top: -9999px;
-                right: -9999px; /* Changed from left to right */
+                right: -9999px;
             }
             tr {
                 border: 1px solid #ccc;
@@ -119,24 +120,24 @@
             td {
                 border: none;
                 position: relative;
-                padding-right: 50%; /* Changed from padding-left to padding-right */
+                padding-right: 50%;
                 text-align: right;
                 background-color: #fff;
             }
             td:before {
                 content: attr(data-label);
                 position: absolute;
-                right: 6px; /* Changed from left to right */
+                right: 6px;
                 width: 45%;
-                padding-left: 10px; /* Changed from padding-right to padding-left */
+                padding-left: 10px;
                 white-space: nowrap;
                 font-weight: bold;
-                text-align: right; /* Changed from left to right */
+                text-align: right;
             }
             td:nth-of-type(even) {
                 background-color: #f8f8f8;
             }
-            #searchInput {
+            #phoneInput, #startDate, #endDate {
                 width: 100%;
                 margin-bottom: 10px;
                 margin-right: 0;
@@ -151,8 +152,13 @@
 <body>
     <h1>المشرف</h1>
     
-    <input type="text" id="searchInput" placeholder="البحث...">
+    <input type="text" id="phoneInput" placeholder="رقم الهاتف">
+    <input type="date" id="startDate" placeholder="تاريخ البداية">
+    <input type="date" id="endDate" placeholder="تاريخ النهاية">
     <button onclick="searchTable()">بحث</button>
+    <button onclick="resetSearch()">إعادة تعيين</button>
+    <button onclick="printHighlightedData()">طباعة</button>
+
     <button id="toggleDeleteMode">تفعيل وضع الحذف</button>
 
     <table id="dataTable">
@@ -177,6 +183,7 @@
         const DELETE_PASSWORD = '0'; // Set your desired password here
         let deleteMode = false;
         let moderatorReservations = [];
+        let highlightedRows = []; // New variable to store highlighted rows
 
         function loadModeratorReservations() {
             const storedReservations = localStorage.getItem('moderatorReservations');
@@ -193,11 +200,13 @@
             const tableBody = document.getElementById('tableBody');
             tableBody.innerHTML = '';
 
-            // Sort reservations before displaying
             const sortedReservations = sortReservationsByNewest([...moderatorReservations]);
 
             sortedReservations.forEach((reservation, index) => {
                 const row = document.createElement('tr');
+                if (highlightedRows.includes(index)) {
+                    row.classList.add('highlight');
+                }
                 
                 const cellsData = [
                     { label: 'الاسم', value: reservation.name },
@@ -243,11 +252,9 @@
         function deleteReservation(index) {
             const reservationToDelete = moderatorReservations[index];
             
-            // Remove from moderatorReservations
             moderatorReservations.splice(index, 1);
             saveModeratorReservations();
 
-            // Remove from the corresponding localStorage array
             const status = reservationToDelete.status;
             let storageKey;
             if (status === 'قيد الانتظار') {
@@ -268,27 +275,48 @@
                 localStorage.setItem(storageKey, JSON.stringify(updatedArray));
             }
 
+            // Update highlightedRows after deletion
+            highlightedRows = highlightedRows.filter(rowIndex => rowIndex !== index)
+                                             .map(rowIndex => rowIndex > index ? rowIndex - 1 : rowIndex);
+
             updateTable();
         }
 
         function searchTable() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toUpperCase();
-            const table = document.getElementById('dataTable');
-            const tr = table.getElementsByTagName('tr');
+            const phoneInput = document.getElementById('phoneInput').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
 
-            for (let i = 1; i < tr.length; i++) {
-                const td = tr[i].getElementsByTagName('td');
-                let txtValue = '';
-                for (let j = 0; j < td.length; j++) {
-                    txtValue += td[j].textContent || td[j].innerText;
+            highlightedRows = []; // Reset highlighted rows
+
+            moderatorReservations.forEach((reservation, index) => {
+                let match = true;
+
+                if (phoneInput) {
+                    match = match && reservation.phone.includes(phoneInput);
                 }
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = '';
-                } else {
-                    tr[i].style.display = 'none';
+
+                if (startDate && endDate) {
+                    const reservationDate = new Date(reservation.day);
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    match = match && (reservationDate >= start && reservationDate <= end);
                 }
-            }
+
+                if (match) {
+                    highlightedRows.push(index);
+                }
+            });
+
+            updateTable();
+        }
+
+        function resetSearch() {
+            document.getElementById('phoneInput').value = '';
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            highlightedRows = []; // Reset highlighted rows
+            updateTable();
         }
 
         function toggleDeleteMode() {
@@ -309,15 +337,11 @@
             const approvedReservations = JSON.parse(localStorage.getItem('approvedReservations') || '[]');
             const rejectedReservations = JSON.parse(localStorage.getItem('rejectedReservations') || '[]');
 
-            console.log('Rejected reservations:', rejectedReservations);
-
             const allReservations = [
                 ...reservations.map(r => ({...r, status: 'قيد الانتظار'})),
                 ...approvedReservations.map(r => ({...r, status: 'تمت الموافقة'})),
                 ...rejectedReservations.map(r => ({...r, status: 'مرفوض'}))
             ];
-
-            console.log('All reservations:', allReservations);
 
             allReservations.forEach(newReservation => {
                 const existingIndex = moderatorReservations.findIndex(r => 
@@ -333,8 +357,6 @@
                 }
             });
 
-            console.log('Moderator reservations after sync:', moderatorReservations);
-
             saveModeratorReservations();
             updateTable();
         }
@@ -347,15 +369,47 @@
             });
         }
 
-        // Load moderator reservations when the page loads
         loadModeratorReservations();
-
-        // Initial table update and interval to use the new sorting
         updateTable();
         setInterval(() => {
             syncReservations();
             updateTable();
         }, 5000);
+        function printHighlightedData() {
+    if (highlightedRows.length === 0) {
+        return; // Simply return if there are no highlighted rows
+    }
+
+    const printWindow = window.open('', '', 'height=600,width=800');
+    let printContent = '<h1>بيانات محددة للطباعة</h1><table style="width: 100%; border-collapse: collapse;"><thead><tr><th>الاسم</th><th>اسم العائلة</th><th>الهاتف</th><th>اليوم</th><th>وقت البدء</th><th>وقت الانتهاء</th><th>الحالة</th></tr></thead><tbody>';
+
+    highlightedRows.forEach(index => {
+        const reservation = moderatorReservations[index];
+        printContent += `<tr>
+            <td>${reservation.name}</td>
+            <td>${reservation.familyName}</td>
+            <td>${reservation.phone}</td>
+            <td>${reservation.day}</td>
+            <td>${reservation.startTime}</td>
+            <td>${reservation.endTime}</td>
+            <td>${reservation.status}</td>
+        </tr>`;
+    });
+
+    printContent += '</tbody></table>';
+    
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    printWindow.focus();
+
+    // Automatically print without confirmation
+    setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+    }, 100); // Delay before printing
+}
+
     </script>
+    
 </body>
 </html>
