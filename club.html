@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football Team - Player Cards</title>
+    <title>أعضاء فريق نادي قلنديا البلد</title>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-image: url(./imges/view-soccer-field-with-grass_23-2150887297.avif);
-            background-repeat: no-repeat;
-            background-position:center center; 
-            background-size: cover;
             margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            color: #fff;
+            padding: 0;
+            background-image: url(./imges/view-soccer-field-with-grass_23-2150887297.avif);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Open Sans', sans-serif;
+            /* Imported font from Google Fonts */
+            padding-top: 60px;
+            /* Adjust this value based on your navbar height */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
+
         h1 {
             text-align: center;
             font-size: 2.5rem;
@@ -23,12 +31,14 @@
             margin-bottom: 30px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
         }
+
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
         }
+
         .card {
             background: linear-gradient(145deg, #f9f9f9, #e0e0e0);
             border-radius: 15px;
@@ -38,7 +48,12 @@
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             animation: fadeIn 0.6s ease-out;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
+
         .card::before {
             content: '';
             position: absolute;
@@ -48,10 +63,12 @@
             height: 8px;
             background: linear-gradient(to right, #ff416c, #ff4b2b);
         }
+
         .card:hover {
             transform: translateY(-10px) scale(1.05);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 24px rgba(0, 0, 0, 0.15);
         }
+
         .card img {
             width: 100%;
             height: 200px;
@@ -59,184 +76,124 @@
             border-bottom: 5px solid #ff4b2b;
             transition: opacity 0.3s ease;
         }
+
         .card:hover img {
             opacity: 0.9;
         }
+
         .card-content {
             padding: 20px;
             background-color: #fff;
             text-align: center;
             color: #333;
+            width: 100%;
         }
+
         .card-content h2 {
             margin: 0 0 10px 0;
             font-size: 1.5em;
             color: #333;
             font-weight: bold;
         }
+
         .card-content p {
             margin: 5px 0;
             color: #666;
         }
+
         .card-content p.position {
             font-weight: bold;
             color: #ff416c;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @media (max-width: 768px) {
-            .card {
-                width: calc(50% - 20px);
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
+
+        /* Responsive layout for screen widths under 768px */
+        @media (max-width: 768px) {
+            .container {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .card {
+                width: 100%;
+            }
+
+            .card img {
+                height: auto;
+                width: 100%;
+            }
+
+            .card-content {
+                padding: 10px;
+            }
+        }
+
+        /* Keep two-column layout for screens under 480px */
         @media (max-width: 480px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
             .card {
                 width: 100%;
             }
         }
     </style>
 </head>
+
 <body>
-    <h1>أعضاء نادي قلنديا البلد</h1>
+    
+    <h1>أعضاء فريق نادي قلنديا البلد</h1>
     <div class="container">
         <!-- Player 1 -->
         <div class="card">
             <img src="./imges/WhatsApp Image 2024-09-19 at 18.56.23_90d259dc.jpg" alt="Player 1">
             <div class="card-content">
                 <h2>حمد سميح حسين</h2>
-                <p class="position">مركز اللاعب : وسط</p>
-                <p>العمر : 21 </p>
+                <p class="position">الموقع :وسط</p>
+                <p>العمر 21</p>
             </div>
         </div>
-        <!-- Repeat cards for all players... -->
         <!-- Player 2 -->
         <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+2" alt="Player 2">
+            <img src="./imges/WhatsApp Image 2024-09-19 at 18.56.23_90d259dc.jpg" alt="Player 1">
             <div class="card-content">
-                <h2>Player 2</h2>
-                <p class="position">Midfielder</p>
-                <p>Age: 28</p>
+                <h2>حمد سميح حسين</h2>
+                <p class="position">الموقع :وسط</p>
+                <p>العمر 21</p>
             </div>
         </div>
-        <!-- Continue for all players -->
-        <!-- Player 22 -->
+        <!-- Player 3 -->
         <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
+            <img src="./imges/WhatsApp Image 2024-09-19 at 18.56.23_90d259dc.jpg" alt="Player 1">
             <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
-            </div>
-        </div>   <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
-            <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
+                <h2>حمد سميح حسين</h2>
+                <p class="position">الموقع :وسط</p>
+                <p>العمر 21</p>
             </div>
         </div>
+        <!-- Player 4 -->
         <div class="card">
-            <img src="https://via.placeholder.com/250x200.png?text=Player+22" alt="Player 22">
+            <img src="./imges/WhatsApp Image 2024-09-19 at 18.56.23_90d259dc.jpg" alt="Player 1">
             <div class="card-content">
-                <h2>Player 22</h2>
-                <p class="position">Goalkeeper</p>
-                <p>Age: 31</p>
+                <h2>حمد سميح حسين</h2>
+                <p class="position">الموقع :وسط</p>
+                <p>العمر 21</p>
             </div>
         </div>
-    </div>
-    
 </body>
+
 </html>
