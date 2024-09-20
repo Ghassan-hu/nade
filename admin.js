@@ -135,8 +135,14 @@ window.addEventListener('load', function () {
     // Initial fetch and display
     fetchAndDisplayReservations();
 
-    // Set up polling every 5 seconds
-    setInterval(fetchAndDisplayReservations, 5000);
+    // Disable auto-refresh
+    // setInterval(fetchAndDisplayReservations, 5000); // Commented out to disable auto-refresh
+
+    // Prevent screen resizing on input focus
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('focus', function () {
+        this.blur(); // Remove focus to prevent resizing
+    });
 
     document.getElementById('clear-table').addEventListener('click', function () {
         document.getElementById('confirmation-popup').style.display = 'flex';
@@ -162,12 +168,6 @@ window.addEventListener('load', function () {
     });
 
     updateSavedReservationsDisplay();
-
-    const searchInput = document.getElementById('search-input');
-    searchInput.addEventListener('input', function () {
-        this.value = this.value.replace(/\D/g, '').slice(0, 10);
-        updateSavedReservationsDisplay(this.value);
-    });
 
     const reservationContainer = document.getElementById('reservation-container');
     reservationContainer.addEventListener('click', function (event) {
@@ -268,4 +268,5 @@ function addMember() {
     document.body.appendChild(successMessage);
     setTimeout(() => document.body.removeChild(successMessage), 3000);
 }
+
 

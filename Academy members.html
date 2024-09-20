@@ -6,136 +6,120 @@
     <title>أعضاء الأكاديمية</title>
     <style>
     /* Styles for member details */
-#member-details {
-    display: grid; /* Added to create a grid layout */
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
-    gap: 20px; /* Space between grid items */
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-h1{
-    text-align: center;
-    font-size: 2rem;
-    color: #fff; /* Changed text color to white */
-    margin-bottom: 20px;
-    font-weight: bold;
-    background: linear-gradient(90deg, #6a11cb, #2575fc); /* Added gradient background */
-    padding: 20px; /* Added padding for better spacing */
-    border-radius: 10px; /* Rounded corners for the background */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Added shadow for depth */
-}   
-
-/* Styles for each member's information as a Bootstrap card */
-#member-details div {
-    flex: 0 1 calc(20% - 20px); /* Set base width for 5 cards side by side */
-    padding: 10px; /* Maintain smaller padding */
-    display: flex; /* Use flexbox for better layout */
-    flex-direction: column; /* Stack elements vertically */
-    align-items: center; /* Center align items */
-    border: 1px solid #ddd;
-    border-radius: 0.5rem; /* Bootstrap-like rounded corners */
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
-    transition: transform 0.2s; /* Added transition for hover effect */
-    aspect-ratio: 1; /* Make the card square */
-    text-align: center; /* Center align text for readability */
-}
-
-/* Added styles for card details */
-#member-details div h2 {
-    font-size: 1.25rem; /* Smaller font size for title */
-    color: #007bff; /* Title color */
-    margin: 0 0 5px; /* Reduced margin for spacing */
-}
-
-#member-details div p {
-    font-size: 0.875rem; /* Smaller font size for description */
-    color: #555; /* Description color */
-    margin: 0; /* Remove default margin */
-}
-
-/* Styles for responsive images */
-#member-details div img {
-    width: 100%; /* Make image responsive */
-    height: 100%; /* Fill the square card */
-    object-fit: cover; /* Maintain aspect ratio while covering the area */
-    border-radius: 0.5rem; /* Match card corners */
-}
-
-#member-details div:hover {
-    transform: scale(1.05); /* Scale effect on hover */
-    border-color: #e74c3c; /* Change border color on hover */
-}
-
-/* Styles for the delete button */
-button {
-    margin: 20px;
-    padding: 10px 15px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #e74c3c;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #c0392b;
-}
-
-/* Responsive adjustments */
-@media (max-width: 718px) {
     #member-details {
-        display: grid; /* Change to grid layout */
-        grid-template-columns: repeat(3, 1fr); /* 2 cards side by side */
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid with flexible cards */
+        gap: 20px;
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
     }
 
+    h1 {
+        text-align: center;
+        font-size: 2rem;
+        color: #fff;
+        margin-bottom: 20px;
+        font-weight: bold;
+        background: linear-gradient(90deg, #6a11cb, #2575fc);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Styles for each member's information as a card */
     #member-details div {
-        width: 100%; /* Allow cards to take full width of grid cell */
-        padding: 15px; /* Maintain padding */
-        border: 1px solid #ddd; /* Keep border style */
-        background-color: #fff; /* Keep background color */
-        box-sizing: border-box; /* Include padding and border in width */
-    }
-}
-
-@media (max-width: 480px) {
-    #member-details div {
-        flex: 0 1 calc(100% - 20px); /* Full width for mobile */
-    }
-}
-
-/* New styles for screens under 768px */
-@media (max-width: 768px) {
-    #member-details div {
-        flex: 0 1 calc(100% - 20px); /* Full width for mobile */
-        padding: 15px; /* Increased padding for better touch targets */
-        border: 2px solid #007bff; /* Change border color for emphasis */
-        background-color: #e9f7fe; /* Light blue background for cards */
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+        text-align: center;
     }
 
+    /* Card text styling */
     #member-details div h2 {
-        font-size: 1.5rem; /* Larger font size for title */
+        font-size: 1.25rem;
+        color: #007bff;
+        margin: 10px 0;
     }
 
     #member-details div p {
-        font-size: 1rem; /* Larger font size for description */
+        font-size: 0.875rem;
+        color: #555;
+        margin: 0;
     }
-}
-#delete-button{
-    display: block;
-    margin: 20px auto;
-    padding: 10px 15px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #e74c3c;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+
+    /* Responsive image styles */
+    #member-details div img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 0.5rem;
+    }
+
+    #member-details div:hover {
+        transform: scale(1.05);
+        border-color: #e74c3c;
+    }
+
+    /* Styles for delete button */
+    button {
+        margin: 20px;
+        padding: 10px 15px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #e74c3c;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #c0392b;
+    }
+
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 1024px) {
+        #member-details {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust grid for tablets */
+        }
+    }
+
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 1.5rem; /* Smaller font size on mobile */
+            padding: 15px;
+        }
+
+        #member-details {
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Adjust for mobile */
+        }
+
+        #member-details div h2 {
+            font-size: 1rem; /* Smaller title size */
+        }
+
+        #member-details div p {
+            font-size: 0.75rem; /* Smaller description size */
+        }
+    }
+
+    @media (max-width: 480px) {
+        #member-details {
+            grid-template-columns: 1fr; /* Single column layout for very small screens */
+        }
+
+        #member-details div {
+            padding: 20px; /* Increased padding for easier interaction on small screens */
+        }
     }
     </style>
 </head>
@@ -145,5 +129,4 @@ button:hover {
 
     <script src="academy.js"></script>
 </body>
-
 </html>

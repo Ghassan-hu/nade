@@ -83,7 +83,12 @@ function initializeAdminLogin() {
   if (adminLink) {
     adminLink.addEventListener('click', function(event) {
       event.preventDefault();
-      displayAdminLoginForm();
+      const loginStatus = localStorage.getItem('isLoggedIn');
+      if (loginStatus === 'admin') {
+        window.location.href = 'admin.html'; // Redirect if already logged in
+      } else {
+        displayAdminLoginForm();
+      }
     });
   }
 }
@@ -151,7 +156,7 @@ function displayAdminLoginForm() {
       adminErrorMessage.style.color = 'green';
       setTimeout(() => {
         adminForm.style.display = 'none';
-        window.location.href = adminPage;
+        window.location.href = 'admin.html';
       }, 1000);
     } else {
       adminErrorMessage.textContent = 'Incorrect username or password. Access denied.';
@@ -165,7 +170,12 @@ function initializeModeratorLogin() {
   if (moderatorLink) {
     moderatorLink.addEventListener('click', function(event) {
       event.preventDefault();
-      displayModeratorLoginForm();
+      const loginStatus = localStorage.getItem('isLoggedIn');
+      if (loginStatus === 'moderator') {
+        window.location.href = 'moderator.html'; // Redirect if already logged in
+      } else {
+        displayModeratorLoginForm();
+      }
     });
   }
 }
@@ -232,7 +242,7 @@ function displayModeratorLoginForm() {
       moderatorErrorMessage.style.color = 'green';
       setTimeout(() => {
         moderatorForm.style.display = 'none';
-        window.location.href = moderatorPage;
+        window.location.href = 'moderator.html';
       }, 1000);
     } else {
       moderatorErrorMessage.textContent = 'Incorrect username or password. Access denied.';
@@ -410,7 +420,6 @@ function handleReservationSubmit(event) {
     }, 5000);
   }
 }
-
 
 function calculatePrice(startTime, endTime) {
   const start = new Date(`2000-01-01T${startTime}`);
