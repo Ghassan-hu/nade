@@ -42,16 +42,6 @@ function initializeLogo() {
 }
 
 function initializeTeamLogin() {
-  const teams = document.querySelectorAll('.dropdown-content a');
-  teams.forEach((team, index) => {
-    team.addEventListener('click', function() {
-      const teamName = this.textContent;
-      const teamUsernames = ['1', 'team2user', 'team3user', 'team4user', 'team5user'];
-      const teamPasswords = ['1', 'team2pass', 'team3pass', 'team4pass', 'team5pass'];
-      const teamPages = ['team1.html', 'team2.html', 'team3.html', 'team4.html', 'team5.html'];
-      displayTeamLoginForm(teamName, teamUsernames[index], teamPasswords[index], teamPages[index]);
-    });
-  });
 }
 
 function displayTeamLoginForm(teamName, username, password, page) {
@@ -155,6 +145,8 @@ function displayAdminLoginForm() {
       }
     }
     if (isValid) {
+      localStorage.setItem('isLoggedIn', 'admin'); // Store login status
+      showAcademyMembersLink(); // Show the link after successful login
       adminErrorMessage.textContent = `Access granted for Admin!`;
       adminErrorMessage.style.color = 'green';
       setTimeout(() => {
@@ -234,6 +226,8 @@ function displayModeratorLoginForm() {
       }
     }
     if (isValid) {
+      localStorage.setItem('isLoggedIn', 'moderator'); // Store login status
+      showAcademyMembersLink(); // Show the link after successful login
       moderatorErrorMessage.textContent = `Access granted for Moderator!`;
       moderatorErrorMessage.style.color = 'green';
       setTimeout(() => {
@@ -596,6 +590,60 @@ function displayReservationApproval(reservationData) {
     window.close();
   });
 }
+
+function showAcademyMembersLink() {
+  const academyMembersLink = document.getElementById('academy-members-link');
+  if (academyMembersLink) {
+    academyMembersLink.style.display = 'block'; // Show the link
+  }
+}
+
+function signOut() {
+  localStorage.removeItem('isLoggedIn'); // Clear login status
+  const academyMembersLink = document.getElementById('academy-members-link');
+  if (academyMembersLink) {
+    academyMembersLink.style.display = 'none'; // Hide the link
+  }
+  // Remove sign-out button from the navbar
+  const signOutButton = document.querySelector('.navbar-links a[href="#"]');
+  if (signOutButton) {
+    signOutButton.remove(); // Remove the button from the navbar
+  }
+}
+
+// Check login status on page load and add sign-out button if admin or moderator are signed in
+window.addEventListener('load', function() {
+  const loginStatus = localStorage.getItem('isLoggedIn');
+  if (loginStatus) {
+    showAcademyMembersLink(); // Show the link if logged in
+    // Add sign-out button functionality to the navbar if not already added
+    const signOutButton = document.querySelector('.navbar-links a[href="#"]');
+    if (!signOutButton) {
+      const newSignOutButton = document.createElement('a');
+      newSignOutButton.textContent = 'Sign Out';
+      newSignOutButton.href = '#';
+      newSignOutButton.className = 'sign-out-button'; // Add a different CSS class to the sign-out button
+      newSignOutButton.style.background = '#ff4d4d'; // Background color
+      newSignOutButton.style.color = '#fff'; // Text color
+      newSignOutButton.style.padding = '2px 5px'; // Further reduced padding for an even smaller button
+      newSignOutButton.style.borderRadius = '5px'; // Border radius
+      newSignOutButton.style.cursor = 'pointer'; // Cursor style
+      newSignOutButton.style.transition = 'background 0.3s ease-in-out'; // Transition effect
+      newSignOutButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        signOut();
+      });
+      newSignOutButton.addEventListener('mouseover', function() {
+        newSignOutButton.style.background = '#ff8080'; // Hover background color
+      });
+      newSignOutButton.addEventListener('mouseout', function() {
+        newSignOutButton.style.background = '#ff4d4d'; // Default background color
+      });
+      document.querySelector('.navbar-links').appendChild(newSignOutButton); // Add the button to the navbar
+    }
+  }
+});
+
 document.getElementById('phone').addEventListener('input', function(e) {
   var phone = e.target.value.replace(/\D/g, '');
   var isValid = /^(05[0-9]{8}|9[0-9]{8})$/.test(phone);
