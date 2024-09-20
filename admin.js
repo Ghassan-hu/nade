@@ -269,21 +269,3 @@ function addMember() {
     setTimeout(() => document.body.removeChild(successMessage), 3000);
 }
 
-// Function to open the device camera and take a photo
-function takePhoto() {
-    const cameraInput = document.createElement('input');
-    cameraInput.type = 'file';
-    cameraInput.accept = 'image/*';
-    cameraInput.capture = 'camera';
-    cameraInput.onchange = function() {
-        const file = cameraInput.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('member-photo').value = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    cameraInput.click();
-}

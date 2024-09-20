@@ -4,9 +4,13 @@ const memberDetailsDiv = document.getElementById('member-details');
 
 if (members.length > 0) {
     members.forEach(member => {
+        // Save member photo to localStorage if it exists
+        if (member.photo) {
+            localStorage.setItem(`photo-${member.nationalId}`, member.photo);
+        }
         memberDetailsDiv.innerHTML += `
             <div>
-               ${member.photo ? `<img id="member-photo-${member.nationalId}" src="${member.photo}" alt="Member Photo" onerror="this.onerror=null; this.src='fallback-image.jpg';" />` : ''}
+               ${member.photo ? `<img id="member-photo-${member.nationalId}" src="${localStorage.getItem(`photo-${member.nationalId}`) || member.photo}" alt="Member Photo" onerror="this.onerror=null; this.src='fallback-image.jpg';" />` : ''}
                 <p><strong>الاسم:</strong> ${member.name}</p>
                 <p><strong>الهاتف:</strong> ${member.phone}</p>
                 <p><strong>رقم الهوية الوطنية:</strong> ${member.nationalId}</p>

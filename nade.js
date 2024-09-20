@@ -600,6 +600,10 @@ function showAcademyMembersLink() {
 
 function signOut() {
   localStorage.removeItem('isLoggedIn'); // Clear login status
+  localStorage.removeItem('approvedReservations'); // Clear approved reservations
+  localStorage.removeItem('reservationData'); // Clear reservation data
+  localStorage.removeItem('members'); // Clear members data
+  localStorage.removeItem('moderators'); // Clear moderators data
   const academyMembersLink = document.getElementById('academy-members-link');
   if (academyMembersLink) {
     academyMembersLink.style.display = 'none'; // Hide the link
@@ -609,6 +613,10 @@ function signOut() {
   if (signOutButton) {
     signOutButton.remove(); // Remove the button from the navbar
   }
+  // Auto refresh the page
+  setTimeout(function() {
+    location.reload();
+  }, 1000);
 }
 
 // Check login status on page load and add sign-out button if admin or moderator are signed in
