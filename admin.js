@@ -269,4 +269,44 @@ function addMember() {
     setTimeout(() => document.body.removeChild(successMessage), 3000);
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.hamburger');
+    const navbarLinks = document.querySelector('.navbar-links');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('.section');
+    const welcomeMessage = document.getElementById('welcome-message');
 
+    // Toggle hamburger menu
+    hamburger.addEventListener('click', () => {
+        navbarLinks.classList.toggle('show');
+    });
+
+    // Handle navigation
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(targetId).classList.add('active');
+            navbarLinks.classList.remove('show');
+        });
+    });
+
+    // Show welcome message
+    function showWelcomeMessage(adminName) {
+        welcomeMessage.textContent = `مرحبًا ${adminName}`;
+        welcomeMessage.style.display = 'block';
+        setTimeout(() => {
+            welcomeMessage.style.display = 'none';
+        }, 2000);
+    }
+
+    // Example: Show welcome message when page loads
+    // Replace 'Admin Name' with the actual admin name from your authentication system
+    showWelcomeMessage('Admin Name');
+
+    // Show the reservations section by default
+    document.getElementById('reservations').classList.add('active');
+});
