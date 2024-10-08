@@ -56,6 +56,24 @@ document.addEventListener('DOMContentLoaded', function() {
   closeServices.addEventListener('click', function() {
     closeSection(servicesSection);
   });
+
+  const toggleButton = document.getElementById('toggle-schedule');
+  const scheduleContent = document.getElementById('schedule-content');
+  const arrow = toggleButton.querySelector('.arrow-down');
+
+  toggleButton.addEventListener('click', function() {
+    if (scheduleContent.style.display === 'none') {
+      scheduleContent.style.display = 'block';
+      toggleButton.textContent = 'إخفاء الجدول ';
+      toggleButton.appendChild(arrow);
+      arrow.innerHTML = '&#9650;'; // Up arrow
+    } else {
+      scheduleContent.style.display = 'none';
+      toggleButton.textContent = 'عرض الجدول ';
+      toggleButton.appendChild(arrow);
+      arrow.innerHTML = '&#9660;'; // Down arrow
+    }
+  });
 });
 
 function initializeLogo() {

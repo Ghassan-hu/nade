@@ -86,18 +86,24 @@
     </section>
     <section id="schedule" style="text-align: center;">
         <h2>الجدول الأسبوعي لحجز ملعب كرة القدم</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>اليوم</th>
-                    <th>الفترة الزمنية</th>
-                    <th>محجوز بواسطة</th>
-                </tr>
-            </thead>
-            <tbody id="reservation-table">
-                <!-- Table content will be dynamically populated -->
-            </tbody>
-        </table>
+        <button id="toggle-schedule" class="toggle-button">
+            عرض الجدول
+            <span class="arrow-down">&#9660;</span>
+        </button>
+        <div id="schedule-content" style="display: none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>اليوم</th>
+                        <th>الفترة الزمنية</th>
+                        <th>محجوز بواسطة</th>
+                    </tr>
+                </thead>
+                <tbody id="reservation-table">
+                    <!-- Table content will be dynamically populated -->
+                </tbody>
+            </table>
+        </div>
         <button id="reservation-toggle" class="reservation-toggle">طلب حجز الملعب</button>
         <div id="reservation-dropdown" class="reservation-dropdown">
             <h3>طلب حجز الملعب</h3>
