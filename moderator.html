@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,19 +12,22 @@
             padding: 20px;
             box-sizing: border-box;
         }
+
         h1 {
             text-align: center;
         }
+
         table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
             margin-top: 20px;
             background-color: #fff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             overflow: hidden;
         }
+
         thead th {
             background-color: #f2f2f2;
             color: #333;
@@ -34,15 +38,19 @@
             text-align: right;
             border-bottom: 2px solid #ddd;
         }
+
         tbody tr {
             transition: background-color 0.3s ease;
         }
+
         tbody tr:nth-child(even) {
             background-color: #f8f8f8;
         }
+
         tbody tr:hover {
             background-color: #f0f0f0;
         }
+
         td {
             padding: 12px 15px;
             text-align: right;
@@ -50,25 +58,45 @@
             font-size: 14px;
             line-height: 1.4;
         }
+
         tbody tr:last-child td {
             border-bottom: none;
         }
+
         td:first-child {
             font-weight: bold;
         }
-        td:nth-child(3) { /* Phone number */
+
+        td:nth-child(3) {
+            /* Phone number */
             font-family: monospace;
             letter-spacing: 0.5px;
         }
-        td:nth-child(4), td:nth-child(5), td:nth-child(6) { /* Date and time */
+
+        td:nth-child(4),
+        td:nth-child(5),
+        td:nth-child(6) {
+            /* Date and time */
             white-space: nowrap;
         }
-        td:nth-child(7) { /* Status */
+
+        td:nth-child(7) {
+            /* Status */
             font-weight: bold;
         }
-        .status-approved { color: #27ae60; }
-        .status-rejected { color: #c0392b; }
-        .status-pending { color: #f39c12; }
+
+        .status-approved {
+            color: #27ae60;
+        }
+
+        .status-rejected {
+            color: #c0392b;
+        }
+
+        .status-pending {
+            color: #f39c12;
+        }
+
         .delete-btn {
             background-color: #e74c3c;
             color: white;
@@ -79,16 +107,26 @@
             transition: background-color 0.3s ease;
             font-size: 12px;
         }
-        .delete-btn:hover { 
-            background-color: #c0392b; 
+
+        .delete-btn:hover {
+            background-color: #c0392b;
         }
-        #phoneInput, #startDate, #endDate {
+
+        #phoneInput,
+        #startDate,
+        #endDate {
             width: calc(33% - 10px);
             padding: 10px;
             margin-right: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
+        .phone-highlight {
+            background-color: #ffff99;
+            font-weight: bold;
+        }
+
         button {
             padding: 10px 15px;
             background-color: #4CAF50;
@@ -97,26 +135,47 @@
             cursor: pointer;
             border-radius: 4px;
         }
-        button:hover { background-color: #45a049; }
-        #toggleDeleteMode { background-color: #f44336; }
-        #toggleDeleteMode:hover { background-color: #da190b; }
-        .highlight { background-color: #ffff99 !important; }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #toggleDeleteMode {
+            background-color: #f44336;
+        }
+
+        #toggleDeleteMode:hover {
+            background-color: #da190b;
+        }
+
+        .highlight {
+            background-color: #ffff99 !important;
+        }
 
         @media screen and (max-width: 768px) {
-            table, thead, tbody, th, td, tr {
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
                 display: block;
             }
+
             thead tr {
                 position: absolute;
                 top: -9999px;
                 right: -9999px;
             }
+
             tr {
                 border: 1px solid #ccc;
                 margin-bottom: 10px;
                 border-radius: 8px;
                 overflow: hidden;
             }
+
             td {
                 border: none;
                 position: relative;
@@ -124,6 +183,7 @@
                 text-align: right;
                 background-color: #fff;
             }
+
             td:before {
                 content: attr(data-label);
                 position: absolute;
@@ -134,32 +194,69 @@
                 font-weight: bold;
                 text-align: right;
             }
+
             td:nth-of-type(even) {
                 background-color: #f8f8f8;
             }
-            #phoneInput, #startDate, #endDate {
+
+            #phoneInput,
+            #startDate,
+            #endDate {
                 width: 100%;
                 margin-bottom: 10px;
                 margin-right: 0;
             }
+
             button {
                 width: 100%;
                 margin-bottom: 10px;
             }
         }
+
+        /* Add these new styles */
+        .new-totals {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .total-accepted-new {
+            color: #27ae60;
+        }
+
+        .total-rejected-new {
+            color: #c0392b;
+        }
+
+        .phone-highlight {
+            background-color: #ffff99;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <h1>المشرف</h1>
-    
-    <input type="text" id="phoneInput" placeholder="رقم الهاتف">
+
+    <!-- Add this new div for new totals -->
+    <div class="new-totals">
+        <span class="total-accepted-new">إجمالي المقبول: <span id="totalAcceptedNew">0</span> شيكل</span>
+        <span class="total-rejected-new">إجمالي المرفوض: <span id="totalRejectedNew">0</span> شيكل</span>
+    </div>
+
+    <input type="text" id="phoneInput" placeholder="رقم الهاتف" style="display: none;">
     <input type="date" id="startDate" placeholder="تاريخ البداية">
     <input type="date" id="endDate" placeholder="تاريخ النهاية">
-    <button onclick="searchTable()">بحث</button>
+    <button onclick="searchTableByDateRange()">بحث حسب التاريخ</button>
     <button onclick="resetSearch()">إعادة تعيين</button>
     <button onclick="printHighlightedData()">طباعة</button>
 
     <button id="toggleDeleteMode">تفعيل وضع الحذف</button>
+
+    <input type="text" id="phoneSearchInput" maxlength="10" placeholder="أدخل رقم الهاتف (10 أرقام)">
+    <button id="searchButton2">بحث الهاتف</button>
 
     <table id="dataTable">
         <thead>
@@ -171,6 +268,7 @@
                 <th>وقت البدء</th>
                 <th>وقت الانتهاء</th>
                 <th>الحالة</th>
+                <th>السعر (شيكل)</th> <!-- New column for reservation amount -->
                 <th>الإجراءات</th>
             </tr>
         </thead>
@@ -184,6 +282,7 @@
         let deleteMode = false;
         let moderatorReservations = [];
         let highlightedRows = []; // New variable to store highlighted rows
+        let highlightedPhoneNumbers = [];
 
         function loadModeratorReservations() {
             const storedReservations = localStorage.getItem('moderatorReservations');
@@ -202,12 +301,34 @@
 
             const sortedReservations = sortReservationsByNewest([...moderatorReservations]);
 
+            let totalAcceptedNew = 0;
+            let totalRejectedNew = 0;
+
+            // First, add highlighted rows
+            highlightedRows.forEach(index => {
+                const reservation = sortedReservations[index];
+                addReservationRow(reservation, true);
+            });
+
+            // Then, add non-highlighted rows
             sortedReservations.forEach((reservation, index) => {
+                if (!highlightedRows.includes(index)) {
+                    addReservationRow(reservation, false);
+                }
+            });
+
+            // Update new totals
+            document.getElementById('totalAcceptedNew').textContent = totalAcceptedNew.toFixed(2);
+            document.getElementById('totalRejectedNew').textContent = totalRejectedNew.toFixed(2);
+
+            function addReservationRow(reservation, isHighlighted) {
                 const row = document.createElement('tr');
-                if (highlightedRows.includes(index)) {
+                if (isHighlighted) {
                     row.classList.add('highlight');
                 }
-                
+
+                const reservationPrice = calculateReservationPrice(reservation);
+
                 const cellsData = [
                     { label: 'الاسم', value: reservation.name },
                     { label: 'اسم العائلة', value: reservation.familyName },
@@ -215,7 +336,8 @@
                     { label: 'اليوم', value: reservation.day },
                     { label: 'وقت البدء', value: reservation.startTime },
                     { label: 'وقت الانتهاء', value: reservation.endTime },
-                    { label: 'الحالة', value: reservation.status }
+                    { label: 'الحالة', value: reservation.status },
+                    { label: 'السعر (شيكل)', value: reservationPrice }
                 ];
 
                 cellsData.forEach(cellData => {
@@ -225,8 +347,10 @@
                     if (cellData.label === 'الحالة') {
                         if (cellData.value === 'تمت الموافقة') {
                             cell.classList.add('status-approved');
+                            totalAcceptedNew += reservationPrice;
                         } else if (cellData.value === 'مرفوض') {
                             cell.classList.add('status-rejected');
+                            totalRejectedNew += reservationPrice;
                         } else {
                             cell.classList.add('status-pending');
                         }
@@ -246,12 +370,12 @@
                 }
 
                 tableBody.appendChild(row);
-            });
+            }
         }
 
         function deleteReservation(index) {
             const reservationToDelete = moderatorReservations[index];
-            
+
             moderatorReservations.splice(index, 1);
             saveModeratorReservations();
 
@@ -267,43 +391,43 @@
 
             if (storageKey) {
                 const storageArray = JSON.parse(localStorage.getItem(storageKey) || '[]');
-                const updatedArray = storageArray.filter(r => 
-                    !(r.phone === reservationToDelete.phone && 
-                      r.day === reservationToDelete.day && 
-                      r.startTime === reservationToDelete.startTime)
+                const updatedArray = storageArray.filter(r =>
+                    !(r.phone === reservationToDelete.phone &&
+                        r.day === reservationToDelete.day &&
+                        r.startTime === reservationToDelete.startTime)
                 );
                 localStorage.setItem(storageKey, JSON.stringify(updatedArray));
             }
 
             // Update highlightedRows after deletion
             highlightedRows = highlightedRows.filter(rowIndex => rowIndex !== index)
-                                             .map(rowIndex => rowIndex > index ? rowIndex - 1 : rowIndex);
+                .map(rowIndex => rowIndex > index ? rowIndex - 1 : rowIndex);
 
             updateTable();
         }
 
-        function searchTable() {
-            const phoneInput = document.getElementById('phoneInput').value;
+        function searchTableByDateRange() {
             const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
 
-            highlightedRows = []; // Reset highlighted rows
+            if (!startDate || !endDate) {
+                alert('الرجاء إدخال تاريخ البداية وتاريخ النهاية');
+                return;
+            }
+
+            highlightedRows = [];
 
             moderatorReservations.forEach((reservation, index) => {
-                let match = true;
+                const reservationDate = new Date(reservation.day);
+                const start = new Date(startDate);
+                const end = new Date(endDate);
 
-                if (phoneInput) {
-                    match = match && reservation.phone.includes(phoneInput);
-                }
+                // Set all dates to midnight to compare only day, month, and year
+                reservationDate.setHours(0, 0, 0, 0);
+                start.setHours(0, 0, 0, 0);
+                end.setHours(0, 0, 0, 0);
 
-                if (startDate && endDate) {
-                    const reservationDate = new Date(reservation.day);
-                    const start = new Date(startDate);
-                    const end = new Date(endDate);
-                    match = match && (reservationDate >= start && reservationDate <= end);
-                }
-
-                if (match) {
+                if (reservationDate >= start && reservationDate <= end) {
                     highlightedRows.push(index);
                 }
             });
@@ -338,15 +462,15 @@
             const rejectedReservations = JSON.parse(localStorage.getItem('rejectedReservations') || '[]');
 
             const allReservations = [
-                ...reservations.map(r => ({...r, status: 'قيد الانتظار'})),
-                ...approvedReservations.map(r => ({...r, status: 'تمت الموافقة'})),
-                ...rejectedReservations.map(r => ({...r, status: 'مرفوض'}))
+                ...reservations.map(r => ({ ...r, status: 'قيد الانتظار' })),
+                ...approvedReservations.map(r => ({ ...r, status: 'تمت الموافقة' })),
+                ...rejectedReservations.map(r => ({ ...r, status: 'مرفوض' }))
             ];
 
             allReservations.forEach(newReservation => {
-                const existingIndex = moderatorReservations.findIndex(r => 
-                    r.phone === newReservation.phone && 
-                    r.day === newReservation.day && 
+                const existingIndex = moderatorReservations.findIndex(r =>
+                    r.phone === newReservation.phone &&
+                    r.day === newReservation.day &&
                     r.startTime === newReservation.startTime
                 );
 
@@ -369,6 +493,91 @@
             });
         }
 
+        function calculateReservationPrice(reservation) {
+            const startTime = new Date(`2000-01-01T${reservation.startTime}`);
+            const endTime = new Date(`2000-01-01T${reservation.endTime}`);
+            const durationHours = (endTime - startTime) / (1000 * 60 * 60);
+            return Math.round(durationHours * 100); // 100 shekels per hour
+        }
+
+        function searchReservations() {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            const searchType = document.getElementById('searchType').value;
+
+            highlightedRows = [];
+
+            if (searchTerm === '') {
+                updateTable();
+                return;
+            }
+
+            moderatorReservations.forEach((reservation, index) => {
+                if (searchType === 'phone') {
+                    // Match exact digits for phone numbers
+                    if (reservation.phone.includes(searchTerm)) {
+                        const phoneDigits = reservation.phone.replace(/\D/g, '');
+                        const searchDigits = searchTerm.replace(/\D/g, '');
+                        if (phoneDigits.includes(searchDigits)) {
+                            highlightedRows.push(index);
+                        }
+                    }
+                } else if (searchType === 'name') {
+                    if (reservation.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        reservation.familyName.toLowerCase().includes(searchTerm.toLowerCase())) {
+                        highlightedRows.push(index);
+                    }
+                } else if (searchType === 'day') {
+                    if (reservation.day.toLowerCase().includes(searchTerm.toLowerCase())) {
+                        highlightedRows.push(index);
+                    }
+                }
+            });
+
+            updateTable();
+        }
+
+        function searchExactPhoneNumber() {
+            const phoneSearchTerm = document.getElementById('phoneSearchInput').value.trim();
+            
+            // Check if the input is exactly 10 digits
+            if (!/^\d{10}$/.test(phoneSearchTerm)) {
+                alert('الرجاء إدخال رقم هاتف مكون من 10 أرقام بالضبط');
+                return;
+            }
+
+            const tableBody = document.getElementById('tableBody');
+            const rows = tableBody.getElementsByTagName('tr');
+
+            let matchedRows = [];
+
+            for (let i = 0; i < rows.length; i++) {
+                const phoneCell = rows[i].querySelector('td[data-label="الهاتف"]');
+                if (phoneCell) {
+                    // Remove any non-digit characters from the phone number in the table
+                    const tablePhoneNumber = phoneCell.textContent.replace(/\D/g, '');
+                    if (tablePhoneNumber === phoneSearchTerm) {
+                        phoneCell.classList.add('phone-highlight');
+                        matchedRows.push(rows[i]);
+                        if (!highlightedPhoneNumbers.includes(tablePhoneNumber)) {
+                            highlightedPhoneNumbers.push(tablePhoneNumber);
+                        }
+                    }
+                }
+            }
+
+            if (matchedRows.length > 0) {
+                // Move all matched rows to the top of the table
+                matchedRows.reverse().forEach(row => {
+                    tableBody.insertBefore(row, tableBody.firstChild);
+                });
+            } else {
+                alert('لم يتم العثور على رقم الهاتف');
+            }
+        }
+
+        // Add event listener for the new search button
+        document.getElementById('searchButton2').addEventListener('click', searchExactPhoneNumber);
+
         loadModeratorReservations();
         updateTable();
         setInterval(() => {
@@ -376,16 +585,16 @@
             updateTable();
         }, 5000);
         function printHighlightedData() {
-    if (highlightedRows.length === 0) {
-        return; // Simply return if there are no highlighted rows
-    }
+            if (highlightedRows.length === 0) {
+                return; // Simply return if there are no highlighted rows
+            }
 
-    const printWindow = window.open('', '', 'height=600,width=800');
-    let printContent = '<h1>بيانات محددة للطباعة</h1><table style="width: 100%; border-collapse: collapse;"><thead><tr><th>الاسم</th><th>اسم العائلة</th><th>الهاتف</th><th>اليوم</th><th>وقت البدء</th><th>وقت الانتهاء</th><th>الحالة</th></tr></thead><tbody>';
+            const printWindow = window.open('', '', 'height=600,width=800');
+            let printContent = '<h1>بيانات محددة للطباعة</h1><table style="width: 100%; border-collapse: collapse;"><thead><tr><th>الاسم</th><th>اسم العائلة</th><th>الهاتف</th><th>اليوم</th><th>وقت البدء</th><th>وقت الانتهاء</th><th>الحالة</th></tr></thead><tbody>';
 
-    highlightedRows.forEach(index => {
-        const reservation = moderatorReservations[index];
-        printContent += `<tr>
+            highlightedRows.forEach(index => {
+                const reservation = moderatorReservations[index];
+                printContent += `<tr>
             <td>${reservation.name}</td>
             <td>${reservation.familyName}</td>
             <td>${reservation.phone}</td>
@@ -394,22 +603,23 @@
             <td>${reservation.endTime}</td>
             <td>${reservation.status}</td>
         </tr>`;
-    });
+            });
 
-    printContent += '</tbody></table>';
-    
-    printWindow.document.write(printContent);
-    printWindow.document.close();
-    printWindow.focus();
+            printContent += '</tbody></table>';
 
-    // Automatically print without confirmation
-    setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-    }, 100); // Delay before printing
-}
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.focus();
+
+            // Automatically print without confirmation
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 100); // Delay before printing
+        }
 
     </script>
-    
+
 </body>
+
 </html>
