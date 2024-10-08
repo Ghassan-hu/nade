@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
 
 body {
   margin: 0;
@@ -8,12 +8,14 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  font-family: 'Open Sans', sans-serif; /* Imported font from Google Fonts */
-  padding-top: 60px; /* Adjust this value based on your navbar height */
+  font-family: "Open Sans", sans-serif;
+  /* Imported font from Google Fonts */
+  padding-top: 60px;
+  /* Adjust this value based on your navbar height */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .navbar {
@@ -74,7 +76,8 @@ body {
   justify-content: flex-start;
 }
 
-.navbar-links a, .dropdown {
+.navbar-links a,
+.dropdown {
   color: #fff;
   text-decoration: none;
   padding: 10px;
@@ -144,26 +147,41 @@ body {
     display: flex;
   }
 
-  .navbar-links a, .dropdown {
+  .navbar-links a,
+  .dropdown {
     opacity: 0;
     -webkit-transform: translateY(20px);
     transform: translateY(20px);
     -webkit-transition: opacity 0.3s ease, -webkit-transform 0.3s ease;
     transition: opacity 0.3s ease, -webkit-transform 0.3s ease;
     transition: opacity 0.3s ease, transform 0.3s ease;
-    transition: opacity 0.3s ease, transform 0.3s ease, -webkit-transform 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease,
+      -webkit-transform 0.3s ease;
   }
 
-  .navbar-links.active a, .navbar-links.active .dropdown {
+  .navbar-links.active a,
+  .navbar-links.active .dropdown {
     opacity: 1;
     -webkit-transform: translateY(0);
     transform: translateY(0);
   }
 
   /* Add a delay for each link to create a staggered animation */
-  .navbar-links.active a:nth-child(1), .navbar-links.active .dropdown:nth-child(1) { transition-delay: 0.1s; }
-  .navbar-links.active a:nth-child(2), .navbar-links.active .dropdown:nth-child(2) { transition-delay: 0.2s; }
-  .navbar-links.active a:nth-child(3), .navbar-links.active .dropdown:nth-child(3) { transition-delay: 0.3s; }
+  .navbar-links.active a:nth-child(1),
+  .navbar-links.active .dropdown:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+
+  .navbar-links.active a:nth-child(2),
+  .navbar-links.active .dropdown:nth-child(2) {
+    transition-delay: 0.2s;
+  }
+
+  .navbar-links.active a:nth-child(3),
+  .navbar-links.active .dropdown:nth-child(3) {
+    transition-delay: 0.3s;
+  }
+
   /* Add more if you have more links */
 
   .logo {
@@ -172,7 +190,9 @@ body {
 }
 
 @media screen and (min-width: 769px) and (max-width: 1024px) {
-  .navbar-links a, .dropdown {
+
+  .navbar-links a,
+  .dropdown {
     font-size: 14px;
     padding: 8px;
   }
@@ -185,7 +205,8 @@ body {
     justify-content: flex-start;
   }
 
-  .navbar-links a, .dropdown {
+  .navbar-links a,
+  .dropdown {
     font-size: 18px;
     padding: 12px;
   }
@@ -200,8 +221,10 @@ body {
   transition: -webkit-transform 0.5s ease;
   transition: transform 0.5s ease;
   transition: transform 0.5s ease, -webkit-transform 0.5s ease;
-  margin-right: 0; /* Remove right margin */
-  margin-left: 10px; /* Add left margin */
+  margin-right: 0;
+  /* Remove right margin */
+  margin-left: 10px;
+  /* Add left margin */
   /* Added a 10px gap between the logo and the left edge of the window */
   -webkit-transform-origin: left;
   transform-origin: left;
@@ -337,7 +360,8 @@ body {
   font-size: 0.9em;
 }
 
-#schedule th, #schedule td {
+#schedule th,
+#schedule td {
   border: 1px solid #007bff;
   padding: 4px;
   text-align: center;
@@ -361,7 +385,9 @@ body {
   font-size: 0.9em;
 }
 
-#schedule input, #schedule select, #schedule button {
+#schedule input,
+#schedule select,
+#schedule button {
   width: 100%;
   max-width: 250px;
   padding: 6px;
@@ -391,11 +417,14 @@ body {
     font-size: 1em;
   }
 
-  #schedule th, #schedule td {
+  #schedule th,
+  #schedule td {
     padding: 2px;
   }
 
-  #schedule input, #schedule select, #schedule button {
+  #schedule input,
+  #schedule select,
+  #schedule button {
     max-width: 200px;
     padding: 4px;
   }
@@ -406,7 +435,9 @@ body {
     font-size: 13px;
   }
 
-  #schedule input, #schedule select, #schedule button {
+  #schedule input,
+  #schedule select,
+  #schedule button {
     max-width: 220px;
   }
 }
@@ -424,91 +455,95 @@ body {
     justify-content: center;
   }
 
-  #schedule input, #schedule select, #schedule button {
+  #schedule input,
+  #schedule select,
+  #schedule button {
     width: auto;
     max-width: 180px;
   }
 }
 
 @media screen and (min-width: 769px) {
-    .reservation-toggle {
-        display: none;
-    }
+  .reservation-toggle {
+    display: none;
+  }
 
-    .reservation-dropdown {
-        display: block;
-    }
+  .reservation-dropdown {
+    display: block;
+  }
 
-    /* Add these styles to match larger screens */
-    #schedule {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: rgba(26, 29, 35, 0.9);
-        color: white;
-        text-align: center;
-        padding: 10px;
-        font-size: 14px;
-        border-top: 2px solid #007bff;
-        box-sizing: border-box;
-        max-height: 80vh;
-        overflow-y: auto;
-    }
+  /* Add these styles to match larger screens */
+  #schedule {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(26, 29, 35, 0.9);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    border-top: 2px solid #007bff;
+    box-sizing: border-box;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
 
-    #schedule form {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-    }
+  #schedule form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
 
-    #schedule input, #schedule select, #schedule button {
-        width: auto;
-        max-width: 180px;
-    }
+  #schedule input,
+  #schedule select,
+  #schedule button {
+    width: auto;
+    max-width: 180px;
+  }
 }
 
 @media screen and (max-width: 768px) {
-    .reservation-toggle {
-        display:  inline-block;
-        width: 100%;
-        padding: 10px;
-        background-color: #f0f0f0;
-        border: none;
-        text-align: center;
-        cursor: pointer;
-        margin-bottom: 10px;
-    }
+  .reservation-toggle {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
 
-    .reservation-dropdown {
-        display: none;
-        overflow: hidden;
-        -webkit-transition: max-height 0.3s ease-out;
-        transition: max-height 0.3s ease-out;
-    }
+  .reservation-dropdown {
+    display: none;
+    overflow: hidden;
+    -webkit-transition: max-height 0.3s ease-out;
+    transition: max-height 0.3s ease-out;
+  }
 
-    .reservation-dropdown.active {
-        display: block;
-    }
+  .reservation-dropdown.active {
+    display: block;
+  }
 
-    #reservation-form {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -webkit-flex-direction: column;
-        flex-direction: column;
-    }
+  #reservation-form {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
 
-    #reservation-form input,
-    #reservation-form select,
-    #reservation-form button {
-        margin-bottom: 10px;
-    }
+  #reservation-form input,
+  #reservation-form select,
+  #reservation-form button {
+    margin-bottom: 10px;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -549,19 +584,21 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color:transparent;
+  background-color: transparent;
   padding: 50px;
   border: 4px solid #007bff;
   border-radius: 20px;
   box-shadow: 0 0 30px rgba(0, 123, 255, 0.5), 0 0 60px rgba(0, 123, 255, 0.3);
-  font-size: 1.5rem; /* Changed to rem */
+  font-size: 1.5rem;
+  /* Changed to rem */
   display: none;
   backdrop-filter: blur(2px);
   animation: fadeIn 0.5s ease-out;
 }
 
 .admin-form h2 {
-  font-size: 1.25rem; /* Changed to rem */
+  font-size: 1.25rem;
+  /* Changed to rem */
   margin-bottom: 20px;
   color: #007bff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -571,12 +608,14 @@ body {
   display: block;
   width: 100%;
   margin-bottom: 20px;
-  font-size: 1.5rem; /* Changed to rem */
+  font-size: 1.5rem;
+  /* Changed to rem */
   padding: 10px;
   border: 2px solid #007bff;
   border-radius: 10px;
   transition: all 0.3s ease;
-  font-size: 1.25rem; /* Adjusted placeholder text size */
+  font-size: 1.25rem;
+  /* Adjusted placeholder text size */
 }
 
 .admin-form input:focus {
@@ -586,14 +625,16 @@ body {
 
 .admin-form .submit-button {
   padding: 20px 40px;
-  font-size: 1.5rem; /* Changed to rem */
+  font-size: 1.5rem;
+  /* Changed to rem */
   cursor: pointer;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 10px;
   transition: all 0.3s ease;
-  font-size: 1.25rem; /* Adjusted submit button text size */
+  font-size: 1.25rem;
+  /* Adjusted submit button text size */
 }
 
 .admin-form .submit-button:hover {
@@ -607,7 +648,8 @@ body {
   right: 20px;
   background-color: transparent;
   border: none;
-  font-size: 1.875rem; /* Changed to rem */
+  font-size: 1.875rem;
+  /* Changed to rem */
   cursor: pointer;
   color: #007bff;
   transition: all 0.3s ease;
@@ -620,26 +662,50 @@ body {
 
 #admin-error-message {
   color: #ff3860;
-  font-size: 1rem; /* Changed to rem */
+  font-size: 1rem;
+  /* Changed to rem */
   margin-top: 20px;
   animation: shake 0.5s ease-in-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translate(-50%, -60%); }
-  to { opacity: 1; transform: translate(-50%, -50%); }
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-  20%, 40%, 60%, 80% { transform: translateX(5px); }
-}
 
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
 
 /* Added media query to adjust styles for under 768 devices */
 @media (max-width: 768px) {
-  .navbar{
+  .navbar {
     height: 40px;
   }
 
@@ -670,14 +736,16 @@ body {
   border: 4px solid #007bff;
   border-radius: 20px;
   box-shadow: 0 0 30px rgba(0, 123, 255, 0.5), 0 0 60px rgba(0, 123, 255, 0.3);
-  font-size: 1.5rem; /* Changed to rem */
+  font-size: 1.5rem;
+  /* Changed to rem */
   display: none;
   backdrop-filter: blur(2px);
   animation: fadeIn 0.5s ease-out;
 }
 
 .moderator-form h2 {
-  font-size: 1.25rem; /* Changed to rem */
+  font-size: 1.25rem;
+  /* Changed to rem */
   margin-bottom: 20px;
   color: #007bff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -687,12 +755,14 @@ body {
   display: block;
   width: 100%;
   margin-bottom: 20px;
-  font-size: 1.5rem; /* Changed to rem */
+  font-size: 1.5rem;
+  /* Changed to rem */
   padding: 10px;
   border: 2px solid #007bff;
   border-radius: 10px;
   transition: all 0.3s ease;
-  font-size: 1.25rem; /* Adjusted placeholder text size */
+  font-size: 1.25rem;
+  /* Adjusted placeholder text size */
 }
 
 .moderator-form input:focus {
@@ -702,14 +772,16 @@ body {
 
 .moderator-form .submit-button {
   padding: 20px 40px;
-  font-size: 1.5rem; /* Changed to rem */
+  font-size: 1.5rem;
+  /* Changed to rem */
   cursor: pointer;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 10px;
   transition: all 0.3s ease;
-  font-size: 1.25rem; /* Adjusted submit button text size */
+  font-size: 1.25rem;
+  /* Adjusted submit button text size */
 }
 
 .moderator-form .submit-button:hover {
@@ -723,7 +795,8 @@ body {
   right: 20px;
   background-color: transparent;
   border: none;
-  font-size: 1.875rem; /* Changed to rem */
+  font-size: 1.875rem;
+  /* Changed to rem */
   cursor: pointer;
   color: #007bff;
   transition: all 0.3s ease;
@@ -736,8 +809,170 @@ body {
 
 #moderator-error-message {
   color: #ff3860;
-  font-size: 1rem; /* Changed to rem */
+  font-size: 1rem;
+  /* Changed to rem */
   margin-top: 20px;
   animation: shake 0.5s ease-in-out;
 }
 
+#about,
+#services {
+  position: fixed;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(./imges/view-soccer-field-with-grass_23-2150887297.avif);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: top 0.5s ease-in-out;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+
+#about::before,
+#services::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+#about.active,
+#services.active {
+  top: 0;
+}
+
+.slideshow-content {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 800px;
+  position: relative;
+  margin: 2rem auto;
+  box-sizing: border-box;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 1;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #007bff;
+}
+
+.slideshow-content h2 {
+  color: #007bff;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.about-content {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  /* Add left padding for symmetry */
+}
+
+.about-content h3 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.about-content p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  text-align: justify;
+  /* Justify the paragraph text for better readability */
+}
+
+/* For RTL languages like Arabic, use text-align: right for paragraphs */
+.about-content p {
+  text-align: right;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .slideshow-content {
+    padding: 1.5rem;
+    width: 95%;
+    margin: 1rem auto;
+  }
+
+  .slideshow-content h2 {
+    font-size: 1.75rem;
+  }
+
+  .about-content {
+    max-height: 60vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .slideshow-content {
+    padding: 1rem;
+    width: 90%;
+    margin: 0.5rem auto;
+  }
+
+  .slideshow-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .close-btn {
+    font-size: 1.25rem;
+  }
+
+  .about-content {
+    max-height: 70vh;
+  }
+}
+
+@media (min-width: 1200px) {
+  .slideshow-content {
+    max-width: 1000px;
+  }
+}
+
+@media (max-height: 600px) {
+  .slideshow-content {
+    margin: 1rem auto;
+  }
+
+  .about-content {
+    max-height: 50vh;
+  }
+}
+
+.services-content ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.services-content li {
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}

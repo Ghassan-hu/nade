@@ -5,6 +5,57 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeModeratorLogin();
   initializeReservationSystem();
   initializeNavigation();
+
+  const closeAbout = document.getElementById('close-about');
+
+  closeAbout.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.location.hash = '';
+  });
+
+  // Check if the hash is #about on page load
+  if (window.location.hash === '#about') {
+    document.getElementById('about').style.top = '0';
+  }
+
+  // Listen for hash changes
+  window.addEventListener('hashchange', function() {
+    if (window.location.hash !== '#about') {
+      document.getElementById('about').style.top = '-100%';
+    }
+  });
+
+  const aboutLink = document.getElementById('about-link');
+  const servicesLink = document.getElementById('services-link');
+  const aboutSection = document.getElementById('about');
+  const servicesSection = document.getElementById('services');
+  const closeServices = document.getElementById('close-services');
+
+  function openSection(section) {
+    section.classList.add('active');
+  }
+
+  function closeSection(section) {
+    section.classList.remove('active');
+  }
+
+  aboutLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    openSection(aboutSection);
+  });
+
+  servicesLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    openSection(servicesSection);
+  });
+
+  closeAbout.addEventListener('click', function() {
+    closeSection(aboutSection);
+  });
+
+  closeServices.addEventListener('click', function() {
+    closeSection(servicesSection);
+  });
 });
 
 function initializeLogo() {

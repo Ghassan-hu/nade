@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نادي قلنديا البلد</title>
     <link rel="stylesheet" href="nade.css">
- <link rel="icon" href="/imges/Soccer-Player--Streamline-Ultimate.png">
-  
+    <link rel="icon" href="/imges/Soccer-Player--Streamline-Ultimate.png">
+
 </head>
 
 <body>
@@ -20,18 +20,69 @@
         </div>
         <div class="navbar-links">
             <a href="#home">الرئيسية</a>
-            <a href="#services">الخدمات</a>
-            <a href="#about">عنا</a>
-            <a href="club.html">أعضاء النادي</a> 
+            <a href="#" id="services-link">الخدمات</a>
+            <a href="#" id="about-link">من نحن؟</a>
+            <a href="club.html">أعضاء النادي</a>
             <a href="#admin" id="admin-link">المسؤول</a>
             <a href="#moderator" id="moderator-link">المشرف</a>
             <a href="Academy members.html" id="academy-members-link" style="display: none;">أعضاء أكاديميين</a>
-            </div>
         </div>
     </nav>
 
+    <!-- Add this new section for the About slideshow -->
+    <div id="about">
+        <div class="slideshow-content">
+            <button id="close-about" class="close-btn">&times;</button>
+            <h2>مرحباً بكم في نادينا</h2>
+            <div class="about-content">
+                <p> 
+
+                    نادي قلنديا البلد الرياضي نادي مقدسي فلسطيني تأسس عام ٢٠٢٤ تحت مظلة المجلس الأعلى للشباب والرياضة
+                    وبترخيص من وزارة الداخلية بتضافر جهود شباب وأهالي ومؤسسات قلنديا البلد
+
+                    رؤيتنا..
+                    وسط كل هذا الظلم والظلام الذي يعايشه وطننا الحبيب، تضافرت مؤسسات قريتنا، وتكاتفت خيرة شبابها، ثم
+                    أثمرت جهودهم ليعلنوا عن تأسيس نادي قلنديا البلد الرياضي، ليكون رافعًا للقرية وعنونًا من عناوين
+                    أصالتها، وبيت من بيوت خدمتها.
+
+                    ومنذ اليوم الذي ولدت في الفكرة، كان تعزيز الهوية الوطنية، والرباط في عاصمتنا الأبدية، والسمو بالعنصر
+                    الإنساني والشبابي في القرية هو عنوان العمل، الى جانب الاهتمام بالفئات الشبابية من الجنسين، عبر نشر
+                    ثقافة المبادرة وقيم التعاون وخدمة المجتمع والروح الإيجابية وتنمية ثقافة الرياضة بين الشباب، والسمو
+                    بهم وطنيًا ورياضيًا وأخلاقيًا صوب الاحتراف وتنمية مواهبهم وقدراتهم وجمعهم على حب الوطن والانحياز الى
+                    جانب الخير.
+
+                    نؤمن بأهمية العمل الشبابي في ظل ما عانيناه ونعانيه من إجراءات الاحتلال التي تخنق السكان وتستولي على
+                    أراضيهم، كما سبق أن استولت سلطاته على مطارنا وأراضينا الزراعية، وتستمر في التضييق علينا في البناء
+                    والحركة، وتمنع اي توسع وقامت بهدم البيوت وضيقت عيش الناس.
+
+                    لقد وضعنا اللبنة الأولى في هذه المؤسسة، وأحلامنا بحجم السماء للقادم، يملؤنا اليقين بدعمكم والتفافكم
+                    وتصويبكم لمسيرتها، على عهد أن يكون النادي علامة فارقة في تاريخ قريتنا الحبيبة، ومصنع بناء للإنسان
+                    الفلسطيني كما يجب أن يكون.</p>
+                <!-- Add more paragraphs or content as needed -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this new section for the Services slideshow -->
+    <div id="services">
+        <div class="slideshow-content">
+            <button id="close-services" class="close-btn">&times;</button>
+            <h2>خدماتنا</h2>
+            <div class="services-content">
+                <h3>ما نقدمه</h3>
+                <ul>
+                    <li>تدريب كرة القدم للأطفال والشباب</li>
+                    <li>تنظيم البطولات المحلية</li>
+                    <li>تأجير الملعب</li>
+                    <li>برامج اللياقة البدنية</li>
+                    <!-- Add more services as needed -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <section id="home">
-            <h1>مرحباً بكم في موقع نادي قلنديا الرسمي</h1>
+        <h1>مرحباً بكم في موقع نادي قلنديا الرسمي</h1>
     </section>
     <section id="schedule" style="text-align: center;">
         <h2>الجدول الأسبوعي لحجز ملعب كرة القدم</h2>
@@ -56,9 +107,8 @@
                 <label for="family-name">اسم العائلة:</label>
                 <input type="text" id="family-name" name="family-name" required autocomplete="family-name">
                 <label for="phone">رقم الهاتف:</label>
-                <input type="tel" id="phone" name="phone" required autocomplete="tel" 
-                       pattern="^(05[0-9]{8}|9[0-9]{8})$" minlength="9" maxlength="10" 
-                       title="الرجاء إدخال رقم هاتف فلسطيني أو إسرائيلي صحيح">
+                <input type="tel" id="phone" name="phone" required autocomplete="tel" pattern="^(05[0-9]{8}|9[0-9]{8})$"
+                    minlength="9" maxlength="10" title="الرجاء إدخال رقم هاتف فلسطيني أو إسرائيلي صحيح">
                 <label for="day">اليوم:</label>
                 <input type="date" id="reservation-date" required>
                 <section id="time-selection">
@@ -72,7 +122,7 @@
             <p id="reservation-message"></p>
         </div>
     </section>
-    
+
     <section id="moderator" style="display: none;">
         <h2>تسجيل دخول المشرف</h2>
         <form id="moderator-login-form">
@@ -84,7 +134,7 @@
         </form>
         <p id="login-message"></p>
     </section>
-    
+
     <script src="nade.js"></script>
 </body>
 
