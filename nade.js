@@ -677,58 +677,70 @@ function showAcademyMembersLink() {
 }
 
 function signOut() {
-  localStorage.removeItem('isLoggedIn'); // Clear login status
-  localStorage.removeItem('approvedReservations'); // Clear approved reservations
-  localStorage.removeItem('reservationData'); // Clear reservation data
-  localStorage.removeItem('members'); // Clear members data
-  localStorage.removeItem('moderators'); // Clear moderators data
+  console.log('Signing out...'); // Debugging log
+  localStorage.clear(); // Clear all localStorage items
   const academyMembersLink = document.getElementById('academy-members-link');
   if (academyMembersLink) {
-    academyMembersLink.style.display = 'none'; // Hide the link
+    academyMembersLink.style.display = 'none';
   }
   // Remove sign-out button from the navbar
-  const signOutButton = document.querySelector('.navbar-links a[href="#"]');
+  const signOutButton = document.querySelector('.sign-out-button');
   if (signOutButton) {
-    signOutButton.remove(); // Remove the button from the navbar
+    signOutButton.remove();
   }
-  // Auto refresh the page
-  setTimeout(function() {
-    location.reload();
-  }, 1000);
+  // Reload the page
+  window.location.reload();
 }
 
-// Check login status on page load and add sign-out button if admin or moderator are signed in
-window.addEventListener('load', function() {
+// Check login status and manage sign-out button
+function manageSignOutButton() {
   const loginStatus = localStorage.getItem('isLoggedIn');
+  const navbarLinks = document.querySelector('.navbar-links');
+  
+  if (!navbarLinks) {
+    console.error('Navbar links container not found');
+    return;
+  }
+
+  let signOutButton = document.querySelector('.sign-out-button');
+
   if (loginStatus) {
-    showAcademyMembersLink(); // Show the link if logged in
-    // Add sign-out button functionality to the navbar if not already added
-    const signOutButton = document.querySelector('.navbar-links a[href="#"]');
+    showAcademyMembersLink();
+    
     if (!signOutButton) {
-      const newSignOutButton = document.createElement('a');
-      newSignOutButton.textContent = 'Sign Out';
-      newSignOutButton.href = '#';
-      newSignOutButton.className = 'sign-out-button'; // Add a different CSS class to the sign-out button
-      newSignOutButton.style.background = '#ff4d4d'; // Background color
-      newSignOutButton.style.color = '#fff'; // Text color
-      newSignOutButton.style.padding = '2px 5px'; // Further reduced padding for an even smaller button
-      newSignOutButton.style.borderRadius = '5px'; // Border radius
-      newSignOutButton.style.cursor = 'pointer'; // Cursor style
-      newSignOutButton.style.transition = 'background 0.3s ease-in-out'; // Transition effect
-      newSignOutButton.addEventListener('click', function(e) {
+      signOutButton = document.createElement('a');
+      signOutButton.textContent = 'Sign Out';
+      signOutButton.href = '#';
+      signOutButton.className = 'sign-out-button';
+      signOutButton.style.background = '#ff4d4d';
+      signOutButton.style.color = '#fff';
+      signOutButton.style.padding = '2px 5px';
+      signOutButton.style.borderRadius = '5px';
+      signOutButton.style.cursor = 'pointer';
+      signOutButton.style.transition = 'background 0.3s ease-in-out';
+      
+      signOutButton.addEventListener('click', function(e) {
         e.preventDefault();
         signOut();
       });
-      newSignOutButton.addEventListener('mouseover', function() {
-        newSignOutButton.style.background = '#ff8080'; // Hover background color
+      
+      signOutButton.addEventListener('mouseover', function() {
+        this.style.background = '#ff8080';
       });
-      newSignOutButton.addEventListener('mouseout', function() {
-        newSignOutButton.style.background = '#ff4d4d'; // Default background color
+      
+      signOutButton.addEventListener('mouseout', function() {
+        this.style.background = '#ff4d4d';
       });
-      document.querySelector('.navbar-links').appendChild(newSignOutButton); // Add the button to the navbar
+      
+      navbarLinks.appendChild(signOutButton);
     }
+  } else if (signOutButton) {
+    signOutButton.remove();
   }
-});
+}
+
+// Run on DOMContentLoaded and after any login/logout operations
+document.addEventListener('DOMContentLoaded', manageSignOutButton);
 
 document.getElementById('phone').addEventListener('input', function(e) {
   var phone = e.target.value.replace(/\D/g, '');
