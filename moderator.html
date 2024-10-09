@@ -307,13 +307,13 @@
             // First, add highlighted rows
             highlightedRows.forEach(index => {
                 const reservation = sortedReservations[index];
-                addReservationRow(reservation, true);
+                addReservationRow(reservation, true, index);
             });
 
             // Then, add non-highlighted rows
             sortedReservations.forEach((reservation, index) => {
                 if (!highlightedRows.includes(index)) {
-                    addReservationRow(reservation, false);
+                    addReservationRow(reservation, false, index);
                 }
             });
 
@@ -321,7 +321,7 @@
             document.getElementById('totalAcceptedNew').textContent = totalAcceptedNew.toFixed(2);
             document.getElementById('totalRejectedNew').textContent = totalRejectedNew.toFixed(2);
 
-            function addReservationRow(reservation, isHighlighted) {
+            function addReservationRow(reservation, isHighlighted, index) {
                 const row = document.createElement('tr');
                 if (isHighlighted) {
                     row.classList.add('highlight');
