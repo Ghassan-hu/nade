@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإدارة - الموافقة على الحجوزات</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="icon" href="./images/Soccer-Player--Streamline-Ultimate.png">
+    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;400;700&display=swap" rel="stylesheet">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="css/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="home.css" rel="stylesheet">
+       <!-- Bootstrap CSS -->
+       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+       <!-- Font Awesome -->
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+   
+
+   
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+
+    <link href="css/main.css" rel="stylesheet">
+
+    <style>
+        body {
+            padding-top: 56px; /* Adjust this to match the height of the navbar */
+        }
+        .navbar {
+            background-color: #f8f9fa; /* Change to your preferred color */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .navbar-toggler {
+            background-color: green; /* Change border color to green */
+        }
+        .navbar-toggler:hover {
+    background-color: rgb(13, 13, 12); /* Change background color on hover */
+          }
+
+.navbar-toggler:hover .navbar-toggler-icon {
+    background-color: rgb(17, 17, 16); /* Change icon color on hover */
+}
+       
+        .navbar-nav {
+            flex-direction: column; /* Stack items vertically in mobile view */
+            align-items: center; /* Align items to the start */
+        }
+        .btn-logout {
+            width: auto; /* Make the button width auto to fit content */
+            margin: 10px; /* Add some margin for spacing */
+        }
+
+        .input-fieldImg i {
+  margin-right: 10px;
+  font-size: 1.2em;
+  color: #555;
+}
+
+.input-fieldImg input[type="file"] {
+  border: none;
+  outline: none;
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+  display: none; /* Hide the default file input */
+}
+
+
+.input-fieldImg {
+ 
+  align-items: center;
+  
+  max-width: 100%; /* Adjust as needed */
+  transition: all 0.3s ease;
+  position: relative;
+
+  display: flex;
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  width: 100%;
+}
+
+
+
+.input-fieldImg .placeholder {
+  display: block;
+  flex-grow: 1;
+  color: #999;
+  cursor: pointer;
+  white-space: nowrap; /* Prevent wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Show ellipsis for long text */
+}
+
+@media (max-width: 375px) {
+  .input-fieldImg {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 8px;
+  }
+
+  .input-fieldImg i {
+      margin-bottom: 5px;
+  }
+}
+
+/* Styling to show the file name when selected */
+#upload-image:valid + .placeholder::before {
+  content: attr(data-file-name);
+  color: #333;
+}
+
+
+.upload-label {
+  cursor: pointer;
+  color: #333;
+  margin-left: 10px;
+}
+
+#file-name {
+  margin-left: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+
+  
+
+
+    </style>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+       
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+            <div class="container-fluid">
+                <span class="navbar-brand" id="WelcomeMessage" style="margin-left: 20px;">Welcome Admin</span>
+        
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+        
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="navbar-nav ml-auto topnav" style="margin-right: 20px;">
+                        <button class="btn btn-outline-danger btn-logout" onclick="logoutUser()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+          
+          
+
+           <div style="height:60px ;">
+
+           </div>
+        <section id="section_3" style="background-color: #f7f7f7; box-shadow: 0 4px 20px rgba(238, 80, 7, 0.3); border-radius: 8px; padding: 20px; margin: 20px 20px;">
+            <!-- <div class="container"> -->
+            
+                <div class="row">
+                
+                    <div class="col-md-5">
+                        <div class="col-12 text-center mb-4">
+                            <a class="btn custom-btn d-block mx-auto" style="width: 100%; max-width: 260px; height: auto; font-size: 1.5rem;">
+                                Approved Bookings
+                            </a>
+                        </div>
+                        <div class="table-responsive ">
+                            <table class="schedule-table table-hover table table-dark" id="approvedTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col">Contact</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-center">
+                        <div style="border-left: 2px solid #ccc; height: 100%;"></div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="col-12 text-center mb-4">
+                            <a class="btn custom-btn d-block mx-auto" style="width: 100%; max-width: 250px; height: auto; font-size: 1.5rem;">
+                                Declined Bookings
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="schedule-table table table-dark" id="DeclinedTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col">Contact</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            <!-- </div> -->
+        </section>
+
+        <section id="section_3" style="background-color: #f7f7f7; box-shadow: 0 4px 20px rgba(238, 80, 7, 0.3); border-radius: 8px; padding: 20px; margin: 20px 20px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <div class="text-center mb-4">
+                            <a class="btn custom-btn d-block mx-auto" style="width: 100%; max-width: 350px; height: auto; font-size: 1.5rem;">
+                                Booking Requests
+                            </a>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="searchInput" placeholder="Search by Date, Name, Time, or Contact" onkeyup="filterTable()">
+                        </div>
+                        <div class="table-responsive">
+                            <table class="schedule-table table table-dark" id="AllBookingsTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col">Contact</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Sample Data -->
+                                   
+                                    <!-- Add more records as needed -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       
+        <section id="section_3" style="background-color: #f7f7f7; box-shadow: 0 4px 20px rgba(238, 80, 7, 0.3); border-radius: 8px; padding: 20px; margin: 20px 20px;">
+            <div class="container">
+                <div class="row">
+                    <!-- Table for Academy Members -->
+                    <div class="col-md-5">
+                        <div class="col-12 text-center mb-4">
+                            <a class="btn custom-btn d-block mx-auto" style="width: 100%; max-width: 260px; height: auto; font-size: 1.5rem;">
+                                Academy Members
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="schedule-table table table-dark" id="membersTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="display: none;">ID</th>
+                                        <th scope="col">Profile</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Position</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        
+                    <div class="col-md-2 d-flex align-items-center justify-content-center">
+                        <div style="border-left: 2px solid #ccc; height: 100%;"></div>
+                    </div>
+        
+                    <!-- Form to Add/Update Academy Member -->
+                    <div class="col-md-5">
+                        <div class="col-12 text-center mb-4">
+                            <a class="btn custom-btn d-block mx-auto" style="width: 100%; max-width: 400px; height: auto; font-size: 1.5rem;">
+                                Add/Update Academy Member
+                            </a>
+                        </div>
+                        <form id="memberForm" class="custom-form ticket-form mb-5 mb-lg-0">
+                            <div class="row">
+                                <input type="hidden" id="memberRecordId" value="">
+                                <label for="profileImage">Profile Image</label>
+                                <div class="input-fieldImg">
+                                    <i class="fas fa-image"></i>
+                                    <input type="file" id="profile-image" style="display: none;" />
+                                    <label for="profile-image" class="upload-label">Upload Image</label>
+                                    <span id="file-name">No file chosen</span>
+                                </div>
+                            </div>
+                            <div >
+                                <label for="MemberName">Name</label>
+                                <input type="text" name="Name" id="MemberName" class="form-control" placeholder="Name" required>
+                            </div>
+                            <div >
+                                <label for="MemberAge">Age</label>
+                                <input type="text" name="Age" id="MemberAge" class="form-control" placeholder="Age" required>
+                            </div>
+                            <div >
+                                <label for="MemberPosition">Position</label>
+                                <input type="text" name="Age" id="MemberPosition" class="form-control" placeholder="Position" required>
+                            </div>
+                            <button type="button" class="btn btn-info" id="addMemberButton" style="width: 80px;" onclick="addMember()">Add</button>
+                            <button type="button" class="btn btn-success" id="updateMemberButton" style="display:none;width: 80px;" onclick="updateMember()">Update</button>
+                            <button type="button" class="btn btn-danger" id="deleteMemberButton" style="display:none;width: 80px;" onclick="deleteMember()">Delete</button>
+                            <button type="button" class="btn btn-warning" id="cancelMemberButton" style="display:none;width: 80px;" onclick="cancelMemberbtn()">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <script>
+
+document.getElementById('profile-image').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            // Store the base64 string for sending to the API
+            window.profileImageBase64 = e.target.result.split(',')[1]; // Remove the data URL part
+            document.getElementById('file-name').innerText = file.name; // Display file name
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+
+
+             async function fetchMembers() {
+    const response = await fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/academies/');
+    const users = await response.json();
+
+    const membertableBody = document.getElementById('membersTable').querySelector('tbody');
+    membertableBody.innerHTML = ''; // Clear the existing table
+
+    users.forEach(user => {
+        const row = document.createElement('tr');
+        row.onclick = () => populateMemberFormDet(user);
+        row.innerHTML = `
+            <td style="display: none;">${user._id}</td>
+            <td><img src="data:image/png;base64,${user.profileImage}" alt="Profile Image" style="width:50px; height:50px;"/></td>
+            <td>${user.name}</td>
+            <td>${user.age}</td>
+            <td>${user.position}</td>
+        `;
+        membertableBody.appendChild(row);
+    });
+}
+
+
+
+
+            
+        
+            function populateMemberFormDet(user) {
+
+
+    document.getElementById('MemberName').value = user.name;
+    document.getElementById('MemberAge').value = user.age;
+    document.getElementById('MemberPosition').value = user.position;
+    document.getElementById('MemberPosition').value = user.position;
+    document.getElementById('memberRecordId').value = user._id;
+    
+    
+    window.profileImageBase64 = user.profileImage; // Store the base64 string
+
+    // Set the profile image in the input display (optional)
+    const profileImageElement = document.getElementById('profile-image');
+    profileImageElement.value = ''; // Reset file input
+    document.getElementById('file-name').innerText = 'Image uploaded'; // Indicate an image is already uploaded
+
+    // Show the Update and Delete buttons
+    document.getElementById('addMemberButton').style.display = 'none';
+    document.getElementById('updateMemberButton').style.display = 'inline-block';
+    document.getElementById('deleteMemberButton').style.display = 'inline-block';
+    document.getElementById('cancelMemberButton').style.display = 'inline-block';
+}
+
+           async function addMember() {
+        
+            const MemberName = document.getElementById('MemberName').value.trim();
+    const MemberAge = document.getElementById('MemberAge').value.trim();
+    const MemberPosition = document.getElementById('MemberPosition').value.trim();
+
+    // Check for empty required fields
+    if (!MemberName || !MemberAge || !MemberPosition) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Incomplete Form',
+            text: 'Please fill in all required fields.',
+        });
+        return; // Exit the function if validation fails
+    }
+
+    const response = await fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/academies/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            name: MemberName,
+            age: MemberAge,
+            position: MemberPosition,
+            profileImage: window.profileImageBase64 // Send the base64 string
+        })
+    });
+
+        if (response.ok) {
+            
+            Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Member added successfully!',
+        showConfirmButton: false, // Hide the confirm button
+        timer: 1500 // Show for 1.5 seconds
+    }).then(() => {
+        clearMembersForm();
+        fetchMembers(); // Refresh the table
+    });
+            
+        } else {
+            
+            Swal.fire({
+						icon: 'error',
+						title: 'Oops!',
+						text: 'Failed to add Member!',
+						showConfirmButton: false, // Hide the confirm button
+                        timer: 1500
+					});
+        }
+            }
+        
+            async function updateMember() {
+   
+    const memberId = document.getElementById('memberRecordId').value;
+    const MemberName = document.getElementById('MemberName').value;
+    const MemberAge = document.getElementById('MemberAge').value;
+    const MemberPosition = document.getElementById('MemberPosition').value;
+
+    // Prepare the data to send
+    const updatedData = {
+        id: memberId,
+        name: MemberName,
+        age: MemberAge,
+        position: MemberPosition,
+        profileImage: window.profileImageBase64 // Use the stored base64 image
+    };
+
+    const response = await fetch(`http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/academies/`, {
+        method: 'PUT', // Use PUT for updating
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData)
+    });
+
+    if (response.ok) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Member updated successfully!',
+            showConfirmButton: false,
+            timer: 1500
+        }).then(() => {
+            clearMembersForm(); // Clear the form after updating
+            fetchMembers(); // Refresh the table to show updated data
+        });
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops!',
+            text: 'Failed to update member!',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
+}
+
+async function deleteMember() {
+
+    const memberId = document.getElementById('memberRecordId').value;
+    const MemberName = document.getElementById('MemberName').value;
+    const MemberAge = document.getElementById('MemberAge').value;
+    const MemberPosition = document.getElementById('MemberPosition').value;
+
+    // Prepare the data to send
+    const DeletedData = {
+        id: memberId
+    };
+
+
+    const confirmation = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (confirmation.isConfirmed) {
+        const response = await fetch(`http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/academies/`, {
+            method: 'DELETE', // Use DELETE for deleting
+            headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(DeletedData)
+        });
+
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: 'Member has been deleted.',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                fetchMembers(); // Refresh the table to show updated data
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops!',
+                text: 'Failed to delete member!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    }
+}
+
+
+            function cancelMemberbtn() {
+                // cancel logic
+                clearMembersForm();
+            }
+        
+            function clearMembersForm() {
+                document.getElementById('memberForm').reset();
+                document.getElementById('profile-image').value = ''; // Reset file input
+                document.getElementById('file-name').innerText = 'No file chosen'; // Reset file name display
+
+                document.getElementById('addMemberButton').style.display = 'inline-block';
+                document.getElementById('updateMemberButton').style.display = 'none';
+                document.getElementById('deleteMemberButton').style.display = 'none';
+                document.getElementById('cancelMemberButton').style.display = 'none';
+            }
+        </script>
+        
+        
+
+        <section id="section_3" style="background-color: #f7f7f7; box-shadow: 0 4px 20px rgba(238, 80, 7, 0.3); border-radius: 8px; padding: 20px; margin: 20px 20px;">
+            <div class="container">
+                <div class="row">
+                    <!-- Table for Users -->
+                    <div class="col-md-5">
+                        <div class="col-12 text-center mb-4">
+                            <a class="btn custom-btn d-block mx-auto" style="width: 100%; max-width: 260px; height: auto; font-size: 1.5rem;">
+                                Users
+                            </a>
+                        </div>
+                        <div class="table-responsive " style="max-height: 400px; overflow-y: auto;">
+                            <style>
+                                /* Custom Scrollbar Styles */
+                                .table-responsive::-webkit-scrollbar {
+                                    width: 5px; /* Width of the scrollbar */
+                                }
+        
+                                .table-responsive::-webkit-scrollbar-track {
+                                    background: #f1f1f1; /* Background of the scrollbar track */
+                                    border-radius: 5px; /* Rounded corners */
+                                }
+        
+                                .table-responsive::-webkit-scrollbar-thumb {
+                                    background: #EE5007; /* Color of the scrollbar handle */
+                                    border-radius: 5px; /* Rounded corners */
+                                }
+        
+                                .table-responsive::-webkit-scrollbar-thumb:hover {
+                                    background: #EE5007; /* Darker color on hover */
+                                }
+        
+                            </style>
+                            <table class="schedule-table table table-dark" id="usersTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="display: none;">ID</th>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Role</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- User data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        
+                    <div class="col-md-2 d-flex align-items-center justify-content-center">
+                        <div style="border-left: 2px solid #ccc; height: 100%;"></div>
+                    </div>
+        
+                    <!-- Form to Add/Update User -->
+                    <div class="col-md-5">
+                        <div class="col-12 text-center mb-4">
+                            <a class="btn custom-btn d-block mx-auto" style="width: 100%; max-width: 400px; height: auto; font-size: 1.5rem;">
+                                Add/Update User
+                            </a>
+                        </div>
+                        <form id="userForm" class="custom-form ticket-form mb-5 mb-lg-0">
+                         
+                            <div class="row">
+                                <input type="hidden" id="userId" value="">
+                                <div class="col-lg-10 col-md-6 col-12">
+                                    <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+                                </div>
+                              
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-10 col-md-6 col-12">
+                                    <label for="password">Password</label>
+                                    <input type="text" class="form-control" id="password" placeholder="Enter password" required>
+                                </div>
+                              
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-lg-10 col-md-6 col-12">
+                                    <label for="role">Role</label>
+                                    <select class="form-control" id="role" style="height: 50px;" required>
+                                    
+                                        <option value="Academy Member">Academy Member</option>
+                                        <option value="Moderator">Moderator</option>
+                                        <option value="Admin">Admin</option>
+    
+                                    </select>
+                                </div>
+                              
+                            </div>
+
+                            
+                            <button type="button" class="btn btn-info" id="useraddButton" style="width: 80px;" onclick="addUser()">Add</button>
+                            <button type="button" class="btn btn-success" id="userupdateButton" style="display:none;width: 80px;" onclick="updateUser()">Update</button>
+                            <button type="button" class="btn btn-danger" id="userdeleteButton" style="display:none;width: 80px;" onclick="deleteUser()">Delete</button>
+                            <button type="button" class="btn btn-warning" id="usercancelButton" style="display:none;width: 80px;" onclick="clearForm()">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <script>
+            async function fetchUsers() {
+                const response = await fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/users/AllUsers');
+                const users = await response.json();
+        
+                const tableBody = document.getElementById('usersTable').querySelector('tbody');
+                tableBody.innerHTML = ''; // Clear the existing table
+        
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.onclick = () => populateUserForm(user);
+                    row.innerHTML = `
+                     <td style="display: none;" >${user._id}</td>     
+                    <td>${user.username}</td>
+                    <td>${user.role}</td>
+                       
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        
+            function populateUserForm(user) {
+                document.getElementById('username').value = user.username;
+                document.getElementById('role').value = user.role;
+                document.getElementById('userId').value = user._id;
+                
+        
+                // Show the Update and Delete buttons
+                document.getElementById('useraddButton').style.display = 'none';
+                document.getElementById('userupdateButton').style.display = 'inline-block';
+                document.getElementById('userdeleteButton').style.display = 'inline-block';
+                document.getElementById('usercancelButton').style.display = 'inline-block';
+            }
+        
+            async function addUser() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const role = document.getElementById('role').value.trim();
+
+    // Check for empty required fields
+    if (!username || !password || !role) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Incomplete Form',
+            text: 'Please fill in all required fields.',
+        });
+        return; // Exit the function if validation fails
+    }
+
+        const response = await fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/users/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password, role })
+        });
+
+        if (response.ok) {
+            
+            Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'User added successfully!',
+        showConfirmButton: false, // Hide the confirm button
+        timer: 1500 // Show for 1.5 seconds
+    }).then(() => {
+        clearForm();
+        fetchUsers(); // Refresh the table
+    });
+            
+        } else {
+            
+            Swal.fire({
+						icon: 'error',
+						title: 'Oops!',
+						text: 'Failed to add user!',
+						showConfirmButton: false, // Hide the confirm button
+                        timer: 1500
+					});
+        }
+    }
+
+    async function updateUser() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const role = document.getElementById('role').value;
+        const userId = document.getElementById('userId').value;
+        console.log("uerID")
+        console.log(userId)
+        console.log(localStorage.getItem('token'))
+        const response = await fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/users/profile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                 'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ userId, username, password, role })
+        });
+
+        
+        if (response.ok) {
+         
+            Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'User updated successfully!',
+        showConfirmButton: false, // Hide the confirm button
+        timer: 1500 // Show for 1.5 seconds
+    }).then(() => {
+        clearForm();
+        fetchUsers(); // Refresh the table
+    });
+        } else {
+            Swal.fire({
+						icon: 'error',
+						title: 'Oops!',
+						text: 'Failed to update user!',
+						showConfirmButton: false, // Hide the confirm button
+                        timer: 1500
+					});
+        }
+    }
+         
+
+            async function deleteUser() {
+        
+        const currentUserId = localStorage.getItem('userID'); // Get the current user ID from local storage
+        const userId = document.getElementById('userId').value;
+        console.log("UserID")
+        console.log(currentUserId)
+        const response = await fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/users/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({ currentUserId, userId })
+        });
+
+        if (response.ok) {
+            Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'User deleted successfully!',
+        showConfirmButton: false, // Hide the confirm button
+        timer: 1500 // Show for 1.5 seconds
+    }).then(() => {
+        clearForm();
+        fetchUsers(); // Refresh the table
+    });
+        } else {
+            Swal.fire({
+						icon: 'error',
+						title: 'Oops!',
+						text: 'Failed to delete user!',
+						showConfirmButton: false, // Hide the confirm button
+                        timer: 1500
+					});
+        }
+    }
+        
+            function clearForm() {
+                document.getElementById('userForm').reset();
+                document.getElementById('useraddButton').style.display = 'inline-block';
+                document.getElementById('userupdateButton').style.display = 'none';
+                document.getElementById('userdeleteButton').style.display = 'none';
+                document.getElementById('usercancelButton').style.display = 'none';
+            }
+        
+        </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const approvedTableBody = document.querySelector('#approvedTable tbody');
+
+        // Function to fetch approved bookings
+        const fetchApprovedBookings = async () => {
+            try {
+                const response = await fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/bookings/approved');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const bookings = await response.json();
+                populateApprovedTable(bookings);
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        };
+
+        // Function to populate the table with approved bookings
+        const populateApprovedTable = (bookings) => {
+            approvedTableBody.innerHTML = ''; // Clear any existing rows
+            bookings.forEach(booking => {
+                const row = document.createElement('tr');
+                const fullName = `${booking.Firstname} ${booking.lastName}`; // Combine Firstname and Lastname
+                row.innerHTML = `
+                    <td>${new Date(booking.todayDate).toLocaleDateString()}</td> <!-- Format date -->
+                    <td>${fullName}</td>
+                    <td>${booking.startTime} - ${booking.endTime}</td>
+                    <td>${booking.phone}</td>
+                `;
+                approvedTableBody.appendChild(row);
+            });
+        };
+
+        // Fetch bookings on page load
+        fetchApprovedBookings();
+
+        // Refresh bookings every 5 minutes (300000 milliseconds)
+        setInterval(fetchApprovedBookings, 300000);
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const declinedTableBody = document.querySelector('#DeclinedTable tbody');
+
+        // Function to fetch declined bookings
+        const fetchDeclinedBookings = async () => {
+            try {
+                const response = await fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/bookings/cancelled');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const bookings = await response.json();
+                populateDeclinedTable(bookings);
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        };
+
+        // Function to populate the table with approved bookings
+        const populateDeclinedTable = (bookings) => {
+            declinedTableBody.innerHTML = ''; // Clear any existing rows
+            bookings.forEach(booking => {
+                const row = document.createElement('tr');
+                const fullName = `${booking.Firstname} ${booking.lastName}`; // Combine Firstname and Lastname
+                row.innerHTML = `
+                    <td>${new Date(booking.todayDate).toLocaleDateString()}</td> <!-- Format date -->
+                    <td>${fullName}</td>
+                    <td>${booking.startTime} - ${booking.endTime}</td>
+                    <td>${booking.phone}</td>
+                `;
+                declinedTableBody.appendChild(row);
+            });
+        };
+
+        // Fetch bookings on page load
+        fetchDeclinedBookings();
+
+        // Refresh bookings every 5 minutes (300000 milliseconds)
+        setInterval(fetchDeclinedBookings, 300000);
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const allBookingsTableBody = document.querySelector('#AllBookingsTable tbody');
+
+        // Function to fetch all bookings
+        const fetchallBookings = async () => {
+            try {
+                const response = await fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/bookings');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const bookings = await response.json();
+                populateallBookingsTable(bookings);
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        };
+
+        // Function to populate the table with bookings
+        const populateallBookingsTable = (bookings) => {
+            allBookingsTableBody.innerHTML = ''; // Clear any existing rows
+            bookings.forEach(booking => {
+                const row = document.createElement('tr');
+                const fullName = `${booking.Firstname} ${booking.lastName}`; // Combine Firstname and Lastname
+                const status = booking.status; // Assuming 'status' is a field in your booking object
+
+                row.innerHTML = `
+                    <td>${new Date(booking.todayDate).toLocaleDateString()}</td> <!-- Format date -->
+                    <td>${fullName}</td>
+                    <td>${booking.startTime} - ${booking.endTime}</td>
+                    <td>${booking.phone}</td>
+                    <td style="white-space: nowrap;">
+                        ${status.toLowerCase() === 'pending' ? `
+                            <button class="btn btn-success btn-sm approve-btn" data-id="${booking._id}" style="width: 80px; margin-right: 5px;">Approve</button>
+                            <button class="btn btn-danger btn-sm decline-btn" data-id="${booking._id}" style="width: 80px;">Decline</button>
+                        ` : status === 'Approved' ? 'Approved' : 'Declined'}
+                    </td>
+                `;
+
+                allBookingsTableBody.appendChild(row);
+            });
+
+            // Attach click event listeners to approve and decline buttons
+            attachButtonListeners();
+        };
+
+         // Function to attach event listeners to buttons
+         const attachButtonListeners = () => {
+            const approveButtons = document.querySelectorAll('.approve-btn');
+            const declineButtons = document.querySelectorAll('.decline-btn');
+
+            approveButtons.forEach(button => {
+                button.addEventListener('click', () => handleApprove(button.dataset.id));
+            });
+
+            declineButtons.forEach(button => {
+                button.addEventListener('click', () => handleDecline(button.dataset.id));
+            });
+        };
+
+        // Function to handle approval of a booking
+        const handleApprove = async (id) => {
+            try {
+                const response = await fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/bookings/approve', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id }), // Send the booking ID in the request body
+                });
+
+                if (response.ok) {
+                    Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Booking approved successfully!',
+        showConfirmButton: false, // Hide the confirm button
+        timer: 1500 // Show for 1.5 seconds
+    }).then(() => {
+        fetchallBookings();
+        fetchApprovedBookings();
+
+    });
+
+                } else {
+                    Swal.fire({
+						icon: 'error',
+						title: 'Oops!',
+						text: 'Failed to approve booking!',
+						showConfirmButton: false, // Hide the confirm button
+                        timer: 1500
+					});
+
+                }
+            } catch (error) {
+                console.error('Error approving booking:', error);
+            }
+        };
+
+        // Function to handle declining a booking (you can implement this if needed)
+        const handleDecline = async (id) => {
+            try {
+                const response = await fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/bookings/cancel', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id }), // Send the booking ID in the request body
+                });
+
+                if (response.ok) {
+                    
+                    Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Booking Declined successfully!',
+        showConfirmButton: false, // Hide the confirm button
+        timer: 1500 // Show for 1.5 seconds
+    }).then(() => {
+        fetchallBookings();
+        fetchDeclinedBookings();
+    });
+                } else {
+                    
+                    Swal.fire({
+						icon: 'error',
+						title: 'Oops!',
+						text: 'Failed to decline booking!',
+						showConfirmButton: false, // Hide the confirm button
+                        timer: 1500
+					});
+                }
+            } catch (error) {
+                console.error('Error declining booking:', error);
+            }
+        };
+
+        // Fetch bookings on page load
+        fetchallBookings();
+
+        // Refresh bookings every 5 minutes (300000 milliseconds)
+        setInterval(fetchallBookings, 300000);
+    });
+
+// filter booking table
+function filterTable() {
+    const searchInput = document.getElementById("searchInput").value.toLowerCase();
+    const table = document.getElementById("AllBookingsTable");
+    const rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        let rowText = "";
+        
+        for (let j = 0; j < cells.length; j++) {
+            rowText += cells[j].textContent.toLowerCase() + " ";
+        }
+
+        // Check if the row contains the search input
+        rows[i].style.display = rowText.includes(searchInput) || searchInput === "" ? "" : "none";
+    }
+}
+
+
+
+</script>
+
+
+
+    <!-- jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Get username from localStorage and update the welcome message
+        window.onload = function() {
+
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html'; // Redirect to login page
+            }
+
+            const username = localStorage.getItem('user'); // Retrieve username from localStorage
+            const welcomeMessage = document.getElementById('WelcomeMessage');
+
+            if (username) {
+                welcomeMessage.textContent = `Welcome ${username}`; // Update the message with the username
+            }
+
+            fetchUsers();
+            fetchMembers(); 
+
+        };
+      
+           
+      
+
+        function logoutUser() {
+
+            localStorage.clear(); // Clear all localStorage items
+            Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Logout successful!',
+        showConfirmButton: false, // Hide the confirm button
+        timer: 1500 // Show for 1.5 seconds
+    }).then(() => {
+        // Navigate based on user role after the message is dismissed
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = 'index.html'; // Redirect to login page
+    });
+            
+        }
+
+    </script>
+
+</body>
+
+</html>
