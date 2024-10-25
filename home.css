@@ -1,0 +1,75 @@
+
+/* Styling for the container */
+.abcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+}
+
+/* 3D effect for the content box */
+.abcontent {
+  background-color: white;
+  padding: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1), -5px -5px 15px rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  max-width: 900px;
+  border-radius: 10px;
+}
+
+/* Image section styling */
+.abimage-section {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.abimage-section img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Text section styling */
+.abtext-section {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.abtext-section h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.abtext-section p {
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .abcontent {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .abimage-section {
+      margin-right: 0;
+      margin-bottom: 20px;
+  }
+
+  .abtext-section h2 {
+      font-size: 1.2em;
+  }
+
+  .abtext-section p {
+      font-size: 0.9em;
+  }
+}
+
+
