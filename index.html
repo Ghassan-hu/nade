@@ -79,6 +79,10 @@
                         <li class="nav-item">
                             <a class="nav-link click-scroll" href="#section_5">معلومات عنا</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="AcademyMembers.html">اعضاء الأكاديمية</a>
+                        </li>
                     </ul>
 
                     <a href="login.html" class="btn custom-btn d-lg-block d-none">تسجيل الدخول / الاشتراك</a>
@@ -272,22 +276,49 @@
                                             placeholder="اسم العائلة" required>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="phoneType">نوع رقم الهاتف:</label>
+                                    <select class="form-control" id="phoneType" name="phoneType">
+                                        <option value="israel">إسرائيلي</option>
+                                        <option value="palestine">فلسطيني</option>
+                                    </select>
+                                </div>
                                 <input type="tel" class="form-control" name="ticket-form-phone" id="phone"
-                                    placeholder="رقم الهاتف 0X-123-4567" pattern="(05[0-4]|05[6-9]|0[2-9])-[0-9]{7}" required>
+                                    placeholder="رقم الهاتف" required>
+                                <small id="phoneHelp" class="form-text text-muted">
+                                </small>
                                 <div class="row mb-3">
-                                    <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="col-lg-4 col-md-4 col-12">
                                         <label for="todayDate">تاريخ الحجز</label>
                                         <input type="date" name="todayDate" id="todayDate" class="form-control"
                                             required>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="col-lg-4 col-md-4 col-12">
                                         <label for="startTime">وقت البدء</label>
-                                        <input type="time" name="startTime" id="startTime" class="form-control"
-                                            required>
+                                        <select name="startTime" id="startTime" class="form-control" required>
+                                            <option value="">اختر وقت البدء</option>
+                                            <!-- Options will be populated by JavaScript -->
+                                        </select>
                                     </div>
+                                    <div class="col-lg-4 col-md-4 col-12">
+                                        <label for="duration">مدة الحجز (بالساعات)</label>
+                                        <select name="duration" id="duration" class="form-control" required>
+                                            <option value="1">1 ساعة</option>
+                                            <option value="2">2 ساعة</option>
+                                            <option value="3">3 ساعات</option>
+                                            <option value="4">4 ساعات</option>
+                                            <option value="5">5 ساعات</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
                                     <div class="col-lg-6 col-md-6 col-12">
                                         <label for="endTime">وقت الانتهاء</label>
-                                        <input type="time" name="endTime" id="endTime" class="form-control" required>
+                                        <input type="text" name="endTime" id="endTime" class="form-control" readonly>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <label for="reservationCost">تكلفة الحجز</label>
+                                        <input type="text" name="reservationCost" id="reservationCost" class="form-control" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-10 col-8 mx-auto">
@@ -384,12 +415,14 @@
                         <div class="tab-pane active fade show" id="nav-ContactMap" role="tabpanel"
                             aria-labelledby="nav-ContactMap-tab">
                             <iframe class="google-map"
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9629.50548737967!2d35.19030780211376!3d31.75095706672506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1502d78d1aad9a03%3A0x12d30a9ba15ca0ce!2sTeddy%20Stadium!5e1!3m2!1sen!2s!4v1729707924077!5m2!1sen!2s"
+                            src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d526.152595187584!2d35.204423085641835!3d31.864320322788373!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sil!4v1729882842594!5m2!1sen!2sil" 
                                 width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                                 referrerpolicy="no-referrer-when-downgrade"></iframe>
 
+                            
+
                             <!-- You can easily copy the embed code from Google Maps -> Share -> Embed a map // -->
-                        </div>
+                           </div>
                     </div>
                 </div>
 
@@ -517,6 +550,118 @@
         });
     </script>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('bookingForm');
+        const phoneInput = document.getElementById('phone');
+        const startTimeSelect = document.getElementById('startTime');
+        const durationSelect = document.getElementById('duration');
+        const endTimeInput = document.getElementById('endTime');
+        const reservationCostInput = document.getElementById('reservationCost');
+
+        // Populate start time options
+        for (let i = 0; i < 24; i++) {
+            let hour = i.toString().padStart(2, '0');
+            let option = document.createElement('option');
+            option.value = `${hour}:00`;
+            option.textContent = `${hour}:00`;
+            startTimeSelect.appendChild(option);
+        }
+
+        function validatePhone(phone) {
+            const israeliRegex = /^(05[0-9])\d{7}$/;
+            const palestinianRegex = /^059\d{7}$/;
+            return israeliRegex.test(phone) || palestinianRegex.test(phone);
+        }
+
+        function updateEndTimeAndCost() {
+            if (startTimeSelect.value && durationSelect.value) {
+                let [hours, minutes] = startTimeSelect.value.split(':');
+                let duration = parseInt(durationSelect.value);
+                let endDate = new Date(2000, 0, 1, parseInt(hours) + duration, 0);
+                endTimeInput.value = endDate.toTimeString().substr(0, 5);
+                
+                // Calculate and display reservation cost
+                let cost = duration * 100;
+                reservationCostInput.value = `${cost} شيكل`;
+            } else {
+                endTimeInput.value = '';
+                reservationCostInput.value = '';
+            }
+        }
+
+        startTimeSelect.addEventListener('change', updateEndTimeAndCost);
+        durationSelect.addEventListener('change', updateEndTimeAndCost);
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const phone = phoneInput.value;
+
+            if (!validatePhone(phone)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ في رقم الهاتف',
+                    text: 'الرجاء إدخال رقم هاتف صحيح (10 أرقام).',
+                    confirmButtonText: 'حسنًا'
+                });
+                return;
+            }
+
+            const firstname = document.getElementById('firstname').value;
+            const lastname = document.getElementById('lastname').value;
+            const todayDate = document.getElementById('todayDate').value;
+            const startTime = startTimeSelect.value;
+            const endTime = endTimeInput.value;
+            const duration = durationSelect.value;
+            const reservationCost = parseInt(durationSelect.value) * 100;
+
+            const requestBody = {
+                Firstname: firstname,
+                lastName: lastname,
+                phone: phone,
+                todayDate: todayDate,
+                startTime: startTime,
+                endTime: endTime,
+                duration: duration,
+                reservationCost: reservationCost
+            };
+
+            fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/bookings/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            })
+            .then(response => {
+                if (response.status === 201) {
+                    return response.json();
+                } else {
+                    throw new Error('Something went wrong!');
+                }
+            })
+            .then(data => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'شكراً لك على الحجز',
+                    html: `تم إضافة الطلب بنجاح!<br>تكلفة الحجز: ${reservationCost} شيكل`,
+                    confirmButtonText: 'حسنًا'
+                });
+                form.reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'عذرًا!',
+                    text: 'حدث خطأ. يرجى المحاولة مرة أخرى.',
+                    confirmButtonText: 'حسنًا'
+                });
+            });
+        });
+    });
+    </script>
 
 </body>
 
