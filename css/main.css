@@ -34,11 +34,20 @@
   --font-weight-light:            300;
   --font-weight-normal:           400;
   --font-weight-bold:             700;
+
+  --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.89rem);
+  --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);
+  --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.58rem);
+  --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.11rem);
+  --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 2.81rem);
+  --font-size-xxl: clamp(2.44rem, 2.38vw + 1.85rem, 3.75rem);
+  --font-size-xxxl: clamp(3.05rem, 3.54vw + 2.17rem, 5rem);
 }
 
 body {
   background-color: var(--white-color);
   font-family: var(--body-font-family); 
+  font-size: var(--font-size-base);
 }
 
 
@@ -64,27 +73,27 @@ h6 {
 }
 
 h1 {
-  font-size: var(--h1-font-size);
+  font-size: var(--font-size-xxl);
 }
 
 h2 {
-  font-size: var(--h2-font-size);
+  font-size: var(--font-size-xl);
 }
 
 h3 {
-  font-size: var(--h3-font-size);
+  font-size: var(--font-size-lg);
 }
 
 h4 {
-  font-size: var(--h4-font-size);
+  font-size: var(--font-size-md);
 }
 
 h5 {
-  font-size: var(--h5-font-size);
+  font-size: var(--font-size-base);
 }
 
 h6 {
-  font-size: var(--h6-font-size);
+  font-size: var(--font-size-sm);
 }
 
 p {
@@ -290,11 +299,11 @@ strong {
   border: 2px solid transparent;
   border-radius: var(--border-radius-large);
   color: var(--white-color);
-  font-size: var(--btn-font-size);
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
   line-height: normal;
   transition: all 0.3s;
-  padding: 10px 20px;
+  padding: 0.5em 1em;
 }
 
 .custom-btn:hover {
@@ -1007,3 +1016,9 @@ strong {
   }
 }
 
+@media (max-width: 768px) {
+  .custom-btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}

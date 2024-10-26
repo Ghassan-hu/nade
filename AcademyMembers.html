@@ -61,6 +61,103 @@
   font-size: 1.2em;
   color: #555;
 }
+
+.member-card {
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px; /* Add some bottom margin */
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.member-card .card-img-top {
+    height: auto; /* Change height to auto for responsiveness */
+    width: 100%; /* Ensure the image takes full width */
+    object-fit: cover; /* Maintain aspect ratio */
+    transition: all 0.3s ease;
+}
+
+.member-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.member-card .card-body {
+    padding: 1.5rem;
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+}
+
+.member-card .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.member-card .card-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.member-card .position {
+    font-weight: 600;
+    color: #007bff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .member-card .card-img-top {
+        height: 200px; /* Slightly smaller image height on mobile */
+    }
+
+    .member-card .card-body {
+        padding: 1rem; /* Less padding on mobile */
+    }
+
+    .member-card .card-title {
+        font-size: 1.1rem; /* Smaller font size on mobile */
+    }
+
+    .member-card .card-text {
+        font-size: 0.8rem; /* Smaller font size on mobile */
+    }
+}
+
+/* Adjust container padding on small screens */
+@media (max-width: 576px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .member-card {
+        margin-bottom: 15px; /* Reduce bottom margin for smaller screens */
+    }
+
+    .navbar {
+        padding: 10px; /* Add padding to navbar */
+    }
+
+    .btn.custom-btn {
+        font-size: 1.2rem; /* Increase button font size */
+        padding: 10px; /* Add padding for better touch targets */
+    }
+
+    #searchInput {
+        padding: 12px; /* Increase padding for better usability */
+        font-size: 1.1rem; /* Slightly larger font size */
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem; /* Increase font size for navbar brand */
+    }
+}
     </style>
 </head>
 <body>
@@ -96,24 +193,10 @@
                             </a>
                         </div>
                         <div class="text-center mb-4">
-                            <input type="text" id="searchInput" placeholder="Search by Name, Age, Position" style="width: 100%; max-width: 350px; padding: 10px; font-size: 1rem; border-radius: 20px; border: 1px solid #ccc;">
-
+                            <input type="text" id="searchInput" placeholder="Search by Name" style="width: 100%; max-width: 350px; padding: 10px; font-size: 1rem; border-radius: 20px; border: 1px solid #ccc;">
                         </div>
-                        <div class="table-responsive">
-                            <table class="schedule-table table table-dark" id="membersTable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" style="display: none;">ID</th>
-                                        <th scope="col">Profile</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Age</th>
-                                        <th scope="col">Position</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                   
-                                </tbody>
-                            </table>
+                        <div id="membersContainer" class="row">
+                            <!-- Member cards will be dynamically added here -->
                         </div>
                     </div>
                 </div>
@@ -138,71 +221,61 @@
 
 
     <script>
-
 async function fetchMembers() {
     const response = await fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/academies/');
     const users = await response.json();
 
-    const membertableBody = document.getElementById('membersTable').querySelector('tbody');
-    membertableBody.innerHTML = ''; // Clear the existing table
+    const membersContainer = document.getElementById('membersContainer');
+    membersContainer.innerHTML = ''; // Clear the existing content
 
     users.forEach(user => {
-        const row = document.createElement('tr');
-       // row.onclick = () => populateMemberFormDet(user);
-        row.innerHTML = `
-            <td style="display: none;">${user._id}</td>
-            <td><img src="data:image/png;base64,${user.profileImage}" alt="Profile Image" style="width:50px; height:50px;"/></td>
-            <td>${user.name}</td>
-            <td>${user.age}</td>
-            <td>${user.position}</td>
+        const card = document.createElement('div');
+        card.className = 'col-12 col-sm-6 col-md-4 col-lg-3 mb-4'; // Adjusted column classes
+        card.innerHTML = `
+            <div class="card member-card h-100">
+                <img src="data:image/png;base64,${user.profileImage}" class="card-img-top" alt="${user.name}">
+                <div class="badge-new">New</div> <!-- Badge for new members -->
+                <div class="card-body">
+                    <h5 class="card-title">${user.name}</h5>
+                    <p class="card-text"><i class="fas fa-birthday-cake mr-2"></i> Age: ${user.age}</p>
+                    <p class="card-text position"><i class="fas fa-user-tie mr-2"></i> ${user.position}</p>
+                </div>
+            </div>
         `;
-        membertableBody.appendChild(row);
+        card.setAttribute('data-name', user.name.toLowerCase()); // Store the name for filtering
+        membersContainer.appendChild(card);
     });
 }
 
-
 document.getElementById('searchInput').addEventListener('keyup', function() {
     const filter = this.value.toLowerCase();
-    const table = document.getElementById('membersTable');
-    const tr = table.getElementsByTagName('tr');
+    const cards = document.querySelectorAll('#membersContainer .member-card');
 
-    for (let i = 1; i < tr.length; i++) {
-        let match = false;
-        const td = tr[i].getElementsByTagName('td');
-
-        for (let j = 1; j < td.length; j++) {
-            if (td[j]) {
-                const textValue = td[j].textContent || td[j].innerText;
-                if (textValue.toLowerCase().indexOf(filter) > -1) {
-                    match = true;
-                    break;
-                }
-            }
+    cards.forEach(card => {
+        const cardName = card.querySelector('.card-title').textContent.toLowerCase();
+        if (cardName.includes(filter)) {
+            card.closest('.col-12').style.display = ''; // Show the card
+        } else {
+            card.closest('.col-12').style.display = 'none'; // Hide the card
         }
-
-        tr[i].style.display = match ? '' : 'none';
-    }
+    });
 });
 
+// Get username from localStorage and update the welcome message
+window.onload = function() {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = 'login.html'; // Redirect to login page
+    }
 
+    const username = localStorage.getItem('user'); // Retrieve username from localStorage
+    const welcomeMessage = document.getElementById('WelcomeMessage');
 
-        // Get username from localStorage and update the welcome message
-        window.onload = function() {
+    if (username) {
+        welcomeMessage.textContent = `Welcome ${username}`; // Update the message with the username
+    }
 
-            if (localStorage.getItem('isLoggedIn') !== 'true') {
-                window.location.href = 'login.html'; // Redirect to login page
-            }
-
-            const username = localStorage.getItem('user'); // Retrieve username from localStorage
-            const welcomeMessage = document.getElementById('WelcomeMessage');
-
-            if (username) {
-                welcomeMessage.textContent = `Welcome ${username}`; // Update the message with the username
-            }
-
-            fetchMembers(); 
-
-        };
+    fetchMembers(); 
+};
       
            
       

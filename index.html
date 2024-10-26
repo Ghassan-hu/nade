@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 
 <head>
     <meta charset="utf-8">
@@ -35,7 +35,30 @@
 
     <link href="css/main.css" rel="stylesheet">
 
+    <!-- Add RTL Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css">
 
+    <!-- Add custom RTL styles -->
+    <style>
+        body {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .navbar-nav {
+            padding-right: 0;
+        }
+
+        .ms-auto {
+            margin-right: auto !important;
+            margin-left: 0 !important;
+        }
+
+        .me-lg-5 {
+            margin-left: 3rem !important;
+            margin-right: 0 !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -48,7 +71,7 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container">
                 <a class="navbar-brand" href="index.html">
-                    <img src="images/Soccer-Ball--Streamline-Ultimate.png" alt="Logo" id="logoimg">
+                    <img src="images/Soccer-Ball--Streamline-Ultimate.png" alt="شعار" id="logoimg">
                 </a>
 
                 <a href="login.html" class="btn custom-btn d-lg-none ms-auto me-4">تسجيل الدخول / الاشتراك</a>
@@ -65,7 +88,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_2">الخدمات</a>
+                            <a class="nav-link click-scroll" href="#section_2">خدماتنا</a>
                         </li>
 
                         <li class="nav-item">
@@ -81,7 +104,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="AcademyMembers.html">اعضاء الأكاديمية</a>
+                            <a class="nav-link" href="AcademyMembers.html">أعضاء الأكاديمية</a>
                         </li>
                     </ul>
 
@@ -98,19 +121,8 @@
                 <div class="row">
 
                     <div class="col-12 mt-auto mb-5 text-center">
-                        <small class="animated-text">
-                            <span class="text-highlight">أكاديمية</span>
-                            <span class="separator">|</span>
-                            <span class="text-glow">ملعب كرة قدم</span>
-                        </small>
+                        <small>أكاديمية | ملعب كرة قدم</small>
                         <h1 class="text-white mb-5">مرحباً بكم في موقع نادي قلنديا الرسمي</h1>
-
-                        <div>
-
-
-                          
-
-                        </div>
                     </div>
 
                     <div class="col-lg-12 col-12 mt-auto d-flex flex-column flex-lg-row text-center">
@@ -239,7 +251,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Data will be populated here -->
+                                    <!-- البيانات ستضاف هنا -->
                                 </tbody>
                             </table>
                         </div>
@@ -264,7 +276,7 @@
                     <div class="col-lg-6 col-10 mx-auto">
                         <form id="bookingForm" class="custom-form ticket-form mb-5 mb-lg-0" action="#" method="post"
                             role="form">
-                            <h4 class="text-center mb-4">إضافة طلب!</h4>
+                            <h4 class="text-center mb-4">أضف طلبك!</h4>
                             <div class="ticket-form-body">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-12">
@@ -276,49 +288,38 @@
                                             placeholder="اسم العائلة" required>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="phoneType">نوع رقم الهاتف:</label>
-                                    <select class="form-control" id="phoneType" name="phoneType">
-                                        <option value="israel">إسرائيلي</option>
-                                        <option value="palestine">فلسطيني</option>
-                                    </select>
-                                </div>
                                 <input type="tel" class="form-control" name="ticket-form-phone" id="phone"
-                                    placeholder="رقم الهاتف" required>
-                                <small id="phoneHelp" class="form-text text-muted">
-                                </small>
+                                    placeholder=" رقم الهاتف (مثال: 0599123456)" 
+                                    pattern="^(05[0-9]{8}|9725[0-9]{8})$"
+                                    title="الرجاء إدخال رقم هاتف فلسطيني أو إسرائيلي صالح"
+                                    required>
                                 <div class="row mb-3">
-                                    <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="col-lg-6 col-md-6 col-12">
                                         <label for="todayDate">تاريخ الحجز</label>
                                         <input type="date" name="todayDate" id="todayDate" class="form-control"
                                             required>
                                     </div>
-                                    <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="col-lg-6 col-md-6 col-12">
                                         <label for="startTime">وقت البدء</label>
-                                        <select name="startTime" id="startTime" class="form-control" required>
-                                            <option value="">اختر وقت البدء</option>
-                                            <!-- Options will be populated by JavaScript -->
-                                        </select>
+                                        <input type="time" name="startTime" id="startTime" class="form-control"
+                                            step="3600" required>
                                     </div>
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <label for="duration">مدة الحجز (بالساعات)</label>
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <label for="duration">مدة اللعب (بالساعات)</label>
                                         <select name="duration" id="duration" class="form-control" required>
                                             <option value="1">1 ساعة</option>
                                             <option value="2">2 ساعة</option>
                                             <option value="3">3 ساعات</option>
                                             <option value="4">4 ساعات</option>
-                                            <option value="5">5 ساعات</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
                                     <div class="col-lg-6 col-md-6 col-12">
                                         <label for="endTime">وقت الانتهاء</label>
-                                        <input type="text" name="endTime" id="endTime" class="form-control" readonly>
+                                        <input type="time" name="endTime" id="endTime" class="form-control" readonly>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <label for="reservationCost">تكلفة الحجز</label>
-                                        <input type="text" name="reservationCost" id="reservationCost" class="form-control" readonly>
+                                    <div class="col-12 mt-3">
+                                        <label for="cost">التكلفة الإجمالية</label>
+                                        <input type="text" name="cost" id="cost" class="form-control" readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-md-10 col-8 mx-auto">
@@ -360,7 +361,7 @@
 
                             رؤيتنا.. وسط كل هذا الظلم والظلام الذي يعايشه وطننا الحبيب، تضافرت مؤسسات قريتنا، وتكاتفت
                             خيرة شبابها،
-                            ثم أثمرت جهودهم ليعلنوا عن تأسيس نادي قلنديا البلد الرياضي، ليكون رافعًا للقرية وعنونًا من
+                            ثم أثمرت جهودهم ليعلنوا عن تأسيس نادي قلندا البلد الرياضي، ليكون رافعًا للقرية وعنونًا من
                             عناوين
                             أصالتها، وبيت من بيوت خدمتها.
 
@@ -399,15 +400,19 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 col-12 mx-auto">
-                        <h2 class="text-center mb-4">مهتم؟ هيا بنا نزور</h2>
+                        <h2 class="text-center mb-4">تفضل بزيارتنا
+
+                        </h2>
 
                         <nav class="d-flex justify-content-center">
                             <div class="nav nav-tabs align-items-baseline justify-content-center" id="nav-tab"
                                 role="tablist">
+
+
                                 <button class="nav-link active" id="nav-ContactMap-tab" data-bs-toggle="tab"
                                     data-bs-target="#nav-ContactMap" type="button" role="tab"
                                     aria-controls="nav-ContactMap" aria-selected="true">
-                                    <h5>موقعنا على خرائط جوجل</h5>
+                                    <h5>موقعنا عل خرائط جوجل</h5>
                                 </button>
                             </div>
                         </nav>
@@ -415,14 +420,11 @@
                         <div class="tab-pane active fade show" id="nav-ContactMap" role="tabpanel"
                             aria-labelledby="nav-ContactMap-tab">
                             <iframe class="google-map"
-                            src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d526.152595187584!2d35.204423085641835!3d31.864320322788373!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sil!4v1729882842594!5m2!1sen!2sil" 
+                                src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1052.3025683707783!2d35.20351926965121!3d31.864549998378635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzHCsDUxJzUyLjQiTiAzNcKwMTInMTUuMCJF!5e1!3m2!1sen!2sil!4v1729946604577!5m2!1sen!2sil"
                                 width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                                 referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-                            
-
                             <!-- You can easily copy the embed code from Google Maps -> Share -> Embed a map // -->
-                           </div>
+                        </div>
                     </div>
                 </div>
 
@@ -431,9 +433,43 @@
         </section>
     </main>
 
-
-
-
+    <!-- Footer Section -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="mb-3">نادي قلنديا البلد</h5>
+                    <p class="mb-0">نسعى لتعزيز الروح الرياضية وبناء مجتمع قوي.</p>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="mb-3">تواصل معنا</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> قلنديا، القدس الشرقية</li>
+                        <li><i class="fas fa-phone me-2"></i> <a href="tel:0543923782" class="text-white">0543923782</a></li>
+                        <li><i class="fas fa-envelope me-2"></i> <a href="mailto:ghassanhussen22@icloud.com" class="text-white">ghassanhussen22@icloud.com</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <h5 class="mb-3">تابعنا</h5>
+                    <div class="social-icons">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2024 نادي قلنديا البلد. جميع الحقوق محفوظة.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">تم التطوير بواسطة: <a href="#" class="text-white fw-bold">غسان حسين</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- JAVASCRIPT FILES -->
     <script src="js/jquery.min.js"></script>
@@ -442,6 +478,7 @@
     <script src="js/click-scroll.js"></script>
     <script src="js/custom.js"></script>
 
+    <!-- Font Awesome for icons -->
     <script>
 
         const responseMessageElement = document.getElementById('responseMessage');
@@ -489,9 +526,9 @@
                     // Show SweetAlert success message
                     Swal.fire({
                         icon: 'success',
-                        title: 'Success!',
-                        text: 'Request added successfully!',
-                        confirmButtonText: 'Okay'
+                        title: 'تم بنجاح!',
+                        text: 'تمت إضافة الطلب بنجاح!',
+                        confirmButtonText: 'حسناً'
                     });
                     form.reset(); // Reset the form fields
                 })
@@ -500,9 +537,9 @@
                     //responseMessageElement.innerText = 'An error occurred. Please try again.';
                     Swal.fire({
                         icon: 'error',
-                        title: 'Oops!',
-                        text: 'An error occurred. Please try again.',
-                        confirmButtonText: 'Okay'
+                        title: 'عذراً!',
+                        text: 'حدث خطأ. يرجى المحاولة مرة أخرى.',
+                        confirmButtonText: 'حسناً'
                     });
                 });
         });
@@ -533,7 +570,7 @@
                     const row = document.createElement('tr');
                     const fullName = `${booking.Firstname} ${booking.lastName}`; // Combine Firstname and Lastname
                     row.innerHTML = `
-                    <td>${new Date(booking.todayDate).toLocaleDateString()}</td> <!-- Format date -->
+                    <td>${new Date(booking.todayDate).toLocaleDateString('ar-EG')}</td> <!-- Format date -->
                     <td>${fullName}</td>
                     <td>${booking.startTime} - ${booking.endTime}</td>
                     <td>${booking.phone}</td>
@@ -552,113 +589,34 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('bookingForm');
-        const phoneInput = document.getElementById('phone');
-        const startTimeSelect = document.getElementById('startTime');
+        const startTimeInput = document.getElementById('startTime');
         const durationSelect = document.getElementById('duration');
         const endTimeInput = document.getElementById('endTime');
-        const reservationCostInput = document.getElementById('reservationCost');
-
-        // Populate start time options
-        for (let i = 0; i < 24; i++) {
-            let hour = i.toString().padStart(2, '0');
-            let option = document.createElement('option');
-            option.value = `${hour}:00`;
-            option.textContent = `${hour}:00`;
-            startTimeSelect.appendChild(option);
-        }
-
-        function validatePhone(phone) {
-            const israeliRegex = /^(05[0-9])\d{7}$/;
-            const palestinianRegex = /^059\d{7}$/;
-            return israeliRegex.test(phone) || palestinianRegex.test(phone);
-        }
+        const costInput = document.getElementById('cost');
 
         function updateEndTimeAndCost() {
-            if (startTimeSelect.value && durationSelect.value) {
-                let [hours, minutes] = startTimeSelect.value.split(':');
-                let duration = parseInt(durationSelect.value);
-                let endDate = new Date(2000, 0, 1, parseInt(hours) + duration, 0);
-                endTimeInput.value = endDate.toTimeString().substr(0, 5);
-                
-                // Calculate and display reservation cost
-                let cost = duration * 100;
-                reservationCostInput.value = `${cost} شيكل`;
-            } else {
-                endTimeInput.value = '';
-                reservationCostInput.value = '';
-            }
+            const startTime = new Date(`2000-01-01T${startTimeInput.value}:00`);
+            const duration = parseInt(durationSelect.value);
+            
+            startTime.setMinutes(0); // Set minutes to 00
+            const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000);
+            
+            endTimeInput.value = endTime.toTimeString().slice(0, 5);
+            
+            const cost = duration * 100;
+            costInput.value = `${cost} شيكل إسرائيلي`;
         }
 
-        startTimeSelect.addEventListener('change', updateEndTimeAndCost);
+        startTimeInput.addEventListener('change', updateEndTimeAndCost);
         durationSelect.addEventListener('change', updateEndTimeAndCost);
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const phone = phoneInput.value;
-
-            if (!validatePhone(phone)) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'خطأ في رقم الهاتف',
-                    text: 'الرجاء إدخال رقم هاتف صحيح (10 أرقام).',
-                    confirmButtonText: 'حسنًا'
-                });
-                return;
-            }
-
-            const firstname = document.getElementById('firstname').value;
-            const lastname = document.getElementById('lastname').value;
-            const todayDate = document.getElementById('todayDate').value;
-            const startTime = startTimeSelect.value;
-            const endTime = endTimeInput.value;
-            const duration = durationSelect.value;
-            const reservationCost = parseInt(durationSelect.value) * 100;
-
-            const requestBody = {
-                Firstname: firstname,
-                lastName: lastname,
-                phone: phone,
-                todayDate: todayDate,
-                startTime: startTime,
-                endTime: endTime,
-                duration: duration,
-                reservationCost: reservationCost
-            };
-
-            fetch('http://ec2-13-60-195-41.eu-north-1.compute.amazonaws.com:3000/api/bookings/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody),
-            })
-            .then(response => {
-                if (response.status === 201) {
-                    return response.json();
-                } else {
-                    throw new Error('Something went wrong!');
-                }
-            })
-            .then(data => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'شكراً لك على الحجز',
-                    html: `تم إضافة الطلب بنجاح!<br>تكلفة الحجز: ${reservationCost} شيكل`,
-                    confirmButtonText: 'حسنًا'
-                });
-                form.reset();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'عذرًا!',
-                    text: 'حدث خطأ. يرجى المحاولة مرة أخرى.',
-                    confirmButtonText: 'حسنًا'
-                });
-            });
+        // Set initial step to 1 hour (3600 seconds)
+        startTimeInput.step = "3600";
+        
+        // Ensure minutes are always set to 00 when changing time
+        startTimeInput.addEventListener('change', function() {
+            const timeValue = this.value.split(':');
+            this.value = `${timeValue[0]}:00`;
         });
     });
     </script>
