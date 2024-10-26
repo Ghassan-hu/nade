@@ -952,14 +952,6 @@ async function deleteMember() {
         // Function to populate the table with bookings
         const populateallBookingsTable = (bookings) => {
             allBookingsTableBody.innerHTML = ''; // Clear any existing rows
-            
-            // Sort bookings: pending first, then by date (most recent first)
-            bookings.sort((a, b) => {
-                if (a.status.toLowerCase() === 'pending' && b.status.toLowerCase() !== 'pending') return -1;
-                if (a.status.toLowerCase() !== 'pending' && b.status.toLowerCase() === 'pending') return 1;
-                return new Date(b.todayDate) - new Date(a.todayDate);
-            });
-
             bookings.forEach(booking => {
                 const row = document.createElement('tr');
                 const fullName = `${booking.Firstname} ${booking.lastName}`; // Combine Firstname and Lastname
@@ -1007,50 +999,31 @@ async function deleteMember() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ id }),
+                    body: JSON.stringify({ id }), // Send the booking ID in the request body
                 });
 
                 if (response.ok) {
-                    const booking = await response.json();
-                    const formattedPhone = formatPhoneForWhatsApp(booking.phone);
-
-                    // Calculate total price
-                    const startTime = new Date(`2000-01-01T${booking.startTime}`);
-                    const endTime = new Date(`2000-01-01T${booking.endTime}`);
-                    const durationHours = (endTime - startTime) / (1000 * 60 * 60);
-                    const totalPrice = durationHours * 100; // 100 shekels per hour
-
-                    const message = encodeURIComponent(`مرحبًا ${booking.Firstname}، تمت الموافقة على حجزك!
-
-التفاصيل:
-اليوم: ${new Date(booking.todayDate).toLocaleDateString('ar-EG')}
-وقت البدء: ${booking.startTime}
-وقت الانتهاء: ${booking.endTime}
-المدة: ${durationHours} ساعة
-السعر الإجمالي: ${totalPrice.toFixed(2)} شيكل
-
-شكرًا لحجزك!`);
-
-                    window.open(`https://wa.me/${formattedPhone}?text=${message}`, '_blank');
-
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: 'Booking approved successfully!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        fetchallBookings();
-                        fetchApprovedBookings();
-                    });
+        icon: 'success',
+        title: 'Success!',
+        text: 'Booking approved successfully!',
+        showConfirmButton: false, // Hide the confirm button
+        timer: 1500 // Show for 1.5 seconds
+    }).then(() => {
+        fetchallBookings();
+        fetchApprovedBookings();
+
+    });
+
                 } else {
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Oops!',
-                        text: 'Failed to approve booking!',
-                        showConfirmButton: false,
+						icon: 'error',
+						title: 'Oops!',
+						text: 'Failed to approve booking!',
+						showConfirmButton: false, // Hide the confirm button
                         timer: 1500
-                    });
+					});
+
                 }
             } catch (error) {
                 console.error('Error approving booking:', error);
@@ -1065,42 +1038,30 @@ async function deleteMember() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ id }),
+                    body: JSON.stringify({ id }), // Send the booking ID in the request body
                 });
 
                 if (response.ok) {
-                    const booking = await response.json();
-                    const formattedPhone = formatPhoneForWhatsApp(booking.phone);
-                    const message = encodeURIComponent(`مرحبًا ${booking.Firstname}، نأسف لإبلاغك أنه تم رفض حجزك.
-
-التفاصيل:
-اليوم: ${new Date(booking.todayDate).toLocaleDateString('ar-EG')}
-وقت البدء: ${booking.startTime}
-وقت الانتهاء: ${booking.endTime}
-السعر الإجمالي: ${booking.price} شيكل
-
-شكرًا لحجزك!`);
-
-                    window.open(`https://wa.me/${formattedPhone}?text=${message}`, '_blank');
-
+                    
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: 'Booking Declined successfully!',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        fetchallBookings();
-                        fetchDeclinedBookings();
-                    });
+        icon: 'success',
+        title: 'Success!',
+        text: 'Booking Declined successfully!',
+        showConfirmButton: false, // Hide the confirm button
+        timer: 1500 // Show for 1.5 seconds
+    }).then(() => {
+        fetchallBookings();
+        fetchDeclinedBookings();
+    });
                 } else {
+                    
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Oops!',
-                        text: 'Failed to decline booking!',
-                        showConfirmButton: false,
+						icon: 'error',
+						title: 'Oops!',
+						text: 'Failed to decline booking!',
+						showConfirmButton: false, // Hide the confirm button
                         timer: 1500
-                    });
+					});
                 }
             } catch (error) {
                 console.error('Error declining booking:', error);
@@ -1133,28 +1094,7 @@ function filterTable() {
     }
 }
 
-// Function to format phone number for WhatsApp
-function formatPhoneForWhatsApp(phone) {
-    // Remove any non-digit characters
-    let cleanNumber = phone.replace(/\D/g, '');
-    
-    // Check if it's an Israeli number
-    if (cleanNumber.startsWith('05')) {
-        return '972' + cleanNumber.substring(1);
-    }
-    // Check if it's a Palestinian number
-    else if (cleanNumber.startsWith('059') || cleanNumber.startsWith('056')) {
-        return '970' + cleanNumber.substring(1);
-    }
-    // If it already has a country code, return as is
-    else if (cleanNumber.startsWith('972') || cleanNumber.startsWith('970')) {
-        return cleanNumber;
-    }
-    // Default case: assume it's a local number and add Palestinian code
-    else {
-        return '970' + cleanNumber;
-    }
-}
+
 
 </script>
 
